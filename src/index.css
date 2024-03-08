@@ -1,0 +1,19 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  font-family: "Nunito", sans-serif;
+  background-color: #f7fafc;
+  color: #1a202c;
+}
+
+a {
+  color: #3182ce;
+  text-decoration: none;
+  transition: color 0.15s ease;
+}
+
+a:hover {
+  color: #2c5282;
+}
