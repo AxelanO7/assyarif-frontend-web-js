@@ -4,6 +4,7 @@ const DetailOutcome = () => {
   const detailProduct = ["Kopi", "Teh", "Susu"];
 
   return (
+    
     <>
       <BaseLayout>
         <div className="flex flex-col bg-gray-100 rounded-md shadow-md m-6 text-center">

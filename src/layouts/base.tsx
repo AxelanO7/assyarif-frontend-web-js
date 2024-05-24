@@ -19,11 +19,7 @@ const BaseLayout = ({ children }: BaseProps) => {
           >
             {children}
             <div className="grow pb-8" />
-            <footer
-              className="text-gray-600 text-center py-2
-            bg-gray-100 border-t-2 border-gray-200
-            "
-            >
+            <footer className="text-gray-600 text-center py-2 bg-gray-100 border-t-2 border-gray-200">
               © 2023 - TOKO ASSYARIF
             </footer>
           </div>

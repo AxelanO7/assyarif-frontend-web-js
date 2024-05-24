@@ -1,18 +1,32 @@
 import { HomeIcon, MagnifyingGlassIcon } from "@heroicons/react/20/solid";
 import BaseLayout from "../../layouts/base";
+import axios from "axios";
+import { useState, useEffect } from "react";
+import { getBaseUrl } from "../../helpers/api";
+import { Stuff } from "../../types/stuff";
 
 const Outcome = () => {
-  const stocks = [
-    {
-      id: 1,
-      name: "Bimoli",
-      type: "Minyak",
-      amount: 12,
-      unit: "1 Liter",
-      price: 20000,
-    },
-  ];
+  const [stocks, setStocks] = useState<Stuff[]>([]);
 
+  const baseUrl = () => {
+    return getBaseUrl();
+  };
+
+  const getIns = () => {
+    axios
+      .get(`${baseUrl()}/stuff/out`)
+      .then((res) => {
+        console.log(res.data);
+        setStocks(res.data.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  useEffect(() => {
+    getIns();
+  }, []);
   return (
     <>
       <BaseLayout>
@@ -67,7 +81,7 @@ const Outcome = () => {
                       {stock.type}
                     </td>
                     <td className="border-2 border-gray-300 p-2">
-                      {stock.amount}
+                      {stock.quantity}
                     </td>
                     <td className="border-2 border-gray-300 p-2">
                       {stock.unit}
