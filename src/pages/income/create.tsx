@@ -1,5 +1,9 @@
 import { HomeIcon } from "@heroicons/react/20/solid";
 import BaseLayout from "../../layouts/base";
+import { useEffect, useState } from "react";
+import { getBaseUrl } from "../../helpers/api";
+import axios from "axios";
+import Swal from "sweetalert2";
 
 const CreateIncome = () => {
   const dateNow = new Date().toLocaleDateString("id-ID", {
@@ -7,6 +11,87 @@ const CreateIncome = () => {
     month: "numeric",
     day: "numeric",
   });
+
+  const [idLastNumber, setIdLastNumber] = useState("");
+  const [name, setName] = useState("");
+  const [type, setType] = useState("");
+  const [quantity, setQuantity] = useState(0);
+  const [total, setTotal] = useState(0);
+  const [price, setPrice] = useState(0);
+  const [unit, setUnit] = useState("pcs");
+
+  const baseUrl = () => {
+    return getBaseUrl();
+  };
+
+  const getInLast = () => {
+    axios
+      .get(`${baseUrl()}/stuff/last/in`)
+      .then((res) => {
+        const resLastNumber = res.data.data;
+        const withPrefixZero = (num: number) => {
+          return num.toString().padStart(4, "0");
+        };
+        const finalNumber = `IN-${withPrefixZero(resLastNumber + 1)}`;
+        setIdLastNumber(finalNumber);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const submitIn = () => {
+    const idLast = idLastNumber.toString().split("-")[1];
+    const idFinal = parseInt(idLast);
+
+    const data = {
+      id: idFinal,
+      name: name,
+      type: type,
+      quantity: quantity,
+      total: total,
+      price: price,
+      unit: unit,
+    };
+
+    axios
+      .post(`${baseUrl()}/stuff/in`, data)
+      .then((res) => {
+        console.log(res);
+        resetForm();
+        Swal.fire({
+          icon: "success",
+          title: "Success",
+          text: "Data berhasil disimpan",
+        });
+        window.location.href = "/in";
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const resetForm = () => {
+    getInLast();
+    setName("");
+    setType("");
+    setQuantity(0);
+    setTotal(0);
+    setPrice(0);
+    setUnit("pcs");
+  };
+
+  const updateTotal = (val: number, type: string) => {
+    if (type === "price") {
+      setTotal(val * quantity);
+    } else {
+      setTotal(price * val);
+    }
+  };
+
+  useEffect(() => {
+    getInLast();
+  }, []);
 
   return (
     <>
@@ -30,22 +115,23 @@ const CreateIncome = () => {
               <div>
                 <label>ID Barang</label>
                 <input
-                  type="text"
-                  className="p-2 border-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 w-full"
+                  className="p-2 border-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 w-full bg-gray-100"
+                  value={idLastNumber}
+                  disabled
                 />
               </div>
               <div>
                 <label>Nama Barang</label>
                 <input
-                  type="text"
                   className="p-2 border-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 w-full"
+                  onChange={(e) => setName(e.target.value)}
                 />
               </div>
               <div>
                 <label>Jenis Barang</label>
                 <input
-                  type="text"
                   className="p-2 border-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 w-full"
+                  onChange={(e) => setType(e.target.value)}
                 />
               </div>
             </div>
@@ -53,28 +139,44 @@ const CreateIncome = () => {
               <div>
                 <label>Jumlah Barang</label>
                 <input
-                  type="text"
                   className="p-2 border-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 w-full"
+                  type="number"
+                  onChange={(e) => {
+                    setQuantity(parseInt(e.target.value));
+                    updateTotal(parseInt(e.target.value), "quantity");
+                  }}
                 />
               </div>
               <div>
                 <label>Harga Sub Total</label>
                 <input
-                  type="text"
-                  className="p-2 border-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 w-full"
+                  className="p-2 border-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 w-full bg-gray-100"
+                  value={total.toLocaleString("id-ID", {
+                    style: "currency",
+                    currency: "IDR",
+                  })}
+                  disabled
                 />
               </div>
               <div>
                 <label>Harga</label>
                 <input
-                  type="text"
                   className="p-2 border-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 w-full"
+                  type="number"
+                  onChange={(e) => {
+                    setPrice(parseInt(e.target.value));
+                    updateTotal(parseInt(e.target.value), "price");
+                  }}
                 />
               </div>
             </div>
             <div className="flex-col flex mt-4">
               <label>Satuan</label>
-              <select className="p-2 border-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 w-max bg-white">
+              <select
+                className="p-2 border-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 w-max bg-white"
+                value={unit}
+                onChange={(e) => setUnit(e.target.value)}
+              >
                 <option value="pcs">Pcs</option>
                 <option value="kg">Kg</option>
                 <option value="liter">Liter</option>
@@ -82,7 +184,10 @@ const CreateIncome = () => {
               </select>
             </div>
             <div className="w-full justify-end flex mt-4">
-              <button className="bg-blue-500 text-white px-3 py-2 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500">
+              <button
+                className="bg-blue-500 text-white px-3 py-2 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                onClick={submitIn}
+              >
                 Simpan
               </button>
             </div>

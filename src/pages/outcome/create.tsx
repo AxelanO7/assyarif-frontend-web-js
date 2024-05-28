@@ -1,5 +1,9 @@
 import { HomeIcon } from "@heroicons/react/20/solid";
 import BaseLayout from "../../layouts/base";
+import axios from "axios";
+import { useState, useEffect } from "react";
+import Swal from "sweetalert2";
+import { getBaseUrl } from "../../helpers/api";
 
 const CreateOutcome = () => {
   const dateNow = new Date().toLocaleDateString("id-ID", {
@@ -7,6 +11,86 @@ const CreateOutcome = () => {
     month: "numeric",
     day: "numeric",
   });
+
+  const [idLastNumber, setIdLastNumber] = useState("");
+  const [outlet, setOutlet] = useState("");
+  const [totalPay, setTotalPay] = useState(0);
+  const [quantity, setQuantity] = useState(0);
+  const [total, setTotal] = useState(0);
+  const [totalMoney, setTotalMoney] = useState(0);
+  const [returnMoney, setReturnMoney] = useState(0);
+
+  const baseUrl = () => {
+    return getBaseUrl();
+  };
+
+  const getOutLast = () => {
+    axios
+      .get(`${baseUrl()}/stuff/last/out`)
+      .then((res) => {
+        const resLastNumber = res.data.data;
+        const withPrefixZero = (num: number) => {
+          return num.toString().padStart(4, "0");
+        };
+        const finalNumber = `OUT-${withPrefixZero(resLastNumber + 1)}`;
+        setIdLastNumber(finalNumber);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const submitOut = () => {
+    const idLast = idLastNumber.toString().split("-")[1];
+    const idFinal = parseInt(idLast);
+
+    const data = {
+      id: idFinal,
+      name: outlet,
+      type: totalPay,
+      quantity: quantity,
+      total: total,
+      price: totalMoney,
+      unit: returnMoney,
+    };
+
+    axios
+      .post(`${baseUrl()}/stuff/out`, data)
+      .then((res) => {
+        console.log(res);
+        resetForm();
+        Swal.fire({
+          icon: "success",
+          title: "Success",
+          text: "Data berhasil disimpan",
+        });
+        window.location.href = "/in";
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const resetForm = () => {
+    setOutlet("");
+    setTotalPay(0);
+    setQuantity(0);
+    setTotal(0);
+    setTotalMoney(0);
+    setReturnMoney(0);
+  };
+
+  // const updateTotal = (val: number, type: string) => {
+  //   if (type === "price") {
+  //     setTotal(val * quantity);
+  //   } else {
+  //     setTotal(totalMoney * val);
+  //   }
+  // };
+
+  useEffect(() => {
+    getOutLast();
+  }, []);
 
   return (
     <>
@@ -30,14 +114,18 @@ const CreateOutcome = () => {
               <div>
                 <label>ID Barang</label>
                 <input
-                  type="text"
                   className="p-2 border-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 w-full bg-gray-100"
+                  value={idLastNumber}
                   disabled
                 />
               </div>
               <div>
                 <label>Nama Outlet</label>
-                <select className="p-2 border-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 w-full bg-white">
+                <select
+                  className="p-2 border-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 w-full bg-white"
+                  value={outlet}
+                  onChange={(e) => setOutlet(e.target.value)}
+                >
                   <option value="1">Outlet 1</option>
                   <option value="2">Outlet 2</option>
                   <option value="3">Outlet 3</option>
@@ -46,7 +134,6 @@ const CreateOutcome = () => {
               <div>
                 <label>Jumlah Bayar</label>
                 <input
-                  type="text"
                   className="p-2 border-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 w-full bg-gray-100"
                   disabled
                 />
@@ -56,22 +143,17 @@ const CreateOutcome = () => {
               <div>
                 <label>Jumlah Barang</label>
                 <input
-                  type="text"
                   className="p-2 border-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 w-full bg-gray-100"
                   disabled
                 />
               </div>
               <div>
                 <label>Jumlah Uang</label>
-                <input
-                  type="text"
-                  className="p-2 border-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 w-full"
-                />
+                <input className="p-2 border-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 w-full" />
               </div>
               <div>
                 <label>Kembalian</label>
                 <input
-                  type="text"
                   className="p-2 border-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 w-full bg-gray-100"
                   disabled
                 />
@@ -81,7 +163,10 @@ const CreateOutcome = () => {
               <button className="bg-gray-500 text-white px-3 py-2 rounded-md hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-500">
                 Hitung
               </button>
-              <button className="bg-blue-500 text-white px-3 py-2 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500">
+              <button
+                className="bg-blue-500 text-white px-3 py-2 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                onClick={submitOut}
+              >
                 Simpan
               </button>
             </div>

@@ -3,16 +3,17 @@ import BaseLayout from "../../layouts/base";
 import axios from "axios";
 import { useState, useEffect } from "react";
 import { getBaseUrl } from "../../helpers/api";
-import { Stuff } from "../../types/stuff";
+import { StuffIn } from "../../types/stuff";
+import Swal from "sweetalert2";
 
 const Outcome = () => {
-  const [stocks, setStocks] = useState<Stuff[]>([]);
+  const [stocks, setStocks] = useState<StuffIn[]>([]);
 
   const baseUrl = () => {
     return getBaseUrl();
   };
 
-  const getIns = () => {
+  const getOuts = () => {
     axios
       .get(`${baseUrl()}/stuff/out`)
       .then((res) => {
@@ -24,8 +25,44 @@ const Outcome = () => {
       });
   };
 
+  const addOut = () => {
+    window.location.href = "/out/add";
+  };
+
+  const editOut = (id: number) => {
+    window.location.href = `/out/${id}`;
+  };
+
+  const handleDeleteOut = (id: number) => {
+    Swal.fire({
+      title: "Apakah Anda yakin?",
+      text: "Data yang dihapus tidak dapat dikembalikan!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Ya, hapus!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        deleteStuff(id);
+      }
+    });
+  };
+
+  const deleteStuff = (id: number) => {
+    axios
+      .delete(`${baseUrl()}/stuff/out/${id}`)
+      .then((res) => {
+        console.log(res.data);
+        getOuts();
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
   useEffect(() => {
-    getIns();
+    getOuts();
   }, []);
   return (
     <>
@@ -41,8 +78,11 @@ const Outcome = () => {
               Barang Keluar
             </h3>
             <div className="flex justify-between mt-4">
-              <div className="flex space-x-4">
-                <button className="bg-c-dark-blue rounded-md px-3 text-white">
+              <div className="flex space-x-4 text-base font-semibold text-white">
+                <button
+                  className="bg-c-dark-blue rounded-md px-3"
+                  onClick={addOut}
+                >
                   Tambah Barang
                 </button>
                 <button className="bg-c-yellow rounded-md px-3">
@@ -93,10 +133,16 @@ const Outcome = () => {
                       })}
                     </td>
                     <td className="border-2 border-gray-300 flex space-x-2 text-white p-2">
-                      <button className="bg-blue-500 rounded-md w-full p-1">
+                      <button
+                        className="bg-blue-500 rounded-md w-full p-1"
+                        onClick={() => editOut(stock.id)}
+                      >
                         Edit
                       </button>
-                      <button className="bg-red-500 rounded-md w-full p-1">
+                      <button
+                        className="bg-red-500 rounded-md w-full p-1"
+                        onClick={() => handleDeleteOut(stock.id)}
+                      >
                         Hapus
                       </button>
                     </td>

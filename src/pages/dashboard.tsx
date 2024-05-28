@@ -1,5 +1,6 @@
 import { HomeIcon, MagnifyingGlassIcon } from "@heroicons/react/20/solid";
 import BaseLayout from "../layouts/base";
+import { useEffect } from "react";
 
 const Dashboard = () => {
   const stocks = [
@@ -12,6 +13,14 @@ const Dashboard = () => {
       price: 20000,
     },
   ];
+
+  useEffect(() => {
+    const localToken = localStorage.getItem("token");
+    if (localToken === null) {
+      localStorage.clear();
+      window.location.href = "/login";
+    }
+  }, []);
 
   return (
     <>

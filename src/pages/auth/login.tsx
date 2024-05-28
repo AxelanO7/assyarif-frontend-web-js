@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import swal from "sweetalert2";
 import { getBaseUrl } from "../../helpers/api";
 
@@ -40,7 +40,7 @@ const Login = () => {
           window.location.href = "dashboard";
         });
       })
-      .catch((err) => {
+      .catch(() => {
         swal.fire(
           "Gagal!",
           "Kredensial yang Anda masukkan salah. Silakan coba lagi.",
@@ -48,6 +48,10 @@ const Login = () => {
         );
       });
   };
+
+  useEffect(() => {
+    localStorage.clear();
+  }, []);
 
   return (
     <>

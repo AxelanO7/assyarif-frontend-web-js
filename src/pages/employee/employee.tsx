@@ -41,6 +41,7 @@ const Employee = () => {
                 <MagnifyingGlassIcon className="w-10 h-10 text-white bg-c-dark-blue rounded-md p-2 ml-2 cursor-pointer" />
               </div>
             </div>
+            
             <table className="w-full mt-4">
               <thead>
                 <tr>

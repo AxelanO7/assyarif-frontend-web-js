@@ -1,7 +1,29 @@
 import { HomeIcon } from "@heroicons/react/20/solid";
 import BaseLayout from "../../layouts/base";
+import axios from "axios";
+import { getBaseUrl } from "../../helpers/api";
+import { useEffect } from "react";
 
 const OutletProfile = () => {
+  const getProfile = () => {
+    axios
+      .get(`${getBaseUrl()}/user/private/profile`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      })
+      .then((res) => {
+        console.log(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  useEffect(() => {
+    getProfile();
+  }, []);
+
   return (
     <>
       <BaseLayout>

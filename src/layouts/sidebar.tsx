@@ -4,9 +4,13 @@ import {
   DocumentArrowUpIcon,
   ClipboardIcon,
   UserIcon,
+  ShoppingCartIcon,
+  ArrowUturnUpIcon,
+  UserCircleIcon,
 } from "@heroicons/react/16/solid";
 import { useRecoilValue } from "recoil";
 import { sidebarState } from "../core/store";
+import { useEffect, useState } from "react";
 
 const Sidebar = () => {
   const sidebarOpen = useRecoilValue(sidebarState);
@@ -14,6 +18,14 @@ const Sidebar = () => {
   const handleSidebar = (route: string) => {
     window.location.href = route;
   };
+
+  const [role, setRole] = useState("");
+
+  useEffect(() => {
+    const localRole = localStorage.getItem("role");
+    setRole(localRole || "outlet");
+  }),
+    [];
 
   return (
     <>
@@ -37,50 +49,92 @@ const Sidebar = () => {
             {sidebarOpen && <p className="ml-2">Dashboard</p>}
           </div>
         </div>
-        <div className="hover:bg-gray-700 cursor-pointer transition-all duration-300 ease-in-out border-b border-gray-700">
-          <div
-            className={`${
-              sidebarOpen ? "mx-8 h-16" : "mx-4 h-12"
-            } flex items-center`}
-            onClick={() => handleSidebar("/in")}
-          >
-            <DocumentArrowDownIcon className="h-6 w-6 " />
-            {sidebarOpen && <p className="ml-2">Barang Masuk</p>}
+
+        {role === "outlet" && (
+          <div>
+            <div className="hover:bg-gray-700 cursor-pointer transition-all duration-300 ease-in-out border-b border-gray-700">
+              <div
+                className={`${
+                  sidebarOpen ? "mx-8 h-16" : "mx-4 h-12"
+                } flex items-center`}
+                onClick={() => handleSidebar("/in")}
+              >
+                <DocumentArrowDownIcon className="h-6 w-6 " />
+                {sidebarOpen && <p className="ml-2">Barang Masuk</p>}
+              </div>
+            </div>
+            <div className="hover:bg-gray-700 cursor-pointer transition-all duration-300 ease-in-out border-b border-gray-700">
+              <div
+                className={`${
+                  sidebarOpen ? "mx-8 h-16" : "mx-4 h-12"
+                } flex items-center`}
+                onClick={() => handleSidebar("/out")}
+              >
+                <DocumentArrowUpIcon className="h-6 w-6 " />
+                {sidebarOpen && <p className="ml-2">Barang Keluar</p>}
+              </div>
+            </div>
+            <div className="hover:bg-gray-700 cursor-pointer transition-all duration-300 ease-in-out border-b border-gray-700">
+              <div
+                className={`${
+                  sidebarOpen ? "mx-8 h-16" : "mx-4 h-12"
+                } flex items-center`}
+                onClick={() => handleSidebar("/opname")}
+              >
+                <ClipboardIcon className="h-6 w-6 " />
+                {sidebarOpen && <p className="ml-2">Stok Opname</p>}
+              </div>
+            </div>
+            <div className="hover:bg-gray-700 cursor-pointer transition-all duration-300 ease-in-out border-b border-gray-700">
+              <div
+                className={`${
+                  sidebarOpen ? "mx-8 h-16" : "mx-4 h-12"
+                } flex items-center`}
+                onClick={() => handleSidebar("/employee")}
+              >
+                <UserIcon className="h-6 w-6" />
+                {sidebarOpen && <p className="ml-2">Akun</p>}
+              </div>
+            </div>
           </div>
-        </div>
-        <div className="hover:bg-gray-700 cursor-pointer transition-all duration-300 ease-in-out border-b border-gray-700">
-          <div
-            className={`${
-              sidebarOpen ? "mx-8 h-16" : "mx-4 h-12"
-            } flex items-center`}
-            onClick={() => handleSidebar("/out")}
-          >
-            <DocumentArrowUpIcon className="h-6 w-6 " />
-            {sidebarOpen && <p className="ml-2">Barang Keluar</p>}
+        )}
+        {role === "supplier" && (
+          <div>
+            <div className="hover:bg-gray-700 cursor-pointer transition-all duration-300 ease-in-out border-b border-gray-700">
+              <div
+                className={`${
+                  sidebarOpen ? "mx-8 h-16" : "mx-4 h-12"
+                } flex items-center`}
+                onClick={() => handleSidebar("/order")}
+              >
+                <ShoppingCartIcon className="h-6 w-6 " />
+                {sidebarOpen && <p className="ml-2">Pesan Barang</p>}
+              </div>
+            </div>
+            <div className="hover:bg-gray-700 cursor-pointer transition-all duration-300 ease-in-out border-b border-gray-700">
+              <div
+                className={`${
+                  sidebarOpen ? "mx-8 h-16" : "mx-4 h-12"
+                } flex items-center`}
+                onClick={() => handleSidebar("/return")}
+              >
+                <ArrowUturnUpIcon className="h-6 w-6 " />
+                {sidebarOpen && <p className="ml-2">Retur Barang</p>}
+              </div>
+            </div>
+            <div className="hover:bg-gray-700 cursor-pointer transition-all duration-300 ease-in-out border-b border-gray-700">
+              <div
+                className={`${
+                  sidebarOpen ? "mx-8 h-16" : "mx-4 h-12"
+                } flex items-center`}
+                onClick={() => handleSidebar("/outlet/profile")}
+              >
+                <UserCircleIcon className="h-6 w-6" />
+                {sidebarOpen && <p className="ml-2">Profil</p>}
+              </div>
+            </div>
           </div>
-        </div>
-        <div className="hover:bg-gray-700 cursor-pointer transition-all duration-300 ease-in-out border-b border-gray-700">
-          <div
-            className={`${
-              sidebarOpen ? "mx-8 h-16" : "mx-4 h-12"
-            } flex items-center`}
-            onClick={() => handleSidebar("/opname")}
-          >
-            <ClipboardIcon className="h-6 w-6 " />
-            {sidebarOpen && <p className="ml-2">Stok Opname</p>}
-          </div>
-        </div>
-        <div className="hover:bg-gray-700 cursor-pointer transition-all duration-300 ease-in-out border-b border-gray-700">
-          <div
-            className={`${
-              sidebarOpen ? "mx-8 h-16" : "mx-4 h-12"
-            } flex items-center`}
-            onClick={() => handleSidebar("/employee")}
-          >
-            <UserIcon className="h-6 w-6" />
-            {sidebarOpen && <p className="ml-2">Akun</p>}
-          </div>
-        </div>
+        )}
       </div>
     </>
   );
