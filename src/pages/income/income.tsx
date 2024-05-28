@@ -112,43 +112,51 @@ const Income = () => {
                 </tr>
               </thead>
               <tbody className="text-center text-gray-700">
-                {stocks.map((stock) => (
-                  <tr key={stock.id}>
-                    <td className="border-2 border-gray-300 p-2">{stock.id}</td>
-                    <td className="border-2 border-gray-300 p-2">
-                      {stock.name}
-                    </td>
-                    <td className="border-2 border-gray-300 p-2">
-                      {stock.type}
-                    </td>
-                    <td className="border-2 border-gray-300 p-2">
-                      {stock.quantity}
-                    </td>
-                    <td className="border-2 border-gray-300 p-2">
-                      {stock.unit}
-                    </td>
-                    <td className="border-2 border-gray-300 p-2">
-                      {stock.price.toLocaleString("id-ID", {
-                        style: "currency",
-                        currency: "IDR",
-                      })}
-                    </td>
-                    <td className="border-2 border-gray-300 flex space-x-2 text-white p-2 font-semibold">
-                      <button
-                        className="bg-blue-500 rounded-md w-full p-1"
-                        onClick={() => editIn(stock.id)}
-                      >
-                        Edit
-                      </button>
-                      <button
-                        className="bg-red-500 rounded-md w-full p-1"
-                        onClick={() => handleDeleteIn(stock.id)}
-                      >
-                        Hapus
-                      </button>
-                    </td>
+                {stocks.length === 0 ? (
+                  <tr>
+                    <td colSpan={7}>Data tidak ditemukan</td>
                   </tr>
-                ))}
+                ) : (
+                  stocks.map((stock) => (
+                    <tr key={stock.id}>
+                      <td className="border-2 border-gray-300 p-2">
+                        {stock.id}
+                      </td>
+                      <td className="border-2 border-gray-300 p-2">
+                        {stock.name}
+                      </td>
+                      <td className="border-2 border-gray-300 p-2">
+                        {stock.type}
+                      </td>
+                      <td className="border-2 border-gray-300 p-2">
+                        {stock.quantity}
+                      </td>
+                      <td className="border-2 border-gray-300 p-2">
+                        {stock.unit}
+                      </td>
+                      <td className="border-2 border-gray-300 p-2">
+                        {stock.price.toLocaleString("id-ID", {
+                          style: "currency",
+                          currency: "IDR",
+                        })}
+                      </td>
+                      <td className="border-2 border-gray-300 flex space-x-2 text-white p-2 font-semibold">
+                        <button
+                          className="bg-blue-500 rounded-md w-full p-1"
+                          onClick={() => editIn(stock.id)}
+                        >
+                          Edit
+                        </button>
+                        <button
+                          className="bg-red-500 rounded-md w-full p-1"
+                          onClick={() => handleDeleteIn(stock.id)}
+                        >
+                          Hapus
+                        </button>
+                      </td>
+                    </tr>
+                  ))
+                )}
               </tbody>
             </table>
           </div>
