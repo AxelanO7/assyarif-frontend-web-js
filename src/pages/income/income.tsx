@@ -53,7 +53,7 @@ const Income = () => {
     axios
       .delete(`${baseUrl()}/stuff/in/${id}`)
       .then((res) => {
-        console.log(res.data);
+        Swal.fire("Berhasil!", "Data berhasil dihapus.", "success");
         getIns();
       })
       .catch((err) => {
