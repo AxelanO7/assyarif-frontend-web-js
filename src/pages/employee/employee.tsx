@@ -1,17 +1,51 @@
 import { HomeIcon, MagnifyingGlassIcon } from "@heroicons/react/20/solid";
 import BaseLayout from "../../layouts/base";
+import axios from "axios";
+import { getBaseUrl } from "@/helpers/api";
+import { useEffect, useState } from "react";
+import { User } from "@/types/user";
 
 const Employee = () => {
-  const stocks = [
-    {
-      id: 1,
-      name: "Bimoli",
-      type: "Minyak",
-      amount: 12,
-      unit: "1 Liter",
-      price: 20000,
-    },
-  ];
+  const [employees, setEmployees] = useState<User[]>([]);
+
+  const getEmployees = () => {
+    axios
+      .get(`${getBaseUrl()}/user/private/employee`)
+      .then((res) => {
+        const data = res.data.data;
+        setEmployees(data);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  };
+
+  const handleAddEmployee = () => {
+    window.location.href = "/employee/add";
+  };
+
+  const handleEditEmployee = (id: number) => {
+    window.location.href = `/employee/${id}`;
+  };
+
+  const handleDeleteEmployee = (id: number) => {
+    deleteEmployee(id);
+  };
+
+  const deleteEmployee = (id: number) => {
+    axios
+      .delete(`${getBaseUrl()}/user/private/employee/${id}`)
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  };
+
+  useEffect(() => {
+    getEmployees();
+  }, []);
 
   return (
     <>
@@ -28,7 +62,10 @@ const Employee = () => {
             </h3>
             <div className="flex justify-between mt-4">
               <div className="flex space-x-4">
-                <button className="bg-c-dark-blue rounded-md px-3 text-white">
+                <button
+                  className="bg-c-dark-blue rounded-md px-3 text-white"
+                  onClick={handleAddEmployee}
+                >
                   Tambah Pegawai
                 </button>
               </div>
@@ -41,46 +78,43 @@ const Employee = () => {
                 <MagnifyingGlassIcon className="w-10 h-10 text-white bg-c-dark-blue rounded-md p-2 ml-2 cursor-pointer" />
               </div>
             </div>
-            
+
             <table className="w-full mt-4">
               <thead>
                 <tr>
-                  <th className="border-2 border-gray-300 p-2">ID</th>
-                  <th className="border-2 border-gray-300 p-2">Nama</th>
-                  <th className="border-2 border-gray-300 p-2">Jenis</th>
-                  <th className="border-2 border-gray-300 p-2">Jumlah</th>
-                  <th className="border-2 border-gray-300 p-2">Satuan</th>
-                  <th className="border-2 border-gray-300 p-2">Harga</th>
+                  <th className="border-2 border-gray-300 p-2">No</th>
+                  <th className="border-2 border-gray-300 p-2">Username</th>
+                  <th className="border-2 border-gray-300 p-2">Password</th>
                   <th className="border-2 border-gray-300 p-2">Aksi</th>
                 </tr>
               </thead>
               <tbody className="text-center text-gray-700">
-                {stocks.map((stock) => (
-                  <tr key={stock.id}>
-                    <td className="border-2 border-gray-300 p-2">{stock.id}</td>
+                {employees.map((employee, index) => (
+                  <tr key={employee.id}>
                     <td className="border-2 border-gray-300 p-2">
-                      {stock.name}
+                      {index + 1}
                     </td>
                     <td className="border-2 border-gray-300 p-2">
-                      {stock.type}
+                      {employee.username}
                     </td>
                     <td className="border-2 border-gray-300 p-2">
-                      {stock.amount}
-                    </td>
-                    <td className="border-2 border-gray-300 p-2">
-                      {stock.unit}
-                    </td>
-                    <td className="border-2 border-gray-300 p-2">
-                      {stock.price.toLocaleString("id-ID", {
-                        style: "currency",
-                        currency: "IDR",
-                      })}
+                      {employee.password}
                     </td>
                     <td className="border-2 border-gray-300 flex space-x-2 text-white p-2">
-                      <button className="bg-blue-500 rounded-md w-full p-1">
+                      <button
+                        className="bg-blue-500 rounded-md w-full p-1"
+                        onClick={() =>
+                          handleEditEmployee(parseInt(employee.id))
+                        }
+                      >
                         Edit
                       </button>
-                      <button className="bg-red-500 rounded-md w-full p-1">
+                      <button
+                        className="bg-red-500 rounded-md w-full p-1"
+                        onClick={() =>
+                          handleDeleteEmployee(parseInt(employee.id))
+                        }
+                      >
                         Hapus
                       </button>
                     </td>

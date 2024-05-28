@@ -1,12 +1,40 @@
 import { HomeIcon } from "@heroicons/react/20/solid";
 import BaseLayout from "../../layouts/base";
+import { useEffect, useState } from "react";
+import { getBaseUrl } from "@/helpers/api";
+import { User } from "@/types/user";
+import axios from "axios";
 
 const UpdateEmployee = () => {
+  const [employee, setEmployee] = useState<User>({
+    id: "",
+    username: "",
+    password: "",
+    role: "",
+  });
   const dateNow = new Date().toLocaleDateString("id-ID", {
     year: "numeric",
     month: "numeric",
     day: "numeric",
   });
+
+  const getEmployee = (id: number) => {
+    axios
+      .get(`${getBaseUrl()}/user/private/employee/${id}`)
+      .then((res) => {
+        const data = res.data.data;
+        setEmployee(data);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  };
+
+  useEffect(() => {
+    const id = window.location.pathname.split("/")[2];
+    const intId = parseInt(id);
+    getEmployee(intId);
+  }, []);
 
   return (
     <>
