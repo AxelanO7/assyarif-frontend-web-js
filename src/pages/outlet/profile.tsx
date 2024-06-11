@@ -2,10 +2,27 @@ import { HomeIcon } from "@heroicons/react/20/solid";
 import BaseLayout from "../../layouts/base";
 import axios from "axios";
 import { getBaseUrl } from "../../helpers/api";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { UserProps, OutletProps } from "@/types/user";
 
 const OutletProfile = () => {
-  const getProfile = () => {
+  const [outlet, setOutlet] = useState<OutletProps>();
+  const [user, setUser] = useState<UserProps>();
+
+  const getOutletByIDUser = ({ id }: { id: string }) => {
+    axios
+      .get(`${getBaseUrl()}/outlet/private/user/${id}`)
+      .then((res) => {
+        console.log(res.data);
+        const dataRes = res.data.data;
+        setOutlet(dataRes);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  };
+
+  const getUserProfile = () => {
     axios
       .get(`${getBaseUrl()}/user/private/profile`, {
         headers: {
@@ -14,14 +31,17 @@ const OutletProfile = () => {
       })
       .then((res) => {
         console.log(res.data);
+        const dataRes: UserProps = res.data.data;
+        getOutletByIDUser({ id: dataRes.id });
+        setUser(dataRes);
       })
       .catch((err) => {
-        console.log(err);
+        console.error(err);
       });
   };
 
   useEffect(() => {
-    getProfile();
+    getUserProfile();
   }, []);
 
   return (
@@ -47,20 +67,16 @@ const OutletProfile = () => {
               </div>
               <div>
                 <div>
-                  <p className="font-semibold">Username Outlet</p>
-                  <p className="ml-4">syarif1</p>
+                  <p className="font-semibold">Nama Outlet</p>
+                  <p className="ml-4">{outlet?.name}</p>
                 </div>
                 <div>
-                  <p className="font-semibold">Passoword</p>
-                  <p className="ml-4">password</p>
-                </div>
-                <div>
-                  <p className="font-semibold">Nama Pemilik</p>
-                  <p className="ml-4">Syarif</p>
+                  <p className="font-semibold">No Telepon Outlet</p>
+                  <p className="ml-4">{outlet?.phone}</p>
                 </div>
                 <div>
                   <p className="font-semibold">Alamat</p>
-                  <p className="ml-4">Jalan Sidakarya nomor 07</p>
+                  <p className="ml-4">{outlet?.address}</p>
                 </div>
               </div>
             </div>

@@ -3,14 +3,14 @@ import BaseLayout from "../../layouts/base";
 import axios from "axios";
 import { getBaseUrl } from "@/helpers/api";
 import { useEffect, useState } from "react";
-import { User } from "@/types/user";
+import { EmployeeProps } from "@/types/user";
 
 const Employee = () => {
-  const [employees, setEmployees] = useState<User[]>([]);
+  const [employees, setEmployees] = useState<EmployeeProps[]>([]);
 
   const getEmployees = () => {
     axios
-      .get(`${getBaseUrl()}/user/private/employee`)
+      .get(`${getBaseUrl()}/employee/private/account`)
       .then((res) => {
         const data = res.data.data;
         setEmployees(data);
@@ -34,9 +34,10 @@ const Employee = () => {
 
   const deleteEmployee = (id: number) => {
     axios
-      .delete(`${getBaseUrl()}/user/private/employee/${id}`)
+      .delete(`${getBaseUrl()}/employee/private/account/${id}`)
       .then((res) => {
-        console.log(res);
+        console.log(res.data);
+        alert("Berhasil menghapus data");
       })
       .catch((err) => {
         console.error(err);
@@ -83,8 +84,9 @@ const Employee = () => {
               <thead>
                 <tr>
                   <th className="border-2 border-gray-300 p-2">No</th>
-                  <th className="border-2 border-gray-300 p-2">Username</th>
-                  <th className="border-2 border-gray-300 p-2">Password</th>
+                  <th className="border-2 border-gray-300 p-2">Nama</th>
+                  <th className="border-2 border-gray-300 p-2">No Telepon</th>
+                  <th className="border-2 border-gray-300 p-2">Alamat</th>
                   <th className="border-2 border-gray-300 p-2">Aksi</th>
                 </tr>
               </thead>
@@ -95,10 +97,13 @@ const Employee = () => {
                       {index + 1}
                     </td>
                     <td className="border-2 border-gray-300 p-2">
-                      {employee.username}
+                      {employee.name}
                     </td>
                     <td className="border-2 border-gray-300 p-2">
-                      {employee.password}
+                      {employee.phone}
+                    </td>
+                    <td className="border-2 border-gray-300 p-2">
+                      {employee.address}
                     </td>
                     <td className="border-2 border-gray-300 flex space-x-2 text-white p-2">
                       <button

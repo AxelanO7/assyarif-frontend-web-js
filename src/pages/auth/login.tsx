@@ -34,10 +34,11 @@ const Login = () => {
         }
       )
       .then((res) => {
+        console.log(res.data);
         localStorage.setItem("token", res.data.token);
         localStorage.setItem("role", res.data.data.role);
         swal.fire("Berhasil!", "Anda berhasil masuk", "success").then(() => {
-          window.location.href = "dashboard";
+          window.location.href = "/";
         });
       })
       .catch(() => {

@@ -2,15 +2,16 @@ import { HomeIcon } from "@heroicons/react/20/solid";
 import BaseLayout from "../../layouts/base";
 import { useEffect, useState } from "react";
 import { getBaseUrl } from "@/helpers/api";
-import { User } from "@/types/user";
+import { EmployeeProps } from "@/types/user";
 import axios from "axios";
 
 const UpdateEmployee = () => {
-  const [employee, setEmployee] = useState<User>({
+  const [employee, setEmployee] = useState<EmployeeProps>({
     id: "",
-    username: "",
-    password: "",
-    role: "",
+    name: "",
+    address: "",
+    phone: "",
+    id_user: 0,
   });
   const dateNow = new Date().toLocaleDateString("id-ID", {
     year: "numeric",
@@ -20,13 +21,36 @@ const UpdateEmployee = () => {
 
   const getEmployee = (id: number) => {
     axios
-      .get(`${getBaseUrl()}/user/private/employee/${id}`)
+      .get(`${getBaseUrl()}/employee/private/account/${id}`)
       .then((res) => {
         const data = res.data.data;
         setEmployee(data);
       })
       .catch((err) => {
         console.error(err);
+      });
+  };
+
+  const handleUpdateEmployee = () => {
+    const id = window.location.pathname.split("/")[2];
+    const intId = parseInt(id);
+
+    axios
+      .put(`${getBaseUrl()}/employee/private/account/${intId}`, {
+        id: parseInt(employee.id),
+        name: employee.name,
+        phone: employee.phone,
+        address: employee.address,
+        id_user: employee.id_user,
+      })
+      .then((res) => {
+        console.log(res.data);
+        alert("Berhasil mengubah data");
+        window.location.href = "/employee";
+      })
+      .catch((err) => {
+        console.error(err);
+        alert("Gagal mengubah data");
       });
   };
 
@@ -56,45 +80,47 @@ const UpdateEmployee = () => {
               <div>
                 <label>ID User</label>
                 <input
-                  type="text"
                   className="p-2 border-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 w-full bg-gray-100"
+                  value={employee.id}
                   disabled
                 />
               </div>
               <div>
                 <label>Nama Pegawai</label>
                 <input
-                  type="text"
+                  defaultValue={employee.name}
+                  onChange={(e) =>
+                    setEmployee({ ...employee, name: e.target.value })
+                  }
                   className="p-2 border-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 w-full"
                 />
               </div>
               <div>
                 <label>No Telepon</label>
                 <input
-                  type="text"
+                  defaultValue={employee.phone}
+                  onChange={(e) =>
+                    setEmployee({ ...employee, phone: e.target.value })
+                  }
                   className="p-2 border-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 w-full"
                 />
               </div>
-            </div>
-            <div className="flex space-x-4 mt-4 items-center">
               <div>
                 <label>Alamat</label>
                 <input
-                  type="text"
+                  defaultValue={employee.address}
+                  onChange={(e) =>
+                    setEmployee({ ...employee, address: e.target.value })
+                  }
                   className="p-2 border-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 w-full"
                 />
               </div>
-              <div className="flex flex-col">
-                <label>Jabatan</label>
-                <select className="p-2 border-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 w-max bg-white">
-                  <option value="admin">Admin</option>
-                  <option value="kasir">Kasir</option>
-                  <option value="gudang">Gudang</option>
-                </select>
-              </div>
             </div>
             <div className="w-full justify-end flex mt-4">
-              <button className="bg-blue-500 text-white px-3 py-2 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500">
+              <button
+                className="bg-blue-500 text-white px-3 py-2 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                onClick={handleUpdateEmployee}
+              >
                 Simpan
               </button>
             </div>

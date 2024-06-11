@@ -3,7 +3,7 @@ import BaseLayout from "../../layouts/base";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { getBaseUrl } from "../../helpers/api";
-import { StuffIn } from "../../types/stuff";
+import { StuffInProps } from "../../types/stuff";
 import Swal from "sweetalert2";
 
 const UpdateIncome = () => {
@@ -13,7 +13,7 @@ const UpdateIncome = () => {
     day: "numeric",
   });
 
-  const [stuff, setStuff] = useState<StuffIn>({
+  const [stuff, setStuff] = useState<StuffInProps>({
     id: 0,
     name: "",
     type: "",

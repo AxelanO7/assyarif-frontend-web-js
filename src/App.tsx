@@ -76,7 +76,6 @@ function App() {
           <Route path="/employee/:id" element={<UpdateEmployee />} />
           {/* outlet */}
           <Route path="/outlet" element={<Po />} />
-          <Route path="/outlet/detail-order" element={<DetailOrderOutlet />} />
           <Route path="/outlet/out" element={<OutcomeOutlet />} />
           <Route path="/outlet/out/add" element={<CreateOutcomeOutlet />} />
           <Route path="/outlet/return/proof" element={<OutletProof />} />
@@ -86,8 +85,12 @@ function App() {
           <Route path="/return/proof" element={<Proof />} />
           <Route path="/return/detail" element={<DetailReturn />} />
           {/* order */}
-          <Route path="/order" element={<Order />} />
+          <Route path="/outlet/order" element={<Order />} />
           <Route path="/order/add" element={<CreateOrder />} />
+          <Route
+            path="/order/detail-order/:id"
+            element={<DetailOrderOutlet />}
+          />
         </Routes>
       </BrowserRouter>
     </RecoilRoot>
