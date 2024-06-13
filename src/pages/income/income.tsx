@@ -3,11 +3,11 @@ import BaseLayout from "../../layouts/base";
 import { getBaseUrl } from "../../helpers/api";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { StuffInProps } from "../../types/stuff";
+import { StuffProps } from "../../types/stuff";
 import Swal from "sweetalert2";
 
 const Income = () => {
-  const [stocks, setStocks] = useState<StuffInProps[]>([]);
+  const [stocks, setStocks] = useState<StuffProps[]>([]);
 
   const baseUrl = () => {
     return getBaseUrl();
@@ -31,6 +31,44 @@ const Income = () => {
 
   const editIn = (id: number) => {
     window.location.href = `/in/${id}`;
+  };
+
+  const handleTapDetail = async (id: number) => {
+    await axios
+      .get(`${baseUrl()}/stuff/in/${id}`)
+      .then((res) => {
+        console.log(res.data);
+        const data: StuffProps = res.data.data;
+        Swal.fire({
+          title: "Detail Barang",
+          html: `
+            <div class="text-left">
+              <p><span class="font-semibold">ID Barang:</span> ${
+                data.id_stuff
+              }</p>
+              <p><span class="font-semibold">Nama:</span> ${data.name}</p>
+              <p><span class="font-semibold">Jenis:</span> ${data.type}</p>
+              <p><span class="font-semibold">Jumlah:</span> ${data.quantity}</p>
+              <p><span class="font-semibold">Satuan:</span> ${data.unit}</p>
+              <p><span class="font-semibold">Harga:</span> ${data.price.toLocaleString(
+                "id-ID",
+                {
+                  style: "currency",
+                  currency: "IDR",
+                }
+              )}</p>
+            </div>
+          `,
+          confirmButtonColor: "#3085d6",
+        }).then((result) => {
+          if (result.isConfirmed) {
+            console.log("OK");
+          }
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   const handleDeleteIn = (id: number) => {
@@ -58,6 +96,7 @@ const Income = () => {
       })
       .catch((err) => {
         console.log(err);
+        Swal.fire("Gagal!", "Data gagal dihapus.", "error");
       });
   };
 
@@ -102,12 +141,12 @@ const Income = () => {
             <table className="w-full mt-4">
               <thead>
                 <tr>
-                  <th className="border-2 border-gray-300 p-2">ID</th>
+                  <th className="border-2 border-gray-300 p-2">ID Barang</th>
+                  <th className="border-2 border-gray-300 p-2">Tanggal</th>
                   <th className="border-2 border-gray-300 p-2">Nama</th>
                   <th className="border-2 border-gray-300 p-2">Jenis</th>
                   <th className="border-2 border-gray-300 p-2">Jumlah</th>
                   <th className="border-2 border-gray-300 p-2">Satuan</th>
-                  <th className="border-2 border-gray-300 p-2">Harga</th>
                   <th className="border-2 border-gray-300 p-2">Aksi</th>
                 </tr>
               </thead>
@@ -120,16 +159,23 @@ const Income = () => {
                   stocks.map((stock) => (
                     <tr key={stock.id}>
                       <td className="border-2 border-gray-300 p-2">
-                        {stock.id}
+                        {stock.id_stuff}
+                      </td>
+                      <td className="border-2 border-gray-300 p-2">
+                        {new Date(
+                          stock.created_at?.toString() || new Date()
+                        ).toLocaleDateString("id-ID", {
+                          weekday: "long",
+                          year: "numeric",
+                          month: "long",
+                          day: "numeric",
+                        })}
                       </td>
                       <td className="border-2 border-gray-300 p-2">
                         {stock.name}
                       </td>
                       <td className="border-2 border-gray-300 p-2">
                         {stock.type}
-                      </td>
-                      <td className="border-2 border-gray-300 p-2">
-                        {stock.quantity}
                       </td>
                       <td className="border-2 border-gray-300 p-2">
                         {stock.unit}
@@ -148,10 +194,10 @@ const Income = () => {
                           Edit
                         </button>
                         <button
-                          className="bg-red-500 rounded-md w-full p-1"
-                          onClick={() => handleDeleteIn(stock.id)}
+                          className="bg-green-500 rounded-md w-full p-1"
+                          onClick={() => handleTapDetail(stock.id)}
                         >
-                          Hapus
+                          Detail
                         </button>
                       </td>
                     </tr>

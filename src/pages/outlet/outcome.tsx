@@ -3,10 +3,10 @@ import BaseLayout from "../../layouts/base";
 import axios from "axios";
 import { useState, useEffect } from "react";
 import { getBaseUrl } from "../../helpers/api";
-import { StuffInProps } from "../../types/stuff";
+import { StuffProps } from "@/types/stuff";
 
 const OutcomeOutlet = () => {
-  const [stocks, setStocks] = useState<StuffInProps[]>([]);
+  const [stocks, setStocks] = useState<StuffProps[]>([]);
 
   const baseUrl = () => {
     return getBaseUrl();

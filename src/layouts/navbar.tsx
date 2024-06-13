@@ -6,6 +6,8 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@sc/components//ui/popover";
+import { ArrowRightStartOnRectangleIcon } from "@heroicons/react/20/solid";
+import clsx from "clsx";
 
 const Navbar = () => {
   const [sidebarOpen, setSidebarOpen] = useRecoilState(sidebarState);
@@ -35,12 +37,13 @@ const Navbar = () => {
             className="bg-white shadow-md rounded-lg p-0"
             style={{ width: "120px" }}
           >
-            <p
-              className="hover:bg-gray-200 cursor-pointer transition-all duration-300 ease-in-out rounded-lg p-2 text-sm text-gray-800"
+            <div
+              className="flex cursor-pointer transition-all duration-300 ease-in-out hover:bg-gray-200  rounded-lg p-2  text-gray-800 text-sm"
               onClick={handleLogout}
             >
-              Logout
-            </p>
+              <ArrowRightStartOnRectangleIcon className="h-5 w-5" />
+              <p className={clsx("ml-2", "text-gray-800")}>Logout</p>
+            </div>
           </PopoverContent>
         </Popover>
       </nav>

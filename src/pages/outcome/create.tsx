@@ -4,6 +4,7 @@ import axios from "axios";
 import { useState, useEffect } from "react";
 import Swal from "sweetalert2";
 import { getBaseUrl } from "../../helpers/api";
+import { OrderProps } from "@/types/stuff";
 
 const CreateOutcome = () => {
   const dateNow = new Date().toLocaleDateString("id-ID", {
@@ -19,6 +20,8 @@ const CreateOutcome = () => {
   const [total, setTotal] = useState(0);
   const [totalMoney, setTotalMoney] = useState(0);
   const [returnMoney, setReturnMoney] = useState(0);
+
+  const [orders, setOrders] = useState<OrderProps>();
 
   const baseUrl = () => {
     return getBaseUrl();
@@ -37,6 +40,23 @@ const CreateOutcome = () => {
       })
       .catch((err) => {
         console.log(err);
+        const errStatus = err.response.data.status;
+        if (errStatus === 400) {
+          setIdLastNumber("OUT-0001");
+        }
+      });
+  };
+
+  const getOrders = () => {
+    axios
+      .get(`${baseUrl()}/order/stuff`)
+      .then((res) => {
+        console.log(res.data);
+        const resData: OrderProps = res.data.data;
+        setOrders(resData);
+      })
+      .catch((err) => {
+        console.log(err);
       });
   };
 
@@ -45,20 +65,18 @@ const CreateOutcome = () => {
     const idFinal = parseInt(idLast);
 
     const data = {
-      id: idFinal,
-      name: outlet,
-      type: totalPay,
-      quantity: quantity,
-      total: total,
-      price: totalMoney,
-      unit: returnMoney,
+      out_id: idFinal,
+      // outlet_id: ,
+      // stock_id: ,
+      total_paid: totalPay,
+      total_order: quantity,
+      return_cash: returnMoney,
     };
 
     axios
       .post(`${baseUrl()}/stuff/out`, data)
       .then((res) => {
         console.log(res);
-        resetForm();
         Swal.fire({
           icon: "success",
           title: "Success",
@@ -71,15 +89,6 @@ const CreateOutcome = () => {
       });
   };
 
-  const resetForm = () => {
-    setOutlet("");
-    setTotalPay(0);
-    setQuantity(0);
-    setTotal(0);
-    setTotalMoney(0);
-    setReturnMoney(0);
-  };
-
   // const updateTotal = (val: number, type: string) => {
   //   if (type === "price") {
   //     setTotal(val * quantity);
@@ -90,6 +99,7 @@ const CreateOutcome = () => {
 
   useEffect(() => {
     getOutLast();
+    getOrders();
   }, []);
 
   return (
@@ -112,16 +122,23 @@ const CreateOutcome = () => {
             </div>
             <div className="flex space-x-4 mt-4">
               <div>
-                <label>ID Barang</label>
-                <input
-                  className="p-2 border-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 w-full bg-gray-100"
+                <label>Id Pemesanan</label>
+                <select
+                  className="p-2 border-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 w-full bg-white"
                   value={idLastNumber}
                   disabled
-                />
+                >
+                  <option value={idLastNumber}>{idLastNumber}</option>
+                </select>
               </div>
               <div>
                 <label>Nama Outlet</label>
-                <select
+                <input
+                  className="p-2 border-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 w-full bg-gray-100"
+                  value="Outlet 1"
+                  disabled
+                />
+                {/* <select
                   className="p-2 border-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 w-full bg-white"
                   value={outlet}
                   onChange={(e) => setOutlet(e.target.value)}
@@ -129,7 +146,7 @@ const CreateOutcome = () => {
                   <option value="1">Outlet 1</option>
                   <option value="2">Outlet 2</option>
                   <option value="3">Outlet 3</option>
-                </select>
+                </select> */}
               </div>
               <div>
                 <label>Jumlah Bayar</label>

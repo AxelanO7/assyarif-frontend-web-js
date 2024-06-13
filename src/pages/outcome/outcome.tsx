@@ -3,11 +3,11 @@ import BaseLayout from "../../layouts/base";
 import axios from "axios";
 import { useState, useEffect } from "react";
 import { getBaseUrl } from "../../helpers/api";
-import { StuffInProps } from "../../types/stuff";
+import { OutProps } from "../../types/stuff";
 import Swal from "sweetalert2";
 
 const Outcome = () => {
-  const [stocks, setStocks] = useState<StuffInProps[]>([]);
+  const [outs, setOuts] = useState<OutProps[]>([]);
 
   const baseUrl = () => {
     return getBaseUrl();
@@ -18,7 +18,7 @@ const Outcome = () => {
       .get(`${baseUrl()}/stuff/out`)
       .then((res) => {
         console.log(res.data);
-        setStocks(res.data.data);
+        setOuts(res.data.data);
       })
       .catch((err) => {
         console.log(err);
@@ -102,49 +102,55 @@ const Outcome = () => {
               <thead>
                 <tr>
                   <th className="border-2 border-gray-300 p-2">ID</th>
-                  <th className="border-2 border-gray-300 p-2">Nama</th>
-                  <th className="border-2 border-gray-300 p-2">Jenis</th>
-                  <th className="border-2 border-gray-300 p-2">Jumlah</th>
-                  <th className="border-2 border-gray-300 p-2">Satuan</th>
-                  <th className="border-2 border-gray-300 p-2">Harga</th>
-                  <th className="border-2 border-gray-300 p-2">Aksi</th>
+                  <th className="border-2 border-gray-300 p-2">Tanggal</th>
+                  <th className="border-2 border-gray-300 p-2">Nama Outlet</th>
+                  <th className="border-2 border-gray-300 p-2">
+                    Jumlah Barang
+                  </th>
+                  <th className="border-2 border-gray-300 p-2">Harga Barang</th>
+                  <th className="border-2 border-gray-300 p-2">Jumlah Bayar</th>
+                  <th className="border-2 border-gray-300 p-2">Kembali</th>
                 </tr>
               </thead>
               <tbody className="text-center text-gray-700">
-                {stocks.map((stock) => (
-                  <tr key={stock.id}>
-                    <td className="border-2 border-gray-300 p-2">{stock.id}</td>
+                {outs.map((out) => (
+                  <tr key={out.id}>
                     <td className="border-2 border-gray-300 p-2">
-                      {stock.name}
+                      {out.out_id}
                     </td>
                     <td className="border-2 border-gray-300 p-2">
-                      {stock.type}
+                      {new Date(
+                        out.created_at?.toString() || new Date()
+                      ).toLocaleDateString("id-ID", {
+                        weekday: "long",
+                        year: "numeric",
+                        month: "long",
+                        day: "numeric",
+                      })}
                     </td>
                     <td className="border-2 border-gray-300 p-2">
-                      {stock.quantity}
+                      {out.outlet.name}
                     </td>
                     <td className="border-2 border-gray-300 p-2">
-                      {stock.unit}
+                      {out.total_order}
                     </td>
                     <td className="border-2 border-gray-300 p-2">
-                      {stock.price.toLocaleString("id-ID", {
+                      {out.stock.price.toLocaleString("id-ID", {
                         style: "currency",
                         currency: "IDR",
                       })}
                     </td>
-                    <td className="border-2 border-gray-300 flex space-x-2 text-white p-2">
-                      <button
-                        className="bg-blue-500 rounded-md w-full p-1"
-                        onClick={() => editOut(stock.id)}
-                      >
-                        Edit
-                      </button>
-                      <button
-                        className="bg-red-500 rounded-md w-full p-1"
-                        onClick={() => handleDeleteOut(stock.id)}
-                      >
-                        Hapus
-                      </button>
+                    <td className="border-2 border-gray-300 p-2">
+                      {out.total_paid.toLocaleString("id-ID", {
+                        style: "currency",
+                        currency: "IDR",
+                      })}
+                    </td>
+                    <td className="border-2 border-gray-300 p-2">
+                      {out.return_cash.toLocaleString("id-ID", {
+                        style: "currency",
+                        currency: "IDR",
+                      })}
                     </td>
                   </tr>
                 ))}

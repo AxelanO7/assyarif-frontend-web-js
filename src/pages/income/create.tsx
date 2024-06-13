@@ -44,8 +44,8 @@ const CreateIncome = () => {
     const idLast = idLastNumber.toString().split("-")[1];
     const idFinal = parseInt(idLast);
 
-    const data = {
-      id: idFinal,
+    const payloadIn = {
+      id_stuff: idFinal,
       name: name,
       type: type,
       quantity: quantity,
@@ -55,7 +55,7 @@ const CreateIncome = () => {
     };
 
     axios
-      .post(`${baseUrl()}/stuff/in`, data)
+      .post(`${baseUrl()}/stuff/in`, payloadIn)
       .then((res) => {
         console.log(res);
         resetForm();
@@ -64,7 +64,27 @@ const CreateIncome = () => {
           title: "Success",
           text: "Data berhasil disimpan",
         });
+        createStock();
         window.location.href = "/in";
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const createStock = () => {
+    const payloadStock = {
+      name: name,
+      type: type,
+      quantity: quantity,
+      unit: unit,
+      price: price,
+    };
+
+    axios
+      .post(`${baseUrl()}/stock/private/stuff`, payloadStock)
+      .then((res) => {
+        console.log(res);
       })
       .catch((err) => {
         console.log(err);
