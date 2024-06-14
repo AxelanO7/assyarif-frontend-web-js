@@ -129,19 +129,19 @@ const Outcome = () => {
                       })}
                     </td>
                     <td className="border-2 border-gray-300 p-2">
-                      {out.outlet.name}
+                      {out.order.outlet.name}
                     </td>
                     <td className="border-2 border-gray-300 p-2">
-                      {out.total_order}
+                      {out.order.total_order}
                     </td>
                     <td className="border-2 border-gray-300 p-2">
-                      {out.stock.price.toLocaleString("id-ID", {
+                      {out.order.total_paid.toLocaleString("id-ID", {
                         style: "currency",
                         currency: "IDR",
                       })}
                     </td>
                     <td className="border-2 border-gray-300 p-2">
-                      {out.total_paid.toLocaleString("id-ID", {
+                      {out.total_paided.toLocaleString("id-ID", {
                         style: "currency",
                         currency: "IDR",
                       })}

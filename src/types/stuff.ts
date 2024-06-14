@@ -16,12 +16,9 @@ export interface StuffProps {
 export interface OutProps {
   id: number;
   out_id: number;
-  outlet_id: number;
-  outlet: OutletProps;
-  stock_id: number;
-  stock: StuffProps;
-  total_paid: number;
-  total_order: number;
+  order_id: number;
+  order: OrderProps;
+  total_paided: number;
   return_cash: number;
   created_at?: Date;
   updated_at?: Date;

@@ -14,22 +14,16 @@ const CreateOutcome = () => {
   });
 
   const [idLastNumber, setIdLastNumber] = useState("");
-  const [outlet, setOutlet] = useState("");
   const [totalPay, setTotalPay] = useState(0);
-  const [quantity, setQuantity] = useState(0);
   const [total, setTotal] = useState(0);
-  const [totalMoney, setTotalMoney] = useState(0);
   const [returnMoney, setReturnMoney] = useState(0);
 
-  const [orders, setOrders] = useState<OrderProps>();
-
-  const baseUrl = () => {
-    return getBaseUrl();
-  };
+  const [orders, setOrders] = useState<OrderProps[]>();
+  const [selectedOrder, setSelectedOrder] = useState<OrderProps>();
 
   const getOutLast = () => {
     axios
-      .get(`${baseUrl()}/stuff/last/out`)
+      .get(`${getBaseUrl()}/stuff/last/out`)
       .then((res) => {
         const resLastNumber = res.data.data;
         const withPrefixZero = (num: number) => {
@@ -49,10 +43,10 @@ const CreateOutcome = () => {
 
   const getOrders = () => {
     axios
-      .get(`${baseUrl()}/order/stuff`)
-      .then((res) => {
+      .get(`${getBaseUrl()}/order/stuff`)
+      .then(async (res) => {
         console.log(res.data);
-        const resData: OrderProps = res.data.data;
+        const resData: OrderProps[] = res.data.data;
         setOrders(resData);
       })
       .catch((err) => {
@@ -66,15 +60,13 @@ const CreateOutcome = () => {
 
     const data = {
       out_id: idFinal,
-      // outlet_id: ,
-      // stock_id: ,
-      total_paid: totalPay,
-      total_order: quantity,
+      order_id: selectedOrder?.id,
+      total_paided: totalPay,
       return_cash: returnMoney,
     };
 
     axios
-      .post(`${baseUrl()}/stuff/out`, data)
+      .post(`${getBaseUrl()}/stuff/out`, data)
       .then((res) => {
         console.log(res);
         Swal.fire({
@@ -82,20 +74,27 @@ const CreateOutcome = () => {
           title: "Success",
           text: "Data berhasil disimpan",
         });
-        window.location.href = "/in";
+        // window.location.href = "/in";
       })
       .catch((err) => {
         console.log(err);
       });
   };
 
-  // const updateTotal = (val: number, type: string) => {
-  //   if (type === "price") {
-  //     setTotal(val * quantity);
-  //   } else {
-  //     setTotal(totalMoney * val);
-  //   }
-  // };
+  const handleSumReturnMoney = () => {
+    const totalPayed = totalPay;
+    const totalMoney = selectedOrder?.total_paid || 0;
+    const result = totalPayed - totalMoney;
+    if (result < 0) {
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "Tidak ada uang kembalian",
+      });
+      return;
+    }
+    setReturnMoney(result);
+  };
 
   useEffect(() => {
     getOutLast();
@@ -125,34 +124,35 @@ const CreateOutcome = () => {
                 <label>Id Pemesanan</label>
                 <select
                   className="p-2 border-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 w-full bg-white"
-                  value={idLastNumber}
-                  disabled
+                  onChange={(e) => {
+                    const selectedId = e.target.value;
+                    const selectedOrder = orders?.find(
+                      (order) => order.id.toString() === selectedId
+                    );
+                    setSelectedOrder(selectedOrder);
+                  }}
                 >
-                  <option value={idLastNumber}>{idLastNumber}</option>
+                  {orders?.map((order) => (
+                    <option key={order.id} value={order.id}>
+                      {order.id}
+                    </option>
+                  ))}
                 </select>
               </div>
               <div>
                 <label>Nama Outlet</label>
                 <input
                   className="p-2 border-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 w-full bg-gray-100"
-                  value="Outlet 1"
+                  value={selectedOrder?.outlet.name}
                   disabled
                 />
-                {/* <select
-                  className="p-2 border-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 w-full bg-white"
-                  value={outlet}
-                  onChange={(e) => setOutlet(e.target.value)}
-                >
-                  <option value="1">Outlet 1</option>
-                  <option value="2">Outlet 2</option>
-                  <option value="3">Outlet 3</option>
-                </select> */}
               </div>
               <div>
                 <label>Jumlah Bayar</label>
                 <input
                   className="p-2 border-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 w-full bg-gray-100"
                   disabled
+                  value={selectedOrder?.total_paid}
                 />
               </div>
             </div>
@@ -162,22 +162,30 @@ const CreateOutcome = () => {
                 <input
                   className="p-2 border-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 w-full bg-gray-100"
                   disabled
+                  value={selectedOrder?.total_order}
                 />
               </div>
               <div>
                 <label>Jumlah Uang</label>
-                <input className="p-2 border-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 w-full" />
+                <input
+                  className="p-2 border-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 w-full"
+                  onChange={(e) => setTotalPay(parseInt(e.target.value))}
+                />
               </div>
               <div>
                 <label>Kembalian</label>
                 <input
                   className="p-2 border-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 w-full bg-gray-100"
                   disabled
+                  value={returnMoney}
                 />
               </div>
             </div>
             <div className="w-full justify-end flex mt-4 space-x-4">
-              <button className="bg-gray-500 text-white px-3 py-2 rounded-md hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-500">
+              <button
+                className="bg-gray-500 text-white px-3 py-2 rounded-md hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-500"
+                onClick={handleSumReturnMoney}
+              >
                 Hitung
               </button>
               <button
