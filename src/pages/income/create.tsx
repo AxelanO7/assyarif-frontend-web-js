@@ -73,7 +73,11 @@ const CreateIncome = () => {
   };
 
   const createStock = () => {
+    const idLast = idLastNumber.toString().split("-")[1];
+    const idFinal = parseInt(idLast);
+
     const payloadStock = {
+      id_stuff: idFinal,
       name: name,
       type: type,
       quantity: quantity,
