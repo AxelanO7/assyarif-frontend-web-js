@@ -1,36 +1,28 @@
 import { HomeIcon } from "@heroicons/react/20/solid";
 import BaseLayout from "../../layouts/base";
+import { useEffect, useState } from "react";
+import axios from "axios";
+import { ReturProps } from "@/types/stuff";
+import { getBaseUrl } from "@/helpers/api";
+import { MagnifyingGlassIcon } from "@heroicons/react/20/solid";
 
 const Return = () => {
-  const data = [
-    {
-      id: 1,
-      name: "Outlet 1",
-      total: 100000,
-      date: "01-01-2021",
-      status: "active",
-      random1: 1,
-      random2: 2,
-    },
-    {
-      id: 2,
-      name: "Outlet 2",
-      total: 100000,
-      date: "01-01-2021",
-      status: "pending",
-      random1: 1,
-      random2: 2,
-    },
-    {
-      id: 3,
-      name: "Outlet 3",
-      total: 100000,
-      date: "01-01-2021",
-      status: "inactive",
-      random1: 1,
-      random2: 2,
-    },
-  ];
+  const getReturns = () => {
+    axios
+      .get(`${getBaseUrl()}/return/private/stuff`)
+      .then((res) => {
+        console.log(res.data);
+        setReturns(res.data.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const [returns, setReturns] = useState<ReturProps[]>();
+  useEffect(() => {
+    getReturns();
+  }, []);
 
   return (
     <>
@@ -43,40 +35,43 @@ const Return = () => {
         <div className="px-6">
           <div className="mt-4 bg-gray-200 px-8 py-8 rounded-md shadow-md">
             <h3 className="text-3xl font-semibold text-gray-500">Return</h3>
+            <div className="flex items-center w-full justify-end">
+              <input
+                type="search"
+                className="p-2 border-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                placeholder="Cari barang"
+              />
+              <MagnifyingGlassIcon className="w-10 h-10 text-white bg-c-dark-blue rounded-md p-2 ml-2 cursor-pointer" />
+            </div>
             <table className="w-full mt-4">
               <thead>
                 <tr className="bg-gray-300">
                   <th className="py-2 border border-gray-400">No</th>
                   <th className="py-2 border border-gray-400">Outlet</th>
-                  <th className="py-2 border border-gray-400">Total</th>
-                  <th className="py-2 border border-gray-400">Date</th>
-                  <th className="py-2 border border-gray-400">Status</th>
-                  <th className="py-2 border border-gray-400">1</th>
-                  <th className="py-2 border border-gray-400">2</th>
+                  <th className="py-2 border border-gray-400">Barang</th>
+                  <th className="py-2 border border-gray-400">Jumlah</th>
+                  <th className="py-2 border border-gray-400">Alasan</th>
+                  <th className="py-2 border border-gray-400">Bukti</th>
                 </tr>
               </thead>
               <tbody>
-                {data.map((item, index) => (
-                  <tr
-                    key={index}
-                    className={`${
-                      index % 2 === 0 ? "bg-gray-100" : "bg-gray-200"
-                    } text-center`}
-                  >
-                    <td className="py-2 border border-gray-400">{item.id}</td>
-                    <td className="py-2 border border-gray-400">{item.name}</td>
+                {returns?.map((retur, index) => (
+                  <tr key={retur.id} className="text-center">
+                    <td className="py-2 border border-gray-400">{index + 1}</td>
                     <td className="py-2 border border-gray-400">
-                      {item.total}
-                    </td>
-                    <td className="py-2 border border-gray-400">{item.date}</td>
-                    <td className="py-2 border border-gray-400">
-                      {item.status}
+                      {retur.outlet.name}
                     </td>
                     <td className="py-2 border border-gray-400">
-                      {item.random1}
+                      {retur.stock.name}
                     </td>
                     <td className="py-2 border border-gray-400">
-                      {item.random2}
+                      {retur.total_return}
+                    </td>
+                    <td className="py-2 border border-gray-400">
+                      {retur.reason}
+                    </td>
+                    <td className="py-2 border border-gray-400">
+                      {retur.proof}
                     </td>
                   </tr>
                 ))}

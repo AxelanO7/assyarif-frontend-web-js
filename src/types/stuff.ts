@@ -35,3 +35,17 @@ export interface OrderProps {
   total_order: number;
   status: number;
 }
+
+export interface ReturProps {
+  id: number;
+  outlet_id: number;
+  outlet: OutletProps;
+  stock_id: number;
+  stock: StuffProps;
+  total_return: number;
+  reason: string;
+  proof: string;
+  created_at?: Date;
+  updated_at?: Date;
+  deleted_at?: Date;
+}
