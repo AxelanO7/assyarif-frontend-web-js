@@ -79,6 +79,17 @@ const Sidebar = () => {
                 className={`${
                   sidebarOpen ? "mx-8 h-16" : "mx-4 h-12"
                 } flex items-center`}
+                onClick={() => handleSidebar("/return")}
+              >
+                <ArrowUturnUpIcon className="h-6 w-6 " />
+                {sidebarOpen && <p className="ml-2">Retur Barang</p>}
+              </div>
+            </div>
+            <div className="hover:bg-gray-700 cursor-pointer transition-all duration-300 ease-in-out border-b border-gray-700">
+              <div
+                className={`${
+                  sidebarOpen ? "mx-8 h-16" : "mx-4 h-12"
+                } flex items-center`}
                 onClick={() => handleSidebar("/opname")}
               >
                 <ClipboardIcon className="h-6 w-6 " />
@@ -116,7 +127,7 @@ const Sidebar = () => {
                 className={`${
                   sidebarOpen ? "mx-8 h-16" : "mx-4 h-12"
                 } flex items-center`}
-                onClick={() => handleSidebar("/return")}
+                onClick={() => handleSidebar("/return/add")}
               >
                 <ArrowUturnUpIcon className="h-6 w-6 " />
                 {sidebarOpen && <p className="ml-2">Retur Barang</p>}

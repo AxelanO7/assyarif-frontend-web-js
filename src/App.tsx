@@ -24,6 +24,8 @@ import DetailReportOutcome from "./pages/outcome/detail_report";
 import Opname from "./pages/opname/opname";
 import DetailReportOpname from "./pages/opname/detail_report";
 
+import CreateReturn from "./pages/return/create";
+
 // employee
 import Employee from "./pages/employee/employee";
 import CreateEmployee from "./pages/employee/create";
@@ -32,12 +34,10 @@ import Po from "./pages/outlet/po";
 import DetailOrderOutlet from "./pages/outlet/detail_order";
 import Return from "./pages/return/return";
 import Proof from "./pages/return/proof";
-import DetailReturn from "./pages/return/detail";
 import Order from "./pages/order/order";
 import CreateOrder from "./pages/order/create";
 import OutcomeOutlet from "./pages/outlet/outcome";
 import CreateOutcomeOutlet from "./pages/outlet/create";
-import OutletProof from "./pages/outlet/proof";
 import OutletProfile from "./pages/outlet/profile";
 
 function App() {
@@ -78,12 +78,11 @@ function App() {
           <Route path="/outlet" element={<Po />} />
           <Route path="/outlet/out" element={<OutcomeOutlet />} />
           <Route path="/outlet/out/add" element={<CreateOutcomeOutlet />} />
-          <Route path="/outlet/return/proof" element={<OutletProof />} />
           <Route path="/outlet/profile" element={<OutletProfile />} />
           {/* return */}
           <Route path="/return" element={<Return />} />
+          <Route path="/return/add" element={<CreateReturn />} />
           <Route path="/return/proof" element={<Proof />} />
-          <Route path="/return/detail" element={<DetailReturn />} />
           {/* order */}
           <Route path="/outlet/order" element={<Order />} />
           <Route path="/order/add" element={<CreateOrder />} />

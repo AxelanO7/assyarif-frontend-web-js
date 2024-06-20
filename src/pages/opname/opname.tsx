@@ -24,29 +24,29 @@ const Opname = () => {
               Stok Opname
             </h3>
             <div className="flex justify-between mt-4">
-              <div className="flex items-center space-x-2">
-                <div>
+              <div className="flex items-center space-x-2 w-full">
+                <div className="w-full">
                   <label>ID Laporan</label>
                   <input
                     type="text"
                     className="p-1 border-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 w-full"
                   />
                 </div>
-                <div>
+                <div className="w-full">
                   <label>Nama Laporan</label>
                   <input
                     type="text"
                     className="p-1 border-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 w-full"
                   />
                 </div>
-                <div>
+                <div className="w-full">
                   <label>Tanggal Awal</label>
                   <input
                     type="date"
                     className="p-1 border-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 w-full"
                   />
                 </div>
-                <div>
+                <div className="w-full">
                   <label>Tanggal Akhir</label>
                   <input
                     type="date"
