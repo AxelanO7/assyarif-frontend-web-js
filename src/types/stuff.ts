@@ -49,3 +49,20 @@ export interface ReturProps {
   updated_at?: Date;
   deleted_at?: Date;
 }
+
+export interface OpnameProps {
+  id: number;
+  id_opname: string;
+  name: string;
+  start_date: string;
+  end_date: string;
+  created_at?: Date;
+  updated_at?: Date;
+  deleted_at?: Date;
+}
+
+export interface ResOpname {
+  in?: StuffProps[];
+  out?: OutProps[];
+  rtr?: ReturProps[];
+}

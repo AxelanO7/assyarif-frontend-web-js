@@ -65,7 +65,35 @@ const CreateReturn = () => {
           title: "Success",
           text: "Data berhasil disimpan",
         });
-        window.location.href = "/";
+        // window.location.href = "/";
+        decreaseDashboardOutlet();
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const decreaseDashboardOutlet = () => {
+    const payload = {
+      id_stuff: selectedStock?.id_stuff,
+      id_outlet: outlet?.id,
+      name: selectedStock?.name,
+      type: selectedStock?.type,
+      quantity: returnTotal,
+      unit: selectedStock?.unit,
+      price: selectedStock?.price,
+    };
+
+    axios
+      .post(`${getBaseUrl()}/stock_outlet/private/decrease-dashboard`, payload)
+      .then((res) => {
+        console.log(res);
+        Swal.fire({
+          icon: "success",
+          title: "Success",
+          text: "Data berhasil disimpan",
+        });
+        // window.location.href = "/";
       })
       .catch((err) => {
         console.log(err);
@@ -104,7 +132,7 @@ const CreateReturn = () => {
 
   const getStocks = () => {
     axios
-      .get(`${getBaseUrl()}/stock/private/stuff`)
+      .get(`${getBaseUrl()}/stock_outlet/private/stuff`)
       .then((res) => {
         console.log(res.data);
         const dataRes: StuffProps[] = res.data.data;
@@ -259,7 +287,8 @@ const CreateReturn = () => {
             <div className="flex justify-end w-full">
               <button
                 className="bg-blue-500 text-white px-3 py-2 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 mt-4"
-                onClick={submit}
+                // onClick={submit}
+                onClick={decreaseDashboardOutlet}
               >
                 Simpan
               </button>

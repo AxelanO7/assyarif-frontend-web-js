@@ -74,7 +74,35 @@ const CreateOutcome = () => {
           title: "Success",
           text: "Data berhasil disimpan",
         });
-        // window.location.href = "/in";
+        // window.location.href = "/out";
+        increaseDashboardOutlet();
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const increaseDashboardOutlet = () => {
+    const payload = {
+      id_stuff: selectedOrder?.stock.id_stuff,
+      id_outlet: selectedOrder?.outlet.id,
+      name: selectedOrder?.stock.name,
+      type: selectedOrder?.stock.type,
+      quantity: selectedOrder?.total_order,
+      unit: selectedOrder?.stock.unit,
+      price: selectedOrder?.stock.price,
+    };
+
+    axios
+      .post(`${getBaseUrl()}/stock_outlet/private/increase-dashboard`, payload)
+      .then((res) => {
+        console.log(res);
+        Swal.fire({
+          icon: "success",
+          title: "Success",
+          text: "Data berhasil disimpan",
+        });
+        window.location.href = "/out";
       })
       .catch((err) => {
         console.log(err);
@@ -190,7 +218,8 @@ const CreateOutcome = () => {
               </button>
               <button
                 className="bg-blue-500 text-white px-3 py-2 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                onClick={submitOut}
+                // onClick={submitOut}
+                onClick={increaseDashboardOutlet}
               >
                 Simpan
               </button>

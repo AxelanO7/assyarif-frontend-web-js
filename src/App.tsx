@@ -67,7 +67,7 @@ function App() {
           {/* opname */}
           <Route path="/opname" element={<Opname />} />
           <Route
-            path="/opname/report/detail"
+            path="/detail-opname/:start/:end"
             element={<DetailReportOpname />}
           />
           {/* employee */}

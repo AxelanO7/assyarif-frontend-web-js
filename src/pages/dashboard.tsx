@@ -9,8 +9,13 @@ const Dashboard = () => {
   const [stocks, setStocks] = useState<StuffProps[]>([]);
 
   const getStocks = () => {
+    const role = localStorage.getItem("role");
     axios
-      .get(`${getBaseUrl()}/stock/private/stuff`)
+      .get(
+        `${getBaseUrl()}/${
+          role === "supplier" ? "stock" : "stock_outlet"
+        }/private/stuff`
+      )
       .then((res) => {
         console.log(res.data);
         const data: StuffProps[] = res.data.data;

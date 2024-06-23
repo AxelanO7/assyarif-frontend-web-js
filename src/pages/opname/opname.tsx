@@ -1,14 +1,62 @@
 import { DocumentTextIcon, HomeIcon } from "@heroicons/react/20/solid";
 import BaseLayout from "../../layouts/base";
+import { getBaseUrl } from "@/helpers/api";
+import axios from "axios";
+import { useState, useEffect } from "react";
+import { OpnameProps } from "@/types/stuff";
+import Swal from "sweetalert2";
 
 const Opname = () => {
-  const stocks = [
-    {
-      id: 1,
-      name: "Bimoli",
-      date: "2021-08-01",
-    },
-  ];
+  const [formState, setFormState] = useState({
+    id_opname: "",
+    name: "",
+    start_date: "",
+    end_date: "",
+  });
+
+  const getOpnames = () => {
+    axios
+      .get(`${getBaseUrl()}/opname/private/stuff`)
+      .then((res) => {
+        console.log(res.data);
+        setOpnames(res.data.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const handleDetailOpname = (val: OpnameProps) => {
+    window.location.href = `/detail-opname/${val.start_date}/${val.end_date}`;
+  };
+
+  const handleAddOpname = () => {
+    const payload = {
+      id_opname: formState.id_opname,
+      name: formState.name,
+      start_date: formState.start_date,
+      end_date: formState.end_date,
+    };
+    axios
+      .post(`${getBaseUrl()}/opname/private/stuff`, payload)
+      .then((res) => {
+        console.log(res.data);
+        Swal.fire({
+          icon: "success",
+          title: "Berhasil",
+          text: "Data berhasil disimpan",
+        });
+        getOpnames();
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const [opnames, setOpnames] = useState<OpnameProps[]>([]);
+  useEffect(() => {
+    getOpnames();
+  }, []);
 
   return (
     <>
@@ -28,15 +76,19 @@ const Opname = () => {
                 <div className="w-full">
                   <label>ID Laporan</label>
                   <input
-                    type="text"
                     className="p-1 border-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 w-full"
+                    onChange={(e) =>
+                      setFormState({ ...formState, id_opname: e.target.value })
+                    }
                   />
                 </div>
                 <div className="w-full">
                   <label>Nama Laporan</label>
                   <input
-                    type="text"
                     className="p-1 border-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 w-full"
+                    onChange={(e) =>
+                      setFormState({ ...formState, name: e.target.value })
+                    }
                   />
                 </div>
                 <div className="w-full">
@@ -44,6 +96,9 @@ const Opname = () => {
                   <input
                     type="date"
                     className="p-1 border-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 w-full"
+                    onChange={(e) =>
+                      setFormState({ ...formState, start_date: e.target.value })
+                    }
                   />
                 </div>
                 <div className="w-full">
@@ -51,12 +106,18 @@ const Opname = () => {
                   <input
                     type="date"
                     className="p-1 border-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 w-full"
+                    onChange={(e) =>
+                      setFormState({ ...formState, end_date: e.target.value })
+                    }
                   />
                 </div>
               </div>
             </div>
             <div className="flex justify-end mt-4">
-              <button className="bg-c-dark-blue rounded-md px-4 py-1 text-white">
+              <button
+                className="bg-c-dark-blue rounded-md px-4 py-1 text-white"
+                onClick={handleAddOpname}
+              >
                 Simpan
               </button>
             </div>
@@ -65,21 +126,32 @@ const Opname = () => {
                 <tr>
                   <th className="border-2 border-gray-300 p-2">ID</th>
                   <th className="border-2 border-gray-300 p-2">Nama</th>
-                  <th className="border-2 border-gray-300 p-2">Tanggal</th>
+                  <th className="border-2 border-gray-300 p-2">Tanggal Awal</th>
+                  <th className="border-2 border-gray-300 p-2">
+                    Tanggal Akhir
+                  </th>
                   <th className="border-2 border-gray-300 p-2">Aksi</th>
                 </tr>
               </thead>
               <tbody className="text-center text-gray-700">
-                {stocks.map((stock) => (
-                  <tr key={stock.id}>
-                    <td className="border-2 border-gray-300 p-2">{stock.id}</td>
+                {opnames.map((opname) => (
+                  <tr key={opname.id}>
                     <td className="border-2 border-gray-300 p-2">
-                      {stock.name}
+                      {opname.id}
                     </td>
                     <td className="border-2 border-gray-300 p-2">
-                      {stock.date}
+                      {opname.name}
                     </td>
-                    <td className="border-2 border-gray-300">
+                    <td className="border-2 border-gray-300 p-2">
+                      {opname.start_date}
+                    </td>
+                    <td className="border-2 border-gray-300 p-2">
+                      {opname.end_date}
+                    </td>
+                    <td
+                      className="border-2 border-gray-300"
+                      onClick={() => handleDetailOpname(opname)}
+                    >
                       <DocumentTextIcon className="rounded-md  w-6 h-6 text-blue-500 mx-auto cursor-pointer" />
                     </td>
                   </tr>
