@@ -12,7 +12,9 @@ const Return = () => {
       .get(`${getBaseUrl()}/return/private/stuff`)
       .then((res) => {
         console.log(res.data);
-        setReturns(res.data.data);
+        const data: ReturProps[] = res.data.data;
+        setReturns(data);
+        setOriginalReturns(data);
       })
       .catch((err) => {
         console.log(err);
@@ -20,6 +22,16 @@ const Return = () => {
   };
 
   const [returns, setReturns] = useState<ReturProps[]>();
+  const [originalReturns, setOriginalReturns] = useState<ReturProps[]>();
+  const [search, setSearch] = useState("");
+
+  const handleTapSearch = () => {
+    const filtered = originalReturns?.filter((retur) => {
+      return retur.stock.name.toLowerCase().includes(search.toLowerCase());
+    });
+    setReturns(filtered);
+  };
+
   useEffect(() => {
     getReturns();
   }, []);
@@ -40,8 +52,12 @@ const Return = () => {
                 type="search"
                 className="p-2 border-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                 placeholder="Cari barang"
+                onChange={(e) => setSearch(e.target.value)}
               />
-              <MagnifyingGlassIcon className="w-10 h-10 text-white bg-c-dark-blue rounded-md p-2 ml-2 cursor-pointer" />
+              <MagnifyingGlassIcon
+                className="w-10 h-10 text-white bg-c-dark-blue rounded-md p-2 ml-2 cursor-pointer"
+                onClick={handleTapSearch}
+              />
             </div>
             <table className="w-full mt-4">
               <thead>
@@ -55,6 +71,16 @@ const Return = () => {
                 </tr>
               </thead>
               <tbody>
+                {returns?.length === 0 && (
+                  <tr>
+                    <td
+                      colSpan={6}
+                      className="text-center border border-gray-400 py-2"
+                    >
+                      No data
+                    </td>
+                  </tr>
+                )}
                 {returns?.map((retur, index) => (
                   <tr key={retur.id} className="text-center">
                     <td className="py-2 border border-gray-400">{index + 1}</td>
