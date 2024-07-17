@@ -7,6 +7,10 @@ import { EmployeeProps } from "@/types/user";
 
 const Employee = () => {
   const [employees, setEmployees] = useState<EmployeeProps[]>([]);
+  const [originalEmployees, setOriginalEmployees] = useState<EmployeeProps[]>(
+    []
+  );
+  const [search, setSearch] = useState("");
 
   const getEmployees = () => {
     axios
@@ -14,10 +18,22 @@ const Employee = () => {
       .then((res) => {
         const data = res.data.data;
         setEmployees(data);
+        setOriginalEmployees(data);
       })
       .catch((err) => {
         console.error(err);
       });
+  };
+
+  const handleSearch = () => {
+    if (search === "") {
+      setEmployees(originalEmployees);
+    } else {
+      const filtered = originalEmployees.filter((employee) =>
+        employee.name.toLowerCase().includes(search.toLowerCase())
+      );
+      setEmployees(filtered);
+    }
   };
 
   const handleAddEmployee = () => {
@@ -74,9 +90,13 @@ const Employee = () => {
                 <input
                   type="search"
                   className="p-2 border-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  placeholder="Cari barang"
+                  placeholder="Cari pegawai"
+                  onChange={(e) => setSearch(e.target.value)}
                 />
-                <MagnifyingGlassIcon className="w-10 h-10 text-white bg-c-dark-blue rounded-md p-2 ml-2 cursor-pointer" />
+                <MagnifyingGlassIcon
+                  className="w-10 h-10 text-white bg-c-dark-blue rounded-md p-2 ml-2 cursor-pointer"
+                  onClick={handleSearch}
+                />
               </div>
             </div>
 
@@ -91,6 +111,13 @@ const Employee = () => {
                 </tr>
               </thead>
               <tbody className="text-center text-gray-700">
+                {employees.length === 0 && (
+                  <tr>
+                    <td colSpan={5} className="border-2 border-gray-300 p-2">
+                      Tidak ada data
+                    </td>
+                  </tr>
+                )}
                 {employees.map((employee, index) => (
                   <tr key={employee.id}>
                     <td className="border-2 border-gray-300 p-2">
