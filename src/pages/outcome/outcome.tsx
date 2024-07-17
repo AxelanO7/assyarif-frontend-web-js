@@ -8,6 +8,8 @@ import Swal from "sweetalert2";
 
 const Outcome = () => {
   const [outs, setOuts] = useState<OutProps[]>([]);
+  const [filteredOuts, setFilteredOuts] = useState<OutProps[]>([]);
+  const [search, setSearch] = useState("");
 
   const baseUrl = () => {
     return getBaseUrl();
@@ -18,11 +20,20 @@ const Outcome = () => {
       .get(`${baseUrl()}/stuff/out`)
       .then((res) => {
         console.log(res.data);
-        setOuts(res.data.data);
+        const data: OutProps[] = res.data.data;
+        setOuts(data);
+        setFilteredOuts(data);
       })
       .catch((err) => {
         console.log(err);
       });
+  };
+
+  const handleTapSearch = () => {
+    const filtered = outs.filter((out) => {
+      return out.order.outlet.name.toLowerCase().includes(search.toLowerCase());
+    });
+    setFilteredOuts(filtered);
   };
 
   const addOut = () => {
@@ -94,8 +105,12 @@ const Outcome = () => {
                   type="search"
                   className="p-2 border-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                   placeholder="Cari barang"
+                  onChange={(e) => setSearch(e.target.value)}
                 />
-                <MagnifyingGlassIcon className="w-10 h-10 text-white bg-c-dark-blue rounded-md p-2 ml-2 cursor-pointer" />
+                <MagnifyingGlassIcon
+                  className="w-10 h-10 text-white bg-c-dark-blue rounded-md p-2 ml-2 cursor-pointer"
+                  onClick={handleTapSearch}
+                />
               </div>
             </div>
             <table className="w-full mt-4">
@@ -113,7 +128,14 @@ const Outcome = () => {
                 </tr>
               </thead>
               <tbody className="text-center text-gray-700">
-                {outs.map((out) => (
+                {filteredOuts.length === 0 && (
+                  <tr>
+                    <td colSpan={7} className="border-2 border-gray-300 p-2">
+                      Data tidak ditemukan
+                    </td>
+                  </tr>
+                )}
+                {filteredOuts.map((out) => (
                   <tr key={out.id}>
                     <td className="border-2 border-gray-300 p-2">
                       {out.out_id}
