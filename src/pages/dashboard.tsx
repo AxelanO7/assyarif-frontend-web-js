@@ -7,6 +7,8 @@ import { StuffProps } from "@/types/stuff";
 
 const Dashboard = () => {
   const [stocks, setStocks] = useState<StuffProps[]>([]);
+  const [filteredStocks, setFilteredStocks] = useState<StuffProps[]>([]);
+  const [search, setSearch] = useState("");
 
   const getStocks = () => {
     const role = localStorage.getItem("role");
@@ -19,6 +21,7 @@ const Dashboard = () => {
       .then((res) => {
         console.log(res.data);
         const data: StuffProps[] = res.data.data;
+        setFilteredStocks(data);
         setStocks(data);
       })
       .catch((err) => {
@@ -32,6 +35,13 @@ const Dashboard = () => {
       localStorage.clear();
       window.location.href = "/login";
     }
+  };
+
+  const handleTapSearch = () => {
+    const filtered = stocks.filter((stock) => {
+      return stock.name.toLowerCase().includes(search.toLowerCase());
+    });
+    setFilteredStocks(filtered);
   };
 
   // const handleTapEdit = (id: number) => {
@@ -94,8 +104,12 @@ const Dashboard = () => {
                 type="search"
                 className="p-2 border-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                 placeholder="Cari barang"
+                onChange={(e) => setSearch(e.target.value)}
               />
-              <MagnifyingGlassIcon className="w-10 h-10 text-white bg-c-c-dark-blue rounded-md p-2 ml-2 cursor-pointer bg-blue-500" />
+              <MagnifyingGlassIcon
+                className="w-10 h-10 text-white bg-c-c-dark-blue rounded-md p-2 ml-2 cursor-pointer bg-blue-500"
+                onClick={handleTapSearch}
+              />
             </div>
             <table className="w-full mt-4">
               <thead>
@@ -110,7 +124,7 @@ const Dashboard = () => {
                 </tr>
               </thead>
               <tbody className="text-center text-gray-700">
-                {stocks.map((stock) => (
+                {filteredStocks.map((stock) => (
                   <tr key={stock.id}>
                     <td className="border-2 border-gray-300 p-2">
                       {stock.id_stuff}
