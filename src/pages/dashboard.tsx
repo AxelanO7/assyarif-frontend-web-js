@@ -1,4 +1,8 @@
-import { HomeIcon, MagnifyingGlassIcon } from "@heroicons/react/20/solid";
+import {
+  HomeIcon,
+  MagnifyingGlassIcon,
+  XMarkIcon,
+} from "@heroicons/react/20/solid";
 import BaseLayout from "../layouts/base";
 import { useEffect, useState } from "react";
 import axios from "axios";
@@ -9,6 +13,7 @@ const Dashboard = () => {
   const [stocks, setStocks] = useState<StuffProps[]>([]);
   const [filteredStocks, setFilteredStocks] = useState<StuffProps[]>([]);
   const [search, setSearch] = useState("");
+  const [date, setDate] = useState("");
 
   const getStocks = () => {
     const role = localStorage.getItem("role");
@@ -40,6 +45,18 @@ const Dashboard = () => {
   const handleTapSearch = () => {
     const filtered = stocks.filter((stock) => {
       return stock.name.toLowerCase().includes(search.toLowerCase());
+    });
+    setFilteredStocks(filtered);
+  };
+
+  const handleFilterDate = (
+    date: string = new Date().toISOString().split("T")[0]
+  ) => {
+    setDate(date);
+    const filtered = stocks.filter((stock) => {
+      return (
+        stock.created_at && stock.created_at.toString().split("T")[0] === date
+      );
     });
     setFilteredStocks(filtered);
   };
@@ -77,6 +94,10 @@ const Dashboard = () => {
   //     });
   // };
 
+  const resetFilteredStocks = () => {
+    setFilteredStocks(stocks);
+  };
+
   useEffect(() => {
     checkToken();
     getStocks();
@@ -91,10 +112,19 @@ const Dashboard = () => {
           <p className="ml-2 font-semibold">Dashboard</p>
         </div>
         <div className="px-6">
-          <input
-            type="date"
-            className="border-2 border-gray-300 rounded-md p-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-500 mt-6"
-          />
+          <div className="flex items-center mt-6">
+            <input
+              type="date"
+              className="border-2 border-gray-300 rounded-md p-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
+              onChange={(e) => {
+                handleFilterDate(e.target.value);
+              }}
+            />
+            <XMarkIcon
+              className="w-10 h-10 text-white bg-c-c-dark-blue rounded-md p-2 ml-2 cursor-pointer bg-red-500"
+              onClick={resetFilteredStocks}
+            />
+          </div>
           <div className="mt-4 bg-gray-200 px-8 py-8 rounded-md shadow-md">
             <h3 className="text-3xl font-semibold text-gray-500">
               Stok Barang
