@@ -104,7 +104,7 @@ const Outcome = () => {
                 <input
                   type="search"
                   className="p-2 border-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  placeholder="Cari barang"
+                  placeholder="Cari outlet"
                   onChange={(e) => setSearch(e.target.value)}
                 />
                 <MagnifyingGlassIcon
