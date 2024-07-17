@@ -8,6 +8,8 @@ import Swal from "sweetalert2";
 
 const Income = () => {
   const [stocks, setStocks] = useState<StuffProps[]>([]);
+  const [filteredStocks, setFilteredStocks] = useState<StuffProps[]>([]);
+  const [search, setSearch] = useState("");
 
   const baseUrl = () => {
     return getBaseUrl();
@@ -18,11 +20,20 @@ const Income = () => {
       .get(`${baseUrl()}/stuff/in`)
       .then((res) => {
         console.log(res.data);
-        setStocks(res.data.data);
+        const data: StuffProps[] = res.data.data;
+        setStocks(data);
+        setFilteredStocks(data);
       })
       .catch((err) => {
         console.log(err);
       });
+  };
+
+  const handleTapSearch = () => {
+    const filtered = stocks.filter((stock) => {
+      return stock.name.toLowerCase().includes(search.toLowerCase());
+    });
+    setFilteredStocks(filtered);
   };
 
   const addIn = () => {
@@ -134,8 +145,12 @@ const Income = () => {
                   type="search"
                   className="p-2 border-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                   placeholder="Cari barang"
+                  onChange={(e) => setSearch(e.target.value)}
                 />
-                <MagnifyingGlassIcon className="w-10 h-10 text-white bg-c-dark-blue rounded-md p-2 ml-2 cursor-pointer" />
+                <MagnifyingGlassIcon
+                  className="w-10 h-10 text-white bg-c-dark-blue rounded-md p-2 ml-2 cursor-pointer"
+                  onClick={handleTapSearch}
+                />
               </div>
             </div>
             <table className="w-full mt-4">
@@ -151,12 +166,12 @@ const Income = () => {
                 </tr>
               </thead>
               <tbody className="text-center text-gray-700">
-                {stocks.length === 0 ? (
+                {filteredStocks.length === 0 ? (
                   <tr>
                     <td colSpan={7}>Data tidak ditemukan</td>
                   </tr>
                 ) : (
-                  stocks.map((stock) => (
+                  filteredStocks.map((stock) => (
                     <tr key={stock.id}>
                       <td className="border-2 border-gray-300 p-2">
                         {stock.id_stuff}
