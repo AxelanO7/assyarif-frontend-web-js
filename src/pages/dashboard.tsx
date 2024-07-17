@@ -124,6 +124,13 @@ const Dashboard = () => {
                 </tr>
               </thead>
               <tbody className="text-center text-gray-700">
+                {filteredStocks.length === 0 && (
+                  <tr>
+                    <td colSpan={6} className="border-2 border-gray-300 p-2">
+                      Data tidak ditemukan
+                    </td>
+                  </tr>
+                )}
                 {filteredStocks.map((stock) => (
                   <tr key={stock.id}>
                     <td className="border-2 border-gray-300 p-2">
