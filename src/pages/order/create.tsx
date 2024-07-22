@@ -158,7 +158,7 @@ const CreateOrder = () => {
           title: "Berhasil",
           text: "Pesanan berhasil disimpan",
         }).then(() => {
-          window.location.href = "/outlet/order";
+          window.location.href = "/dashboard";
         });
       })
       .catch((err) => {
