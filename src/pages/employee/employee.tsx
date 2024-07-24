@@ -4,6 +4,7 @@ import axios from "axios";
 import { getBaseUrl } from "@/helpers/api";
 import { useEffect, useState } from "react";
 import { EmployeeProps } from "@/types/user";
+import Swal from "sweetalert2";
 
 const Employee = () => {
   const [employees, setEmployees] = useState<EmployeeProps[]>([]);
@@ -45,7 +46,20 @@ const Employee = () => {
   };
 
   const handleDeleteEmployee = (id: number) => {
-    deleteEmployee(id);
+    Swal.fire({
+      title: "Apakah anda yakin?",
+      text: "Anda tidak dapat mengembalikan data yang sudah dihapus",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Ya, hapus",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        deleteEmployee(id);
+        getEmployees();
+      }
+    });
   };
 
   const deleteEmployee = (id: number) => {
