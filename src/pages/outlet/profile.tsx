@@ -60,7 +60,7 @@ const OutletProfile = () => {
             <div className="flex mt-4 space-x-16">
               <div>
                 <img
-                  src="https://source.unsplash.com/200x200/?outlet"
+                  src="https://via.placeholder.com/150"
                   alt="outlet"
                   className="border-2 border-gray-400"
                 />
