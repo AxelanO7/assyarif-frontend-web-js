@@ -119,6 +119,7 @@ const Outcome = () => {
                   <th className="border-2 border-gray-300 p-2">ID</th>
                   <th className="border-2 border-gray-300 p-2">Tanggal</th>
                   <th className="border-2 border-gray-300 p-2">Nama Outlet</th>
+                  <th className="border-2 border-gray-300 p-2">Nama Barang</th>
                   <th className="border-2 border-gray-300 p-2">
                     Jumlah Barang
                   </th>
@@ -152,6 +153,9 @@ const Outcome = () => {
                     </td>
                     <td className="border-2 border-gray-300 p-2">
                       {out.order.outlet.name}
+                    </td>
+                    <td className="border-2 border-gray-300 p-2">
+                      {out.order.stock.name}
                     </td>
                     <td className="border-2 border-gray-300 p-2">
                       {out.order.total_order}
