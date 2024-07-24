@@ -96,9 +96,9 @@ const Outcome = () => {
                 >
                   Tambah Barang
                 </button>
-                <button className="bg-c-yellow rounded-md px-3">
+                {/* <button className="bg-c-yellow rounded-md px-3">
                   Cetak Laporan
-                </button>
+                </button> */}
               </div>
               <div className="flex items-center">
                 <input
