@@ -54,7 +54,7 @@ const Employee = () => {
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
       confirmButtonText: "Ya, hapus",
-    }).then((result) => {
+    }).then(async (result) => {
       if (result.isConfirmed) {
         deleteEmployee(id);
         getEmployees();
