@@ -1,0 +1,10 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "run frontend",
+      "type": "shell",
+      "command": "yarn dev"
+    }
+  ]
+}
