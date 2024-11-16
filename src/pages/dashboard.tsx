@@ -8,6 +8,13 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { getBaseUrl } from "@/helpers/api";
 import { StuffProps } from "@/types/stuff";
+import {
+  Table,
+  TableBody,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/shadcn/components/ui/table";
 
 const Dashboard = () => {
   const [stocks, setStocks] = useState<StuffProps[]>([]);
@@ -61,39 +68,6 @@ const Dashboard = () => {
     setFilteredStocks(filtered);
   };
 
-  // const handleTapEdit = (id: number) => {
-  //   window.location.href = `/stock/edit/${id}`;
-  // };
-
-  // const handleTapDelete = (id: number) => {
-  //   Swal.fire({
-  //     title: "Apakah Anda yakin?",
-  //     text: "Data yang dihapus tidak dapat dikembalikan!",
-  //     icon: "warning",
-  //     showCancelButton: true,
-  //     confirmButtonColor: "#3085d6",
-  //     cancelButtonColor: "#d33",
-  //     confirmButtonText: "Ya, hapus!",
-  //   }).then((result) => {
-  //     if (result.isConfirmed) {
-  //       deleteStock(id);
-  //     }
-  //   });
-  // };
-
-  // const deleteStock = (id: number) => {
-  //   axios
-  //     .delete(`${getBaseUrl()}/stock/private/stuff/${id}`)
-  //     .then((res) => {
-  //       Swal.fire("Berhasil!", "Data berhasil dihapus.", "success");
-  //       getStocks();
-  //     })
-  //     .catch((err) => {
-  //       console.log(err);
-  //       Swal.fire("Gagal!", "Data gagal dihapus.", "error");
-  //     });
-  // };
-
   const resetFilteredStocks = () => {
     setFilteredStocks(stocks);
   };
@@ -141,28 +115,39 @@ const Dashboard = () => {
                 onClick={handleTapSearch}
               />
             </div>
-            <table className="w-full mt-4">
-              <thead>
-                <tr>
-                  <th className="border-2 border-gray-300 p-2">ID Barang</th>
-                  <th className="border-2 border-gray-300 p-2">Nama</th>
-                  <th className="border-2 border-gray-300 p-2">Jenis</th>
-                  <th className="border-2 border-gray-300 p-2">Jumlah</th>
-                  <th className="border-2 border-gray-300 p-2">Satuan</th>
-                  <th className="border-2 border-gray-300 p-2">Harga</th>
-                  {/* <th className="border-2 border-gray-300 p-2">Aksi</th> */}
-                </tr>
-              </thead>
-              <tbody className="text-center text-gray-700">
+            <Table className="w-full mt-4">
+              <TableHeader>
+                <TableRow>
+                  <TableHead className="border-2 border-gray-300 p-2">
+                    ID Barang
+                  </TableHead>
+                  <TableHead className="border-2 border-gray-300 p-2">
+                    Nama
+                  </TableHead>
+                  <TableHead className="border-2 border-gray-300 p-2">
+                    Jenis
+                  </TableHead>
+                  <TableHead className="border-2 border-gray-300 p-2">
+                    Jumlah
+                  </TableHead>
+                  <TableHead className="border-2 border-gray-300 p-2">
+                    Satuan
+                  </TableHead>
+                  <TableHead className="border-2 border-gray-300 p-2">
+                    Harga
+                  </TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
                 {filteredStocks.length === 0 && (
-                  <tr>
+                  <TableRow>
                     <td colSpan={6} className="border-2 border-gray-300 p-2">
                       Data tidak ditemukan
                     </td>
-                  </tr>
+                  </TableRow>
                 )}
                 {filteredStocks.map((stock) => (
-                  <tr key={stock.id}>
+                  <TableRow key={stock.id}>
                     <td className="border-2 border-gray-300 p-2">
                       {stock.id_stuff}
                     </td>
@@ -184,18 +169,10 @@ const Dashboard = () => {
                         currency: "IDR",
                       })}
                     </td>
-                    {/* <td className="border-2 border-gray-300 flex space-x-2 text-white p-2">
-                      <button className="bg-blue-500 rounded-md w-full">
-                        Edit
-                      </button>
-                      <button className="bg-red-500 rounded-md w-full">
-                        Hapus
-                      </button>
-                    </td> */}
-                  </tr>
+                  </TableRow>
                 ))}
-              </tbody>
-            </table>
+              </TableBody>
+            </Table>
           </div>
         </div>
       </BaseLayout>
