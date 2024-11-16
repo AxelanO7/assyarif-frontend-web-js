@@ -178,7 +178,7 @@ const Sidebar = () => {
                 {sidebarOpen && <p className="ml-2">Retur Barang</p>}
               </div>
             </div>
-            <div className="hover:bg-gray-700 cursor-pointer transition-all duration-300 ease-in-out border-b border-gray-700">
+            {/* <div className="hover:bg-gray-700 cursor-pointer transition-all duration-300 ease-in-out border-b border-gray-700">
               <div
                 className={`${
                   sidebarOpen ? "mx-8 h-16" : "mx-4 h-12"
@@ -188,7 +188,7 @@ const Sidebar = () => {
                 <UserCircleIcon className="h-6 w-6" />
                 {sidebarOpen && <p className="ml-2">Profil</p>}
               </div>
-            </div>
+            </div> */}
           </div>
         )}
       </div>
