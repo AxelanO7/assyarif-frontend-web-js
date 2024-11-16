@@ -275,7 +275,7 @@ const CreateReturn = () => {
                 </select>
               </div>
             </div>
-            {/* bukti return */}
+            {/* TODO: change into no invoice */}
             <div className="mt-4 flex flex-col">
               <p>Upload Bukti</p>
               <Input
