@@ -176,7 +176,7 @@ const CreateOutcome = () => {
                 />
               </div>
               <div>
-                <label>Jumlah Bayar</label>
+                <label>Total</label>
                 <input
                   className="p-2 border-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 w-full bg-gray-100"
                   disabled
@@ -194,7 +194,7 @@ const CreateOutcome = () => {
                 />
               </div>
               <div>
-                <label>Jumlah Uang</label>
+                <label>Bayar</label>
                 <input
                   className="p-2 border-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 w-full"
                   onChange={(e) => setTotalPay(parseInt(e.target.value))}
@@ -210,12 +210,17 @@ const CreateOutcome = () => {
               </div>
             </div>
             <div className="w-full justify-end flex mt-4 space-x-4">
-              <button
+              {/* <button
                 className="bg-gray-500 text-white px-3 py-2 rounded-md hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-500"
                 onClick={handleSumReturnMoney}
               >
                 Hitung
-              </button>
+                className="bg-gray-500 text-white px-3 py-2 rounded-md hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-500"
+                onClick={handleSumReturnMoney}
+              >
+                Hitung
+              </button
+              </button> */}
               <button
                 className="bg-blue-500 text-white px-3 py-2 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
                 onClick={submitOut}

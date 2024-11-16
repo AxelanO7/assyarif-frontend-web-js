@@ -165,7 +165,7 @@ const Income = () => {
             <Table className="w-full mt-4">
               <TableHeader>
                 <TableRow>
-                  <TableHead className="border-2 border-gray-300 p-2 text-black text-center">
+                  <TableHead className="border-2 border-gray-300 p-2 text-black text-center w-20">
                     ID
                   </TableHead>
                   <TableHead className="border-2 border-gray-300 p-2 text-black text-center">
@@ -176,6 +176,9 @@ const Income = () => {
                   </TableHead>
                   <TableHead className="border-2 border-gray-300 p-2 text-black text-center">
                     Satuan
+                  </TableHead>
+                  <TableHead className="border-2 border-gray-300 p-2 text-black text-center">
+                    Quantity
                   </TableHead>
                   <TableHead className="border-2 border-gray-300 p-2 text-black text-center">
                     Total
@@ -209,6 +212,9 @@ const Income = () => {
                       </TableCell>
                       <TableCell className="border-2 border-gray-300 p-2 text-center">
                         {stock.unit}
+                      </TableCell>
+                      <TableCell className="border-2 border-gray-300 p-2 text-center">
+                        0
                       </TableCell>
                       <TableCell className="border-2 border-gray-300 p-2 text-center">
                         {stock.price.toLocaleString("id-ID", {

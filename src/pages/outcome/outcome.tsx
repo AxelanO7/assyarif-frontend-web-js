@@ -5,6 +5,14 @@ import { useState, useEffect } from "react";
 import { getBaseUrl } from "../../helpers/api";
 import { OutProps } from "../../types/stuff";
 import Swal from "sweetalert2";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/shadcn/components/ui/table";
 
 const Outcome = () => {
   const [outs, setOuts] = useState<OutProps[]>([]);
@@ -96,9 +104,6 @@ const Outcome = () => {
                 >
                   Tambah Barang
                 </button>
-                {/* <button className="bg-c-yellow rounded-md px-3">
-                  Cetak Laporan
-                </button> */}
               </div>
               <div className="flex items-center">
                 <input
@@ -113,75 +118,93 @@ const Outcome = () => {
                 />
               </div>
             </div>
-            <table className="w-full mt-4">
-              <thead>
-                <tr>
-                  <th className="border-2 border-gray-300 p-2">ID</th>
-                  <th className="border-2 border-gray-300 p-2">Tanggal</th>
-                  <th className="border-2 border-gray-300 p-2">Nama Outlet</th>
-                  <th className="border-2 border-gray-300 p-2">Nama Barang</th>
-                  <th className="border-2 border-gray-300 p-2">
+            <Table className="w-full mt-4">
+              <TableHeader>
+                <TableRow>
+                  <TableHead className="border-2 border-gray-300 p-2 text-black text-center">
+                    ID
+                  </TableHead>
+                  <TableHead className="border-2 border-gray-300 p-2 text-black text-center">
+                    Tanggal
+                  </TableHead>
+                  <TableHead className="border-2 border-gray-300 p-2 text-black text-center">
+                    Nama Outlet
+                  </TableHead>
+                  <TableHead className="border-2 border-gray-300 p-2 text-black text-center">
+                    Nama
+                  </TableHead>
+                  <TableHead className="border-2 border-gray-300 p-2 text-black text-center">
                     Jumlah Barang
-                  </th>
-                  <th className="border-2 border-gray-300 p-2">Harga Barang</th>
-                  <th className="border-2 border-gray-300 p-2">Jumlah Bayar</th>
-                  <th className="border-2 border-gray-300 p-2">Kembali</th>
-                </tr>
-              </thead>
-              <tbody className="text-center text-gray-700">
-                {filteredOuts.length === 0 && (
-                  <tr>
-                    <td colSpan={7} className="border-2 border-gray-300 p-2">
+                  </TableHead>
+                  <TableHead className="border-2 border-gray-300 p-2 text-black text-center">
+                    Total
+                  </TableHead>
+                  <TableHead className="border-2 border-gray-300 p-2 text-black text-center">
+                    Bayar
+                  </TableHead>
+                  <TableHead className="border-2 border-gray-300 p-2 text-black text-center">
+                    Kembalian
+                  </TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {filteredOuts.length === 0 ? (
+                  <TableRow>
+                    <TableCell
+                      colSpan={8}
+                      className="border-2 border-gray-300 p-2 text-center"
+                    >
                       Data tidak ditemukan
-                    </td>
-                  </tr>
+                    </TableCell>
+                  </TableRow>
+                ) : (
+                  filteredOuts.map((out) => (
+                    <TableRow key={out.id}>
+                      <TableCell className="border-2 border-gray-300 p-2 text-center">
+                        {out.out_id}
+                      </TableCell>
+                      <TableCell className="border-2 border-gray-300 p-2 text-center">
+                        {new Date(
+                          out.created_at?.toString() || new Date()
+                        ).toLocaleDateString("id-ID", {
+                          weekday: "long",
+                          year: "numeric",
+                          month: "long",
+                          day: "numeric",
+                        })}
+                      </TableCell>
+                      <TableCell className="border-2 border-gray-300 p-2 text-center">
+                        {out.order.outlet.name}
+                      </TableCell>
+                      <TableCell className="border-2 border-gray-300 p-2 text-center">
+                        {out.order.stock.name}
+                      </TableCell>
+                      <TableCell className="border-2 border-gray-300 p-2 text-center">
+                        {out.order.total_order}
+                      </TableCell>
+                      <TableCell className="border-2 border-gray-300 p-2 text-center">
+                        {out.order.total_paid.toLocaleString("id-ID", {
+                          style: "currency",
+                          currency: "IDR",
+                        })}
+                      </TableCell>
+                      <TableCell className="border-2 border-gray-300 p-2 text-center">
+                        {out.total_paided.toLocaleString("id-ID", {
+                          style: "currency",
+                          currency: "IDR",
+                        })}
+                      </TableCell>
+                      <TableCell className="border-2 border-gray-300 p-2 text-center">
+                        {out.return_cash.toLocaleString("id-ID", {
+                          style: "currency",
+                          currency: "IDR",
+                        })}
+                      </TableCell>
+                    </TableRow>
+                  ))
                 )}
-                {filteredOuts.map((out) => (
-                  <tr key={out.id}>
-                    <td className="border-2 border-gray-300 p-2">
-                      {out.out_id}
-                    </td>
-                    <td className="border-2 border-gray-300 p-2">
-                      {new Date(
-                        out.created_at?.toString() || new Date()
-                      ).toLocaleDateString("id-ID", {
-                        weekday: "long",
-                        year: "numeric",
-                        month: "long",
-                        day: "numeric",
-                      })}
-                    </td>
-                    <td className="border-2 border-gray-300 p-2">
-                      {out.order.outlet.name}
-                    </td>
-                    <td className="border-2 border-gray-300 p-2">
-                      {out.order.stock.name}
-                    </td>
-                    <td className="border-2 border-gray-300 p-2">
-                      {out.order.total_order}
-                    </td>
-                    <td className="border-2 border-gray-300 p-2">
-                      {out.order.total_paid.toLocaleString("id-ID", {
-                        style: "currency",
-                        currency: "IDR",
-                      })}
-                    </td>
-                    <td className="border-2 border-gray-300 p-2">
-                      {out.total_paided.toLocaleString("id-ID", {
-                        style: "currency",
-                        currency: "IDR",
-                      })}
-                    </td>
-                    <td className="border-2 border-gray-300 p-2">
-                      {out.return_cash.toLocaleString("id-ID", {
-                        style: "currency",
-                        currency: "IDR",
-                      })}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+              </TableBody>
+            </Table>
           </div>
         </div>
       </BaseLayout>
