@@ -2,6 +2,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import swal from "sweetalert2";
 import { getBaseUrl } from "../../helpers/api";
+import { Button } from "@/shadcn/components/ui/button";
 
 const Login = () => {
   const [username, setUsername] = useState("");
@@ -82,12 +83,12 @@ const Login = () => {
               />
               <p className="ml-2">Ingatkan Saya</p>
             </div>
-            <button
-              className="bg-white border border-gray-300 rounded-md py-2 px-4 hover:bg-gray-100"
+            <Button
+              className="bg-white border border-gray-300 rounded-md py-2 px-4 hover:bg-gray-100 text-black"
               onClick={handleLogin}
             >
               Login
-            </button>
+            </Button>
           </div>
         </div>
       </div>
