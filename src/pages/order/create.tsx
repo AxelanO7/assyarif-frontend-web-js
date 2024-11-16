@@ -212,14 +212,14 @@ const CreateOrder = () => {
                   className="p-2 border-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 w-full"
                 />
               </div>
-              <div className="flex-1">
+              {/* <div className="flex-1">
                 <label>Jumlah Bayar</label>
                 <input
                   disabled
                   value={totalPayment}
                   className="p-2 border-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 w-full bg-slate-50"
                 />
-              </div>
+              </div> */}
             </div>
             {/* <div className="w-full justify-end flex mt-4">
               <button
