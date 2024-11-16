@@ -62,12 +62,13 @@ const Return = () => {
             <table className="w-full mt-4">
               <thead>
                 <tr className="bg-gray-300">
+                  {/* TODO: no invoice */}
                   <th className="py-2 border border-gray-400">No</th>
                   <th className="py-2 border border-gray-400">Outlet</th>
                   <th className="py-2 border border-gray-400">Barang</th>
                   <th className="py-2 border border-gray-400">Jumlah</th>
                   <th className="py-2 border border-gray-400">Alasan</th>
-                  <th className="py-2 border border-gray-400">Bukti</th>
+                  {/* <th className="py-2 border border-gray-400">Bukti</th> */}
                 </tr>
               </thead>
               <tbody>
@@ -96,9 +97,9 @@ const Return = () => {
                     <td className="py-2 border border-gray-400">
                       {retur.reason}
                     </td>
-                    <td className="py-2 border border-gray-400">
+                    {/* <td className="py-2 border border-gray-400">
                       {retur.proof}
-                    </td>
+                    </td> */}
                   </tr>
                 ))}
               </tbody>
