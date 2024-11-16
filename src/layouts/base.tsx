@@ -14,7 +14,8 @@ const BaseLayout = ({ children }: BaseProps) => {
           <Sidebar />
           <div
             className={`${
-              sidebarOpen ? "ml-[197px]" : "ml-[54px]"
+              // sidebarOpen ? "ml-[197px]" : "ml-[54px]"
+              sidebarOpen ? "ml-[230px]" : "ml-[54px]"
             } transition-all duration-300 mt-[59px] min-h-[calc(100vh-59px)]  flex flex-col h-full`}
           >
             {children}

@@ -7,10 +7,17 @@ import {
   ShoppingCartIcon,
   ArrowUturnUpIcon,
   UserCircleIcon,
+  DocumentChartBarIcon,
+  ChevronUpDownIcon,
 } from "@heroicons/react/16/solid";
 import { useRecoilValue } from "recoil";
 import { sidebarState } from "../core/store";
 import { useEffect, useState } from "react";
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/shadcn/components/ui/collapsible";
 
 const Sidebar = () => {
   const sidebarOpen = useRecoilValue(sidebarState);
@@ -24,8 +31,7 @@ const Sidebar = () => {
   useEffect(() => {
     const localRole = localStorage.getItem("role");
     setRole(localRole || "outlet");
-  }),
-    [];
+  }, []);
 
   return (
     <>
@@ -49,7 +55,6 @@ const Sidebar = () => {
             {sidebarOpen && <p className="ml-2">Dashboard</p>}
           </div>
         </div>
-
         {role === "supplier" && (
           <div>
             <div className="hover:bg-gray-700 cursor-pointer transition-all duration-300 ease-in-out border-b border-gray-700">
@@ -96,6 +101,7 @@ const Sidebar = () => {
                 {sidebarOpen && <p className="ml-2">Stok Opname</p>}
               </div>
             </div>
+            {/* employee */}
             <div className="hover:bg-gray-700 cursor-pointer transition-all duration-300 ease-in-out border-b border-gray-700">
               <div
                 className={`${
@@ -107,6 +113,45 @@ const Sidebar = () => {
                 {sidebarOpen && <p className="ml-2">Pegawai</p>}
               </div>
             </div>
+            {/* laporan */}
+            {sidebarOpen ? (
+              <Collapsible>
+                <CollapsibleTrigger className="hover:bg-gray-700 cursor-pointer transition-all duration-300 ease-in-out border-b border-gray-700 w-[232px]">
+                  <div
+                    className={`${
+                      sidebarOpen ? "mx-8 h-16" : "mx-4 h-12"
+                    } flex items-center`}
+                    // onClick={() => handleSidebar("/employee")}
+                  >
+                    <DocumentChartBarIcon className="h-6 w-6" />
+                    <p className="ml-2">Laporan</p>
+                    <ChevronUpDownIcon className="h-6 w-6 ml-auto" />
+                  </div>
+                </CollapsibleTrigger>
+
+                <CollapsibleContent>
+                  <div className="hover:bg-gray-700 cursor-pointer transition-all duration-300 ease-in-out border-b border-gray-700 px-16 py-4">
+                    <p>Barang Keluar</p>
+                  </div>
+                  <div className="hover:bg-gray-700 cursor-pointer transition-all duration-300 ease-in-out border-b border-gray-700 px-16 py-4">
+                    <p>Barang Masuk</p>
+                  </div>
+                  <div className="hover:bg-gray-700 cursor-pointer transition-all duration-300 ease-in-out border-b border-gray-700 px-16 py-4">
+                    <p>Retur</p>
+                  </div>
+                  <div className="hover:bg-gray-700 cursor-pointer transition-all duration-300 ease-in-out border-b border-gray-700 px-16 py-4">
+                    <p>Stok</p>
+                  </div>
+                  <div className="hover:bg-gray-700 cursor-pointer transition-all duration-300 ease-in-out border-b border-gray-700 px-16 py-4">
+                    <p>Order</p>
+                  </div>
+                </CollapsibleContent>
+              </Collapsible>
+            ) : (
+              <div className="w-full flex justify-center">
+                <DocumentChartBarIcon className="h-6 w-6" />
+              </div>
+            )}
           </div>
         )}
         {role === "outlet" && (
