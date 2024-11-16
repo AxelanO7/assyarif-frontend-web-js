@@ -4,7 +4,7 @@
     {
       "label": "run frontend",
       "type": "shell",
-      "command": "yarn dev"
+      "command": "cd ~/Skills/programming/web/syarif/final_project/fe && yarn dev"
     }
   ]
 }
