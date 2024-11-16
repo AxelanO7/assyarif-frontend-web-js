@@ -11,6 +11,7 @@ import { StuffProps } from "@/types/stuff";
 import {
   Table,
   TableBody,
+  TableCell,
   TableHead,
   TableHeader,
   TableRow,
@@ -115,25 +116,25 @@ const Dashboard = () => {
                 onClick={handleTapSearch}
               />
             </div>
-            <Table className="w-full mt-4">
+            <Table className="w-full mt-4 ">
               <TableHeader>
                 <TableRow>
-                  <TableHead className="border-2 border-gray-300 p-2">
+                  <TableHead className="border-2 border-gray-300 p-2 text-black">
                     ID Barang
                   </TableHead>
-                  <TableHead className="border-2 border-gray-300 p-2">
+                  <TableHead className="border-2 border-gray-300 p-2 text-black">
                     Nama
                   </TableHead>
-                  <TableHead className="border-2 border-gray-300 p-2">
+                  <TableHead className="border-2 border-gray-300 p-2 text-black">
                     Jenis
                   </TableHead>
-                  <TableHead className="border-2 border-gray-300 p-2">
+                  <TableHead className="border-2 border-gray-300 p-2 text-black">
                     Jumlah
                   </TableHead>
-                  <TableHead className="border-2 border-gray-300 p-2">
+                  <TableHead className="border-2 border-gray-300 p-2 text-black">
                     Satuan
                   </TableHead>
-                  <TableHead className="border-2 border-gray-300 p-2">
+                  <TableHead className="border-2 border-gray-300 p-2 text-black">
                     Harga
                   </TableHead>
                 </TableRow>
@@ -141,34 +142,37 @@ const Dashboard = () => {
               <TableBody>
                 {filteredStocks.length === 0 && (
                   <TableRow>
-                    <td colSpan={6} className="border-2 border-gray-300 p-2">
+                    <TableCell
+                      colSpan={6}
+                      className="border-2 border-gray-300 p-2"
+                    >
                       Data tidak ditemukan
-                    </td>
+                    </TableCell>
                   </TableRow>
                 )}
                 {filteredStocks.map((stock) => (
                   <TableRow key={stock.id}>
-                    <td className="border-2 border-gray-300 p-2">
+                    <TableCell className="border-2 border-gray-300 p-2">
                       {stock.id_stuff}
-                    </td>
-                    <td className="border-2 border-gray-300 p-2">
+                    </TableCell>
+                    <TableCell className="border-2 border-gray-300 p-2">
                       {stock.name}
-                    </td>
-                    <td className="border-2 border-gray-300 p-2">
+                    </TableCell>
+                    <TableCell className="border-2 border-gray-300 p-2">
                       {stock.type}
-                    </td>
-                    <td className="border-2 border-gray-300 p-2">
+                    </TableCell>
+                    <TableCell className="border-2 border-gray-300 p-2">
                       {stock.quantity}
-                    </td>
-                    <td className="border-2 border-gray-300 p-2">
+                    </TableCell>
+                    <TableCell className="border-2 border-gray-300 p-2">
                       {stock.unit}
-                    </td>
-                    <td className="border-2 border-gray-300 p-2">
+                    </TableCell>
+                    <TableCell className="border-2 border-gray-300 p-2">
                       {stock.price.toLocaleString("id-ID", {
                         style: "currency",
                         currency: "IDR",
                       })}
-                    </td>
+                    </TableCell>
                   </TableRow>
                 ))}
               </TableBody>
