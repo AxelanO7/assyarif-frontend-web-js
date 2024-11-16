@@ -5,6 +5,15 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { StuffProps } from "../../types/stuff";
 import Swal from "sweetalert2";
+import { PencilIcon } from "@heroicons/react/16/solid";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/shadcn/components/ui/table";
 
 const Income = () => {
   const [stocks, setStocks] = useState<StuffProps[]>([]);
@@ -153,75 +162,71 @@ const Income = () => {
                 />
               </div>
             </div>
-            <table className="w-full mt-4">
-              <thead>
-                <tr>
-                  <th className="border-2 border-gray-300 p-2">ID Barang</th>
-                  <th className="border-2 border-gray-300 p-2">Tanggal</th>
-                  <th className="border-2 border-gray-300 p-2">Nama</th>
-                  <th className="border-2 border-gray-300 p-2">Jenis</th>
-                  <th className="border-2 border-gray-300 p-2">Jumlah</th>
-                  <th className="border-2 border-gray-300 p-2">Satuan</th>
-                  <th className="border-2 border-gray-300 p-2">Aksi</th>
-                </tr>
-              </thead>
-              <tbody className="text-center text-gray-700">
+            <Table className="w-full mt-4">
+              <TableHeader>
+                <TableRow>
+                  <TableHead className="border-2 border-gray-300 p-2 text-black text-center">
+                    ID
+                  </TableHead>
+                  <TableHead className="border-2 border-gray-300 p-2 text-black text-center">
+                    Nama
+                  </TableHead>
+                  <TableHead className="border-2 border-gray-300 p-2 text-black text-center">
+                    Jenis
+                  </TableHead>
+                  <TableHead className="border-2 border-gray-300 p-2 text-black text-center">
+                    Satuan
+                  </TableHead>
+                  <TableHead className="border-2 border-gray-300 p-2 text-black text-center">
+                    Total
+                  </TableHead>
+                  <TableHead className="border-2 border-gray-300 p-2 text-black text-center w-24">
+                    Aksi
+                  </TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
                 {filteredStocks.length === 0 ? (
-                  <tr>
-                    <td colSpan={7} className="border-2 border-gray-300 p-2">
+                  <TableRow>
+                    <TableCell
+                      colSpan={7}
+                      className="border-2 border-gray-300 p-2"
+                    >
                       Data tidak ditemukan
-                    </td>
-                  </tr>
+                    </TableCell>
+                  </TableRow>
                 ) : (
                   filteredStocks.map((stock) => (
-                    <tr key={stock.id}>
-                      <td className="border-2 border-gray-300 p-2">
+                    <TableRow key={stock.id}>
+                      <TableCell className="border-2 border-gray-300 p-2 text-center">
                         {stock.id_stuff}
-                      </td>
-                      <td className="border-2 border-gray-300 p-2">
-                        {new Date(
-                          stock.created_at?.toString() || new Date()
-                        ).toLocaleDateString("id-ID", {
-                          weekday: "long",
-                          year: "numeric",
-                          month: "long",
-                          day: "numeric",
-                        })}
-                      </td>
-                      <td className="border-2 border-gray-300 p-2">
+                      </TableCell>
+                      <TableCell className="border-2 border-gray-300 p-2 text-center">
                         {stock.name}
-                      </td>
-                      <td className="border-2 border-gray-300 p-2">
+                      </TableCell>
+                      <TableCell className="border-2 border-gray-300 p-2 text-center">
                         {stock.type}
-                      </td>
-                      <td className="border-2 border-gray-300 p-2">
+                      </TableCell>
+                      <TableCell className="border-2 border-gray-300 p-2 text-center">
                         {stock.unit}
-                      </td>
-                      <td className="border-2 border-gray-300 p-2">
+                      </TableCell>
+                      <TableCell className="border-2 border-gray-300 p-2 text-center">
                         {stock.price.toLocaleString("id-ID", {
                           style: "currency",
                           currency: "IDR",
                         })}
-                      </td>
-                      <td className="border-2 border-gray-300 flex space-x-2 text-white p-2 font-semibold">
-                        <button
-                          className="bg-blue-500 rounded-md w-full p-1"
+                      </TableCell>
+                      <TableCell className="border-2 border-gray-300 flex space-x-2 text-white p-2 font-semibold justify-center">
+                        <PencilIcon
+                          className="w-5 h-5 cursor-pointer text-black"
                           onClick={() => editIn(stock.id)}
-                        >
-                          Edit
-                        </button>
-                        <button
-                          className="bg-green-500 rounded-md w-full p-1"
-                          onClick={() => handleTapDetail(stock.id)}
-                        >
-                          Detail
-                        </button>
-                      </td>
-                    </tr>
+                        />
+                      </TableCell>
+                    </TableRow>
                   ))
                 )}
-              </tbody>
-            </table>
+              </TableBody>
+            </Table>
           </div>
         </div>
       </BaseLayout>

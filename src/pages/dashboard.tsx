@@ -119,22 +119,22 @@ const Dashboard = () => {
             <Table className="w-full mt-4 ">
               <TableHeader>
                 <TableRow>
-                  <TableHead className="border-2 border-gray-300 p-2 text-black">
+                  <TableHead className="border-2 border-gray-300 p-2 text-black text-center">
                     ID Barang
                   </TableHead>
-                  <TableHead className="border-2 border-gray-300 p-2 text-black">
+                  <TableHead className="border-2 border-gray-300 p-2 text-black text-center">
                     Nama
                   </TableHead>
-                  <TableHead className="border-2 border-gray-300 p-2 text-black">
+                  <TableHead className="border-2 border-gray-300 p-2 text-black text-center">
                     Jenis
                   </TableHead>
-                  <TableHead className="border-2 border-gray-300 p-2 text-black">
+                  <TableHead className="border-2 border-gray-300 p-2 text-black text-center">
                     Jumlah
                   </TableHead>
-                  <TableHead className="border-2 border-gray-300 p-2 text-black">
+                  <TableHead className="border-2 border-gray-300 p-2 text-black text-center">
                     Satuan
                   </TableHead>
-                  <TableHead className="border-2 border-gray-300 p-2 text-black">
+                  <TableHead className="border-2 border-gray-300 p-2 text-black text-center">
                     Harga
                   </TableHead>
                 </TableRow>
@@ -152,22 +152,22 @@ const Dashboard = () => {
                 )}
                 {filteredStocks.map((stock) => (
                   <TableRow key={stock.id}>
-                    <TableCell className="border-2 border-gray-300 p-2">
+                    <TableCell className="border-2 border-gray-300 p-2 text-center">
                       {stock.id_stuff}
                     </TableCell>
-                    <TableCell className="border-2 border-gray-300 p-2">
+                    <TableCell className="border-2 border-gray-300 p-2 text-center">
                       {stock.name}
                     </TableCell>
-                    <TableCell className="border-2 border-gray-300 p-2">
+                    <TableCell className="border-2 border-gray-300 p-2 text-center">
                       {stock.type}
                     </TableCell>
-                    <TableCell className="border-2 border-gray-300 p-2">
+                    <TableCell className="border-2 border-gray-300 p-2 text-center">
                       {stock.quantity}
                     </TableCell>
-                    <TableCell className="border-2 border-gray-300 p-2">
+                    <TableCell className="border-2 border-gray-300 p-2 text-center">
                       {stock.unit}
                     </TableCell>
-                    <TableCell className="border-2 border-gray-300 p-2">
+                    <TableCell className="border-2 border-gray-300 p-2 text-center">
                       {stock.price.toLocaleString("id-ID", {
                         style: "currency",
                         currency: "IDR",
