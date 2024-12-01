@@ -14,6 +14,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/shadcn/components/ui/table";
+import { Input } from "@/shadcn/components/ui/input";
 
 const Income = () => {
   const [stocks, setStocks] = useState<StuffProps[]>([]);
@@ -177,7 +178,7 @@ const Income = () => {
                   <TableHead className="border-2 border-gray-300 p-2 text-black text-center">
                     Satuan
                   </TableHead>
-                  <TableHead className="border-2 border-gray-300 p-2 text-black text-center">
+                  <TableHead className="border-2 border-gray-300 p-2 text-black text-center w-32">
                     Quantity
                   </TableHead>
                   <TableHead className="border-2 border-gray-300 p-2 text-black text-center">
@@ -214,7 +215,7 @@ const Income = () => {
                         {stock.unit}
                       </TableCell>
                       <TableCell className="border-2 border-gray-300 p-2 text-center">
-                        0
+                        <Input type="number" defaultValue={0} />
                       </TableCell>
                       <TableCell className="border-2 border-gray-300 p-2 text-center">
                         {stock.price.toLocaleString("id-ID", {
@@ -222,11 +223,13 @@ const Income = () => {
                           currency: "IDR",
                         })}
                       </TableCell>
-                      <TableCell className="border-2 border-gray-300 flex space-x-2 text-white p-2 font-semibold justify-center">
-                        <PencilIcon
-                          className="w-5 h-5 cursor-pointer text-black"
-                          onClick={() => editIn(stock.id)}
-                        />
+                      <TableCell className="border-2 border-gray-300 space-x-2 text-white font-semibold">
+                        <div className="w-full flex justify-center">
+                          <PencilIcon
+                            className="w-5 h-5 cursor-pointer text-black"
+                            onClick={() => editIn(stock.id)}
+                          />
+                        </div>
                       </TableCell>
                     </TableRow>
                   ))
