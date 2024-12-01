@@ -5,6 +5,14 @@ import { useState, useEffect } from "react";
 import Swal from "sweetalert2";
 import { getBaseUrl } from "../../helpers/api";
 import { OrderProps } from "@/types/stuff";
+import {
+  TableHeader,
+  TableRow,
+  TableHead,
+  TableBody,
+  TableCell,
+  Table,
+} from "@/shadcn/components/ui/table";
 
 const CreateOutcome = () => {
   const dateNow = new Date().toLocaleDateString("id-ID", {
@@ -15,8 +23,8 @@ const CreateOutcome = () => {
 
   const [idLastNumber, setIdLastNumber] = useState("");
   const [totalPay, setTotalPay] = useState(0);
-  const [total, setTotal] = useState(0);
-  const [returnMoney, setReturnMoney] = useState(0);
+  const [,] = useState(0);
+  const [returnMoney] = useState(0);
 
   const [orders, setOrders] = useState<OrderProps[]>();
   const [selectedOrder, setSelectedOrder] = useState<OrderProps>();
@@ -109,20 +117,20 @@ const CreateOutcome = () => {
       });
   };
 
-  const handleSumReturnMoney = () => {
-    const totalPayed = totalPay;
-    const totalMoney = selectedOrder?.total_paid || 0;
-    const result = totalPayed - totalMoney;
-    if (result < 0) {
-      Swal.fire({
-        icon: "error",
-        title: "Error",
-        text: "Tidak ada uang kembalian",
-      });
-      return;
-    }
-    setReturnMoney(result);
-  };
+  // const handleSumReturnMoney = () => {
+  //   const totalPayed = totalPay;
+  //   const totalMoney = selectedOrder?.total_paid || 0;
+  //   const result = totalPayed - totalMoney;
+  //   if (result < 0) {
+  //     Swal.fire({
+  //       icon: "error",
+  //       title: "Error",
+  //       text: "Tidak ada uang kembalian",
+  //     });
+  //     return;
+  //   }
+  //   setReturnMoney(result);
+  // };
 
   useEffect(() => {
     getOutLast();
@@ -147,7 +155,7 @@ const CreateOutcome = () => {
               </h3>
               <h6 className="font-semibold text-lg py-1">{dateNow}</h6>
             </div>
-            <div className="flex space-x-4 mt-4">
+            {/* <div className="flex space-x-4 mt-4">
               <div>
                 <label>Id Pemesanan</label>
                 <select
@@ -208,19 +216,75 @@ const CreateOutcome = () => {
                   value={returnMoney}
                 />
               </div>
-            </div>
+            </div> */}
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead className="border-2 border-gray-300 p-2 text-black text-center">
+                    Id Pemesanan
+                  </TableHead>
+                  <TableHead className="border-2 border-gray-300 p-2 text-black text-center">
+                    Nama Outlet
+                  </TableHead>
+                  <TableHead className="border-2 border-gray-300 p-2 text-black text-center">
+                    Total
+                  </TableHead>
+                  <TableHead className="border-2 border-gray-300 p-2 text-black text-center">
+                    Jumlah Barang
+                  </TableHead>
+                  <TableHead className="border-2 border-gray-300 p-2 text-black text-center">
+                    Bayar
+                  </TableHead>
+                  <TableHead className="border-2 border-gray-300 p-2 text-black text-center">
+                    Kembalian
+                  </TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                <TableRow>
+                  <TableCell className="border-2 border-gray-300 p-2 text-center">
+                    <select
+                      className="p-2 border-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 w-full bg-white"
+                      onChange={(e) => {
+                        const selectedId = e.target.value;
+                        const selectedOrder = orders?.find(
+                          (order) => order.id.toString() === selectedId
+                        );
+                        setSelectedOrder(selectedOrder);
+                      }}
+                    >
+                      {orders?.map((order) => (
+                        <option key={order.id} value={order.id}>
+                          {order.id}
+                        </option>
+                      ))}
+                    </select>
+                  </TableCell>
+                  <TableCell className="border-2 border-gray-300 p-2 text-center">
+                    {selectedOrder?.outlet.name}
+                  </TableCell>
+                  <TableCell className="border-2 border-gray-300 p-2 text-center">
+                    {selectedOrder?.total_paid}
+                  </TableCell>
+                  <TableCell className="border-2 border-gray-300 p-2 text-center">
+                    {selectedOrder?.total_order}
+                  </TableCell>
+                  <TableCell className="border-2 border-gray-300 p-2 text-center">
+                    <input
+                      className="p-2 border-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 w-full"
+                      onChange={(e) => setTotalPay(parseInt(e.target.value))}
+                    />
+                  </TableCell>
+                  <TableCell className="border-2 border-gray-300 p-2 text-center">
+                    {((selectedOrder?.total_paid ?? 0) - totalPay)
+                      .toString()
+                      .replace("-", "") || 0}
+                    {/* {returnMoney} */}
+                  </TableCell>
+                </TableRow>
+              </TableBody>
+            </Table>
             <div className="w-full justify-end flex mt-4 space-x-4">
-              {/* <button
-                className="bg-gray-500 text-white px-3 py-2 rounded-md hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-500"
-                onClick={handleSumReturnMoney}
-              >
-                Hitung
-                className="bg-gray-500 text-white px-3 py-2 rounded-md hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-500"
-                onClick={handleSumReturnMoney}
-              >
-                Hitung
-              </button
-              </button> */}
               <button
                 className="bg-blue-500 text-white px-3 py-2 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
                 onClick={submitOut}
