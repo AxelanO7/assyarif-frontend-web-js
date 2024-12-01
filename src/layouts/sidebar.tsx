@@ -137,11 +137,14 @@ const Sidebar = () => {
                   </div>
                   <div
                     className="hover:bg-gray-700 cursor-pointer transition-all duration-300 ease-in-out border-b border-gray-700 px-16 py-4"
-                    onClick={() => handleSidebar("/report-return")}
+                    onClick={() => handleSidebar("/return-report")}
                   >
                     <p>Retur</p>
                   </div>
-                  <div className="hover:bg-gray-700 cursor-pointer transition-all duration-300 ease-in-out border-b border-gray-700 px-16 py-4">
+                  <div
+                    className="hover:bg-gray-700 cursor-pointer transition-all duration-300 ease-in-out border-b border-gray-700 px-16 py-4"
+                    onClick={() => handleSidebar("/stock-report")}
+                  >
                     <p>Stok</p>
                   </div>
                   <div className="hover:bg-gray-700 cursor-pointer transition-all duration-300 ease-in-out border-b border-gray-700 px-16 py-4">

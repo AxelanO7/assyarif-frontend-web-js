@@ -6,7 +6,7 @@ import { ReturProps } from "@/types/stuff";
 import { getBaseUrl } from "@/helpers/api";
 import { MagnifyingGlassIcon } from "@heroicons/react/20/solid";
 
-const ReportReturn = () => {
+const ReturnReport = () => {
   const getReturns = () => {
     axios
       .get(`${getBaseUrl()}/return/private/stuff`)
@@ -113,4 +113,4 @@ const ReportReturn = () => {
   );
 };
 
-export default ReportReturn;
+export default ReturnReport;

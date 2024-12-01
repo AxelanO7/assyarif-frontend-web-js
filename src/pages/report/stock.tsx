@@ -3,7 +3,6 @@ import {
   MagnifyingGlassIcon,
   XMarkIcon,
 } from "@heroicons/react/20/solid";
-import BaseLayout from "../layouts/base";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { getBaseUrl } from "@/helpers/api";
@@ -16,8 +15,9 @@ import {
   TableHeader,
   TableRow,
 } from "@/shadcn/components/ui/table";
+import BaseLayout from "@/layouts/base";
 
-const Dashboard = () => {
+const StockReport = () => {
   const [stocks, setStocks] = useState<StuffProps[]>([]);
   const [filteredStocks, setFilteredStocks] = useState<StuffProps[]>([]);
   const [search, setSearch] = useState("");
@@ -81,10 +81,10 @@ const Dashboard = () => {
   return (
     <>
       <BaseLayout>
-        <h1 className="text-3xl font-bold mx-6 pt-4">Dashboard</h1>
+        <h1 className="text-3xl font-bold mx-6 pt-4">Laporan Stok</h1>
         <div className="flex items-center bg-gray-300 px-6 py-2">
           <HomeIcon className="w-5 h-5" />
-          <p className="ml-2 font-semibold">Dashboard</p>
+          <p className="ml-2 font-semibold">Laporan Stok</p>
         </div>
         <div className="px-6">
           <div className="flex items-center mt-6">
@@ -102,7 +102,7 @@ const Dashboard = () => {
           </div>
           <div className="mt-4 bg-gray-200 px-8 py-8 rounded-md shadow-md">
             <h3 className="text-3xl font-semibold text-gray-500">
-              Stok Barang
+              Laporan Stok
             </h3>
             <div className="flex justify-end items-center">
               <input
@@ -184,4 +184,4 @@ const Dashboard = () => {
   );
 };
 
-export default Dashboard;
+export default StockReport;
