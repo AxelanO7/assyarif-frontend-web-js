@@ -6,7 +6,6 @@ import {
   UserIcon,
   ShoppingCartIcon,
   ArrowUturnUpIcon,
-  UserCircleIcon,
   DocumentChartBarIcon,
   ChevronUpDownIcon,
 } from "@heroicons/react/16/solid";
@@ -136,7 +135,10 @@ const Sidebar = () => {
                   <div className="hover:bg-gray-700 cursor-pointer transition-all duration-300 ease-in-out border-b border-gray-700 px-16 py-4">
                     <p>Barang Masuk</p>
                   </div>
-                  <div className="hover:bg-gray-700 cursor-pointer transition-all duration-300 ease-in-out border-b border-gray-700 px-16 py-4">
+                  <div
+                    className="hover:bg-gray-700 cursor-pointer transition-all duration-300 ease-in-out border-b border-gray-700 px-16 py-4"
+                    onClick={() => handleSidebar("/report-return")}
+                  >
                     <p>Retur</p>
                   </div>
                   <div className="hover:bg-gray-700 cursor-pointer transition-all duration-300 ease-in-out border-b border-gray-700 px-16 py-4">

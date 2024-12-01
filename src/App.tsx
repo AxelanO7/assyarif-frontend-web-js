@@ -39,6 +39,7 @@ import CreateOrder from "./pages/order/create";
 import OutcomeOutlet from "./pages/outlet/outcome";
 import CreateOutcomeOutlet from "./pages/outlet/create";
 import OutletProfile from "./pages/outlet/profile";
+import ReportReturn from "./pages/return/report";
 
 function App() {
   return (
@@ -83,6 +84,7 @@ function App() {
           <Route path="/return" element={<Return />} />
           <Route path="/return/add" element={<CreateReturn />} />
           <Route path="/return/proof" element={<Proof />} />
+          <Route path="/report-return" element={<ReportReturn />} />
           {/* order */}
           <Route path="/outlet/order" element={<Order />} />
           <Route path="/order/add" element={<CreateOrder />} />
