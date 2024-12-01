@@ -56,7 +56,9 @@ const Navbar = () => {
         </div>
         <Popover>
           <PopoverTrigger className="flex items-center">
-            <div className="h-8 w-8 bg-gray-300 rounded-full flex items-center justify-center" />
+            <div className="h-8 w-8 bg-gray-300 rounded-full flex items-center justify-center">
+              <img src="/illust_user.png" />
+            </div>
             <p className="ml-2 text-sm">
               {user?.username
                 ?.split(" ")
