@@ -2,9 +2,14 @@
   "version": "2.0.0",
   "tasks": [
     {
-      "label": "run frontend",
+      "label": "Run Frontend",
       "type": "shell",
       "command": "cd ~/Skills/programming/web/syarif/final_project/fe && yarn dev"
+    },
+    {
+      "label": "Merge Dev",
+      "type": "shell",
+      "command": "git checkout master && git merge dev && git push && git checkout dev"
     }
   ]
 }
