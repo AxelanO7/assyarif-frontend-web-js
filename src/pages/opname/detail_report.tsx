@@ -3,6 +3,14 @@ import BaseLayout from "../../layouts/base";
 import { getBaseUrl } from "@/helpers/api";
 import axios from "axios";
 import { OutProps, ResOpname, ReturProps, StuffProps } from "@/types/stuff";
+import {
+  Table,
+  TableHeader,
+  TableColumn,
+  TableRow,
+  TableBody,
+  TableCell,
+} from "@nextui-org/table";
 
 const DetailReportOpname = () => {
   const startDate = window.location.href.split("/")[4];
@@ -97,19 +105,60 @@ const DetailReportOpname = () => {
           {stuffs.length === 0 ? (
             <h1 className="text-2xl font-semibold mt-8">Tidak ada data</h1>
           ) : (
-            <table className="m-8 border border-gray-400">
-              {stuffs.map((product, index) => (
-                <tr
-                  key={index}
-                  className={index % 2 === 0 ? "bg-gray-200" : "bg-gray-100"}
-                >
-                  <td className="p-2">
-                    Nama Barang: {product.name} <br />
-                    Jumlah Barang: {product.quantity} {product.unit} <br />
-                  </td>
-                </tr>
-              ))}
-            </table>
+            // <table className="m-8 border border-gray-400">
+            //   {stuffs.map((product, index) => (
+            //     <tr
+            //       key={index}
+            //       className={index % 2 === 0 ? "bg-gray-200" : "bg-gray-100"}
+            //     >
+            //       <td className="p-2">
+            //         Nama Barang: {product.name} <br />
+            //         Jumlah Barang: {product.quantity} {product.unit} <br />
+            //       </td>
+            //     </tr>
+            //   ))}
+            // </table>
+
+            <Table className="w-full mt-4">
+              <TableHeader>
+                <TableColumn className="border-2 border-gray-300 p-2 text-black text-center w-20">
+                  ID
+                </TableColumn>
+                <TableColumn className="border-2 border-gray-300 p-2 text-black text-center">
+                  Nama
+                </TableColumn>
+                <TableColumn className="border-2 border-gray-300 p-2 text-black text-center">
+                  Jenis
+                </TableColumn>
+                <TableColumn className="border-2 border-gray-300 p-2 text-black text-center">
+                  Satuan
+                </TableColumn>
+                <TableColumn className="border-2 border-gray-300 p-2 text-black text-center">
+                  Jumlah
+                </TableColumn>
+              </TableHeader>
+              <TableBody>
+                {stuffs.map((product, index) => (
+                  <TableRow key={index}>
+                    <TableCell className="border-2 border-gray-300 p-2 text-black text-center">
+                      {product.id_stuff}
+                    </TableCell>
+                    <TableCell className="border-2 border-gray-300 p-2 text-black text-center">
+                      {product.name}
+                    </TableCell>
+                    <TableCell className="border-2 border-gray-300 p-2 text-black text-center">
+                      {product.type}
+                    </TableCell>
+                    <TableCell className="border-2 border-gray-300 p-2 text-black text-center">
+                      {product.unit}
+                    </TableCell>
+                    <TableCell className="border-2 border-gray-300 p-2 text-black text-center">
+                      {product.quantity}
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
           )}
         </div>
       </BaseLayout>
