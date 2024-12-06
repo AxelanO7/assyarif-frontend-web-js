@@ -1,27 +1,21 @@
-import { CheckIcon, HomeIcon } from "@heroicons/react/20/solid";
+import { HomeIcon } from "@heroicons/react/20/solid";
 import BaseLayout from "../../layouts/base";
 import { getBaseUrl } from "@/helpers/api";
 import axios from "axios";
 import { OutletProps, UserProps } from "@/types/user";
 import { useEffect, useState } from "react";
 import { StuffProps } from "@/types/stuff";
-import { cn } from "@/shadcn/utils";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/shadcn/components/ui/popover";
-import {
-  Command,
-  CommandInput,
-  CommandList,
-  CommandEmpty,
-  CommandGroup,
-  CommandItem,
-} from "@/shadcn/components/ui/command";
-import { Button } from "@/shadcn/components/ui/button";
-import { CaretSortIcon } from "@radix-ui/react-icons";
 import Swal from "sweetalert2";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/shadcn/components/ui/table";
+import { Checkbox } from "@/shadcn/components/ui/checkbox";
+import { Input } from "@/shadcn/components/ui/input";
 
 const CreateOrder = () => {
   const dateNow = new Date().toLocaleDateString("id-ID", {
@@ -31,15 +25,17 @@ const CreateOrder = () => {
   });
 
   const [outlet, setOutlet] = useState<OutletProps>();
-  const [user, setUser] = useState<UserProps>();
+  const [, setUser] = useState<UserProps>();
   const [stocks, setStocks] = useState<StuffProps[]>([]);
-  const [selectedStock, setSelectedStock] = useState<StuffProps>();
+  const [finalStocks, setFinalStocks] = useState<StuffProps[]>([]);
+  // const [selectedStock, setSelectedStock] = useState<StuffProps>();
+  const [listSelectedStock, setListSelectedStock] = useState<StuffProps[]>([]);
 
-  const [openName, setOpenName] = useState(false);
-  const [nameStuff, setNameStuff] = useState("");
+  // const [openName, setOpenName] = useState(false);
+  // const [nameStuff, setNameStuff] = useState("");
 
-  const [totalOrder, setTotalOrder] = useState(0);
-  const [totalPayment, setTotalPayment] = useState(0);
+  // const [totalOrder, setTotalOrder] = useState(0);
+  // const [totalPayment, setTotalPayment] = useState(0);
 
   const getOutletByIDUser = ({ id }: { id: string }) => {
     axios
@@ -79,14 +75,31 @@ const CreateOrder = () => {
         console.log(res.data);
         const dataRes: StuffProps[] = res.data.data;
         setStocks(dataRes);
+        setFinalStocks(dataRes);
       })
       .catch((err) => {
         console.error(err);
       });
   };
 
-  const handleSelectStuff = (stock: StuffProps) => {
-    setSelectedStock(stock);
+  // const handleSelectStuff = (stock: StuffProps) => {
+  //   setSelectedStock(stock);
+  // };
+
+  const handleToggleCheckbox = ({
+    stock,
+    value,
+  }: {
+    stock: StuffProps;
+    value: boolean;
+  }) => {
+    if (value) {
+      setListSelectedStock([...listSelectedStock, stock]);
+    } else {
+      setListSelectedStock(
+        listSelectedStock.filter((stock) => stock.id !== stock.id)
+      );
+    }
   };
 
   const fetchData = async () => {
@@ -94,63 +107,94 @@ const CreateOrder = () => {
     getStocks();
   };
 
-  const handleChangeTotalOrder = async (val: number) => {
-    if (selectedStock) {
-      setTotalOrder(val);
-      handleTotalPayment(val);
-    } else {
-      Swal.fire({
-        icon: "error",
-        title: "Oops...",
-        text: "Pilih barang terlebih dahulu",
-      });
-    }
-  };
+  // const handleChangeTotalOrder = async (val: number) => {
+  //   if (selectedStock) {
+  //     setTotalOrder(val);
+  //     handleTotalPayment(val);
+  //   } else {
+  //     Swal.fire({
+  //       icon: "error",
+  //       title: "Oops...",
+  //       text: "Pilih barang terlebih dahulu",
+  //     });
+  //   }
+  // };
 
-  const handleTotalPayment = (val: number) => {
-    setTotalPayment(val * (selectedStock?.price || 0));
-  };
+  // const handleTotalPayment = (val: number) => {
+  //   setTotalPayment(val * (selectedStock?.price || 0));
+  // };
 
-  const handleSaveOrder = () => {
+  // const handleSaveOrder = () => {
+  // const payload = {
+  //   outlet_id: outlet?.id,
+  //   stock_id: selectedStock?.id,
+  //   date_order: Date.now(),
+  //   total_paid: totalPayment,
+  //   total_order: totalOrder,
+  //   status: 0,
+  // };
+  // set localStorage list order
+  // const orderList = localStorage.getItem("order");
+  // if (orderList) {
+  //   localStorage.setItem(
+  //     "order",
+  //     JSON.stringify([...JSON.parse(orderList), order])
+  //   );
+  // } else {
+  //   localStorage.setItem("order", JSON.stringify([order]));
+  // }
+  // Swal.fire({
+  //   icon: "success",
+  //   title: "Berhasil",
+  //   text: "Pesanan berhasil disimpan",
+  // });
+  // window.location.reload();
+  // resetState();
+  // };
+
+  const handleOrder = () => {
+    // const dateNowISO = new Date().toISOString();
     // const payload = {
     //   outlet_id: outlet?.id,
     //   stock_id: selectedStock?.id,
-    //   date_order: Date.now(),
+    //   date_order: dateNowISO,
     //   total_paid: totalPayment,
     //   total_order: totalOrder,
     //   status: 0,
     // };
-    // set localStorage list order
-    // const orderList = localStorage.getItem("order");
-    // if (orderList) {
-    //   localStorage.setItem(
-    //     "order",
-    //     JSON.stringify([...JSON.parse(orderList), order])
-    //   );
-    // } else {
-    //   localStorage.setItem("order", JSON.stringify([order]));
-    // }
-    // Swal.fire({
-    //   icon: "success",
-    //   title: "Berhasil",
-    //   text: "Pesanan berhasil disimpan",
-    // });
-    // window.location.reload();
-    // resetState();
-  };
+    // axios
+    //   .post(`${getBaseUrl()}/order/stuff`, payload)
+    //   .then((res) => {
+    //     console.log(res.data);
+    //     Swal.fire({
+    //       icon: "success",
+    //       title: "Berhasil",
+    //       text: "Pesanan berhasil disimpan",
+    //     }).then(() => {
+    //       window.location.href = "/dashboard";
+    //     });
+    //   })
+    //   .catch((err) => {
+    //     console.error(err);
+    //     Swal.fire({
+    //       icon: "error",
+    //       title: "Oops...",
+    //       text: "Gagal menyimpan pesanan",
+    //     });
+    //   });
 
-  const handleOrder = () => {
-    const dateNowISO = new Date().toISOString();
-    const payload = {
-      outlet_id: outlet?.id,
-      stock_id: selectedStock?.id,
-      date_order: dateNowISO,
-      total_paid: totalPayment,
-      total_order: totalOrder,
-      status: 0,
-    };
+    const payload = listSelectedStock.map((item) => {
+      return {
+        outlet_id: outlet?.id,
+        stock_id: item.id,
+        date_order: Date.now(),
+        total_paid: item.price * item.quantity,
+        total_order: item.quantity,
+        status: 0,
+      };
+    });
     axios
-      .post(`${getBaseUrl()}/order/stuff`, payload)
+      .post(`${getBaseUrl()}/order/stuff/multiple`, payload)
       .then((res) => {
         console.log(res.data);
         Swal.fire({
@@ -193,125 +237,96 @@ const CreateOrder = () => {
               </h3>
               <h6 className="font-semibold text-lg py-1">{dateNow}</h6>
             </div>
-            <div className="flex space-x-4 mt-4">
-              <div className="flex-1">
-                <label>Outlet</label>
-                <input
-                  className="p-2 border-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 w-full bg-slate-50"
-                  disabled
-                  value={outlet?.name}
-                />
-              </div>
-              <div className="flex-1">
-                <label>Jumlah Orderan</label>
-                <input
-                  type="number"
-                  onChange={(e) =>
-                    handleChangeTotalOrder(parseInt(e.target.value))
-                  }
-                  className="p-2 border-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 w-full"
-                />
-              </div>
-              {/* <div className="flex-1">
-                <label>Jumlah Bayar</label>
-                <input
-                  disabled
-                  value={totalPayment}
-                  className="p-2 border-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 w-full bg-slate-50"
-                />
-              </div> */}
-            </div>
-            {/* <div className="w-full justify-end flex mt-4">
-              <button
-                className="bg-blue-500 text-white px-3 py-2 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                onClick={handleSaveOrder}
-              >
-                Simpan
-              </button>
-            </div> */}
-            <div className="flex space-x-4 mt-4">
-              <div className="flex-1 flex-col flex">
-                <label>Nama Barang</label>
-                {/* <input className="p-2 border-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 w-full" /> */}
-                <Popover open={openName} onOpenChange={setOpenName}>
-                  <PopoverTrigger asChild>
-                    <Button
-                      variant="outline"
-                      role="combobox"
-                      aria-expanded={openName}
-                      className="w-full justify-between h-11"
-                    >
-                      {nameStuff
-                        ? stocks.find((stock) => stock.name === nameStuff)?.name
-                        : "Pilih Barang..."}
-                      <CaretSortIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-                    </Button>
-                  </PopoverTrigger>
-                  <PopoverContent className="w-full p-0">
-                    <Command>
-                      <CommandInput
-                        placeholder="Search framework..."
-                        className="h-9"
-                      />
-                      <CommandList>
-                        <CommandEmpty>Tidak ada data</CommandEmpty>
-                        <CommandGroup>
-                          {stocks.map((stock) => (
-                            <CommandItem
-                              key={stock.id}
-                              value={stock.name}
-                              onSelect={(currentValue) => {
-                                setNameStuff(
-                                  currentValue === nameStuff ? "" : currentValue
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead className="border-2 border-gray-300 p-2 text-black text-center">
+                    ID Barang
+                  </TableHead>
+                  <TableHead className="border-2 border-gray-300 p-2 text-black text-center">
+                    Nama
+                  </TableHead>
+                  <TableHead className="border-2 border-gray-300 p-2 text-black text-center">
+                    Jenis
+                  </TableHead>
+                  <TableHead className="border-2 border-gray-300 p-2 text-black text-center">
+                    Jumlah
+                  </TableHead>
+                  <TableHead className="border-2 border-gray-300 p-2 text-black text-center">
+                    Satuan
+                  </TableHead>
+                  <TableHead className="border-2 border-gray-300 p-2 text-black text-center">
+                    Harga
+                  </TableHead>
+                  <TableHead className="border-2 border-gray-300 p-2 text-black text-center">
+                    Aksi
+                  </TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {finalStocks.map((stock) => (
+                  <TableRow key={stock.id}>
+                    <TableCell className="border-2 border-gray-300 p-2 text-center">
+                      {stock.id_stuff}
+                    </TableCell>
+                    <TableCell className="border-2 border-gray-300 p-2 text-center">
+                      {stock.name}
+                    </TableCell>
+                    <TableCell className="border-2 border-gray-300 p-2 text-center">
+                      {stock.type}
+                    </TableCell>
+                    <TableCell className="border-2 border-gray-300 p-2 text-center">
+                      <Input
+                        type="number"
+                        className="border-2 border-gray-300 p-2 text-center"
+                        defaultValue={stock.quantity}
+                        min={0}
+                        max={
+                          stocks.find((item) => item.id === stock.id)?.quantity
+                        }
+                        onChange={(e) => {
+                          const value = parseInt(e.target.value);
+                          const newStocks = finalStocks.map((item) => {
+                            if (item.id === stock.id) {
+                              listSelectedStock.includes(stock) &&
+                                setListSelectedStock(
+                                  listSelectedStock.map((item) => {
+                                    if (item.id === stock.id) {
+                                      return { ...item, quantity: value };
+                                    }
+                                    return item;
+                                  })
                                 );
-                                handleSelectStuff(stock);
-                                setOpenName(false);
-                              }}
-                            >
-                              {stock.name}
-                              <CheckIcon
-                                className={cn(
-                                  "ml-auto h-4 w-4",
-                                  nameStuff === stock.name
-                                    ? "opacity-100"
-                                    : "opacity-0"
-                                )}
-                              />
-                            </CommandItem>
-                          ))}
-                        </CommandGroup>
-                      </CommandList>
-                    </Command>
-                  </PopoverContent>
-                </Popover>
-              </div>
-              <div className="flex-1">
-                <label>Harga Barang</label>
-                <input
-                  className="p-2 border-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 w-full bg-slate-50"
-                  value={selectedStock?.price}
-                  disabled
-                />
-              </div>
-            </div>
-            <div className="flex space-x-4 mt-4">
-              <div className="flex-1">
-                <label>Jenis Barang</label>
-                <input
-                  className="p-2 border-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 w-full bg-slate-50"
-                  value={selectedStock?.type}
-                  disabled
-                />
-              </div>
-              <div className="flex-1">
-                <label>Satuan Barang</label>
-                <input
-                  className="p-2 border-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 w-full bg-slate-50"
-                  value={selectedStock?.unit}
-                  disabled
-                />
-              </div>
-            </div>
+                              return { ...item, quantity: value };
+                            }
+                            return item;
+                          });
+                          setFinalStocks(newStocks);
+                        }}
+                        disabled={
+                          !listSelectedStock.some(
+                            (item) => item.id === stock.id
+                          )
+                        }
+                      />
+                    </TableCell>
+                    <TableCell className="border-2 border-gray-300 p-2 text-center">
+                      {stock.unit}
+                    </TableCell>
+                    <TableCell className="border-2 border-gray-300 p-2 text-center">
+                      {stock.price}
+                    </TableCell>
+                    <TableCell className="border-2 border-gray-300 p-2 text-center">
+                      <Checkbox
+                        onCheckedChange={(value) =>
+                          handleToggleCheckbox({ stock, value: !!value })
+                        }
+                      />
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
             <div className="w-full justify-end flex mt-4">
               <button
                 className="bg-blue-500 text-white px-3 py-2 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
