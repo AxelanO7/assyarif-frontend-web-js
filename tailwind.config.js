@@ -8,7 +8,7 @@ module.exports = {
     "./components/**/*.{ts,tsx}",
     "./app/**/*.{ts,tsx}",
     "./src/**/*.{html,js,ts,jsx,tsx}",
-    "./node_modules/@nextui-org/theme/dist/components/(table|button).js",
+    "./node_modules/@nextui-org/theme/dist/components/(table|button|modal).js",
   ],
   prefix: "",
   theme: {
