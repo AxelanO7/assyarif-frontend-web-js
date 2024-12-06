@@ -129,10 +129,16 @@ const Sidebar = () => {
                 </CollapsibleTrigger>
 
                 <CollapsibleContent>
-                  <div className="hover:bg-gray-700 cursor-pointer transition-all duration-300 ease-in-out border-b border-gray-700 px-16 py-4">
+                  <div
+                    className="hover:bg-gray-700 cursor-pointer transition-all duration-300 ease-in-out border-b border-gray-700 px-16 py-4"
+                    onClick={() => handleSidebar("/out/report")}
+                  >
                     <p>Barang Keluar</p>
                   </div>
-                  <div className="hover:bg-gray-700 cursor-pointer transition-all duration-300 ease-in-out border-b border-gray-700 px-16 py-4">
+                  <div
+                    className="hover:bg-gray-700 cursor-pointer transition-all duration-300 ease-in-out border-b border-gray-700 px-16 py-4"
+                    onClick={() => handleSidebar("/in/report")}
+                  >
                     <p>Barang Masuk</p>
                   </div>
                   <div
