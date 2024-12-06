@@ -34,7 +34,7 @@ const Sidebar = () => {
 
   return (
     <>
-      <div className="h-screen fixed top-16 left-0 z-10 select-none bg-gray-800 text-white">
+      <div className="h-screen fixed top-16 left-0 z-10 select-none bg-gray-800 text-white min-w">
         <p
           className={`${
             sidebarOpen ? "text-2xl py-4" : "text-xl py-3"
@@ -160,7 +160,7 @@ const Sidebar = () => {
           </div>
         )}
         {role === "outlet" && (
-          <div>
+          <div className="min-w-[232px]">
             <div className="hover:bg-gray-700 cursor-pointer transition-all duration-300 ease-in-out border-b border-gray-700">
               <div
                 className={`${
