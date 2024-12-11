@@ -39,6 +39,9 @@ const Navbar = () => {
         setUser(dataRes);
       })
       .catch((err) => {
+        if (err.response.status === 401) {
+          handleLogout();
+        }
         console.error(err);
       });
   };
