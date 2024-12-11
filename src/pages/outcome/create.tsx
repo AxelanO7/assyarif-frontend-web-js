@@ -13,6 +13,14 @@ import {
   TableCell,
   Table,
 } from "@/shadcn/components/ui/table";
+import { Checkbox } from "@/shadcn/components/ui/checkbox";
+import { Input } from "@/shadcn/components/ui/input";
+
+export interface CreateOutcomeProps {
+  orders: OrderProps;
+  totalPay: number;
+  returnMoney: number;
+}
 
 const CreateOutcome = () => {
   const dateNow = new Date().toLocaleDateString("id-ID", {
@@ -22,12 +30,17 @@ const CreateOutcome = () => {
   });
 
   const [idLastNumber, setIdLastNumber] = useState("");
-  const [totalPay, setTotalPay] = useState(0);
+  // const [totalPay, setTotalPay] = useState(0);
   const [,] = useState(0);
-  const [returnMoney] = useState(0);
+  // const [returnMoney] = useState(0);
 
-  const [orders, setOrders] = useState<OrderProps[]>();
-  const [selectedOrder, setSelectedOrder] = useState<OrderProps>();
+  const [, setOrders] = useState<OrderProps[]>();
+  const [finalOrders, setFinalOrders] = useState<CreateOutcomeProps[]>([]);
+  const [listSelectedOrder, setListSelectedOrder] = useState<
+    CreateOutcomeProps[]
+  >([]);
+
+  // const [selectedOrder, setSelectedOrder] = useState<OrderProps>();
 
   const getOutLast = () => {
     axios
@@ -56,6 +69,14 @@ const CreateOutcome = () => {
         console.log(res.data);
         const resData: OrderProps[] = res.data.data;
         setOrders(resData);
+        const finalData: CreateOutcomeProps[] = resData.map((item) => {
+          return {
+            orders: item,
+            totalPay: 0,
+            returnMoney: 0,
+          };
+        });
+        setFinalOrders(finalData);
       })
       .catch((err) => {
         console.log(err);
@@ -63,18 +84,51 @@ const CreateOutcome = () => {
   };
 
   const submitOut = () => {
+    // const idLast = idLastNumber.toString().split("-")[1];
+    // const idFinal = parseInt(idLast);
+
+    // const data = {
+    //   out_id: idFinal,
+    //   order_id: selectedOrder?.id,
+    //   total_paided: totalPay,
+    //   return_cash: returnMoney,
+    // };
+
+    // axios
+    //   .post(`${getBaseUrl()}/stuff/out`, data)
+    //   .then((res) => {
+    //     console.log(res);
+    //     Swal.fire({
+    //       icon: "success",
+    //       title: "Success",
+    //       text: "Data berhasil disimpan",
+    //     });
+    //     // window.location.href = "/out";
+    //     increaseDashboardOutlet();
+    //   })
+    //   .catch((err) => {
+    //     console.log(err);
+    //   });
+
     const idLast = idLastNumber.toString().split("-")[1];
     const idFinal = parseInt(idLast);
+    const listSelectedOrderLength = listSelectedOrder.length;
+    const listIdFinal: number[] = [];
+    for (let i = 0; i < listSelectedOrderLength; i++) {
+      listIdFinal.push(idFinal + i);
+    }
 
-    const data = {
-      out_id: idFinal,
-      order_id: selectedOrder?.id,
-      total_paided: totalPay,
-      return_cash: returnMoney,
-    };
+    const data = listSelectedOrder.map((item, index) => {
+      return {
+        out_id: listIdFinal[index],
+        order_id: item.orders.id,
+        total_paided: item.totalPay,
+        return_cash: item.returnMoney,
+      };
+    });
 
     axios
-      .post(`${getBaseUrl()}/stuff/out`, data)
+      .post(`${getBaseUrl()}/stuff/out/multiple`, data)
       .then((res) => {
         console.log(res);
         Swal.fire({
@@ -82,7 +136,6 @@ const CreateOutcome = () => {
           title: "Success",
           text: "Data berhasil disimpan",
         });
-        // window.location.href = "/out";
         increaseDashboardOutlet();
       })
       .catch((err) => {
@@ -91,18 +144,34 @@ const CreateOutcome = () => {
   };
 
   const increaseDashboardOutlet = () => {
+    // const payload = {
+    //   orders: listSelectedOrder,
+    // };
+
+    // axios
+    //   .post(`${getBaseUrl()}/stock_outlet/private/increase-dashboard`, payload)
+    //   .then((res) => {
+    //     console.log(res);
+    //     Swal.fire({
+    //       icon: "success",
+    //       title: "Success",
+    //       text: "Data berhasil disimpan",
+    //     });
+    //     window.location.href = "/out";
+    //   })
+    //   .catch((err) => {
+    //     console.log(err);
+    //   });
+
     const payload = {
-      id_stuff: selectedOrder?.stock.id_stuff,
-      id_outlet: selectedOrder?.outlet.id,
-      name: selectedOrder?.stock.name,
-      type: selectedOrder?.stock.type,
-      quantity: selectedOrder?.total_order,
-      unit: selectedOrder?.stock.unit,
-      price: selectedOrder?.stock.price,
+      orders: listSelectedOrder,
     };
 
     axios
-      .post(`${getBaseUrl()}/stock_outlet/private/increase-dashboard`, payload)
+      .post(
+        `${getBaseUrl()}/stock_outlet/private/increase-dashboard/multiple`,
+        payload
+      )
       .then((res) => {
         console.log(res);
         Swal.fire({
@@ -155,68 +224,6 @@ const CreateOutcome = () => {
               </h3>
               <h6 className="font-semibold text-lg py-1">{dateNow}</h6>
             </div>
-            {/* <div className="flex space-x-4 mt-4">
-              <div>
-                <label>Id Pemesanan</label>
-                <select
-                  className="p-2 border-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 w-full bg-white"
-                  onChange={(e) => {
-                    const selectedId = e.target.value;
-                    const selectedOrder = orders?.find(
-                      (order) => order.id.toString() === selectedId
-                    );
-                    setSelectedOrder(selectedOrder);
-                  }}
-                >
-                  {orders?.map((order) => (
-                    <option key={order.id} value={order.id}>
-                      {order.id}
-                    </option>
-                  ))}
-                </select>
-              </div>
-              <div>
-                <label>Nama Outlet</label>
-                <input
-                  className="p-2 border-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 w-full bg-gray-100"
-                  value={selectedOrder?.outlet.name}
-                  disabled
-                />
-              </div>
-              <div>
-                <label>Total</label>
-                <input
-                  className="p-2 border-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 w-full bg-gray-100"
-                  disabled
-                  value={selectedOrder?.total_paid}
-                />
-              </div>
-            </div>
-            <div className="flex space-x-4 mt-4">
-              <div>
-                <label>Jumlah Barang</label>
-                <input
-                  className="p-2 border-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 w-full bg-gray-100"
-                  disabled
-                  value={selectedOrder?.total_order}
-                />
-              </div>
-              <div>
-                <label>Bayar</label>
-                <input
-                  className="p-2 border-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 w-full"
-                  onChange={(e) => setTotalPay(parseInt(e.target.value))}
-                />
-              </div>
-              <div>
-                <label>Kembalian</label>
-                <input
-                  className="p-2 border-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 w-full bg-gray-100"
-                  disabled
-                  value={returnMoney}
-                />
-              </div>
-            </div> */}
             <Table>
               <TableHeader>
                 <TableRow>
@@ -225,6 +232,9 @@ const CreateOutcome = () => {
                   </TableHead>
                   <TableHead className="border-2 border-gray-300 p-2 text-black text-center">
                     Nama Outlet
+                  </TableHead>
+                  <TableHead className="border-2 border-gray-300 p-2 text-black text-center">
+                    Nama Barang
                   </TableHead>
                   <TableHead className="border-2 border-gray-300 p-2 text-black text-center">
                     Total
@@ -238,52 +248,90 @@ const CreateOutcome = () => {
                   <TableHead className="border-2 border-gray-300 p-2 text-black text-center">
                     Kembalian
                   </TableHead>
+                  <TableHead className="border-2 border-gray-300 p-2 text-black text-center">
+                    Aksi
+                  </TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
-                <TableRow>
-                  <TableCell className="border-2 border-gray-300 p-2 text-center">
-                    <select
-                      className="p-2 border-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 w-full bg-white"
-                      onChange={(e) => {
-                        const selectedId = e.target.value;
-                        const selectedOrder = orders?.find(
-                          (order) => order.id.toString() === selectedId
-                        );
-                        setSelectedOrder(selectedOrder);
-                      }}
-                    >
-                      {orders?.map((order) => (
-                        <option key={order.id} value={order.id}>
-                          {order.id}
-                        </option>
-                      ))}
-                    </select>
-                  </TableCell>
-                  <TableCell className="border-2 border-gray-300 p-2 text-center">
-                    {selectedOrder?.outlet.name}
-                  </TableCell>
-                  <TableCell className="border-2 border-gray-300 p-2 text-center">
-                    {selectedOrder?.total_paid}
-                  </TableCell>
-                  <TableCell className="border-2 border-gray-300 p-2 text-center">
-                    {selectedOrder?.total_order}
-                  </TableCell>
-                  <TableCell className="border-2 border-gray-300 p-2 text-center">
-                    <input
-                      className="p-2 border-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 w-full"
-                      onChange={(e) => setTotalPay(parseInt(e.target.value))}
-                    />
-                  </TableCell>
-                  <TableCell className="border-2 border-gray-300 p-2 text-center">
-                    {((selectedOrder?.total_paid ?? 0) - totalPay)
-                      .toString()
-                      .replace("-", "") || 0}
-                    {/* {returnMoney} */}
-                  </TableCell>
-                </TableRow>
+                {finalOrders?.map((order) => (
+                  <TableRow key={order.orders.id}>
+                    <TableCell className="border-2 border-gray-300 p-2 text-center">
+                      {order.orders.id}
+                    </TableCell>
+                    <TableCell className="border-2 border-gray-300 p-2 text-center">
+                      {order.orders.outlet.name}
+                    </TableCell>
+                    <TableCell className="border-2 border-gray-300 p-2 text-center">
+                      {order.orders.stock.name}
+                    </TableCell>
+                    <TableCell className="border-2 border-gray-300 p-2 text-center">
+                      {order.orders.total_paid}
+                    </TableCell>
+                    <TableCell className="border-2 border-gray-300 p-2 text-center">
+                      {order.orders.total_order}
+                    </TableCell>
+                    <TableCell className="border-2 border-gray-300 p-2 text-center">
+                      <Input
+                        min={0}
+                        type="number"
+                        disabled={
+                          !listSelectedOrder.some(
+                            (item) => item.orders.id === order.orders.id
+                          )
+                        }
+                        onChange={(value) => {
+                          const newOrder = {
+                            ...order,
+                            totalPay: parseInt(value.target.value),
+                            returnMoney:
+                              parseInt(value.target.value) -
+                                order.orders.total_paid <
+                              0
+                                ? 0
+                                : parseInt(value.target.value) -
+                                  order.orders.total_paid,
+                          };
+                          const newFinalOrders = finalOrders.map((item) => {
+                            if (item.orders.id === order.orders.id) {
+                              listSelectedOrder.includes(item) &&
+                                setListSelectedOrder([
+                                  ...listSelectedOrder.filter(
+                                    (item) => item.orders.id !== order.orders.id
+                                  ),
+                                  newOrder,
+                                ]);
+                              return newOrder;
+                            }
+                            return item;
+                          });
+                          setFinalOrders(newFinalOrders);
+                        }}
+                      />
+                    </TableCell>
+                    <TableCell className="border-2 border-gray-300 p-2 text-center">
+                      {order.returnMoney || 0}
+                    </TableCell>
+                    <TableCell className="border-2 border-gray-300 p-2 text-center">
+                      <Checkbox
+                        onCheckedChange={(value) => {
+                          if (value) {
+                            setListSelectedOrder([...listSelectedOrder, order]);
+                          } else {
+                            const newListSelectedOrder =
+                              listSelectedOrder.filter(
+                                (item) => item.orders.id !== order.orders.id
+                              );
+                            setListSelectedOrder(newListSelectedOrder);
+                          }
+                        }}
+                      />
+                    </TableCell>
+                  </TableRow>
+                ))}
               </TableBody>
             </Table>
+
             <div className="w-full justify-end flex mt-4 space-x-4">
               <button
                 className="bg-blue-500 text-white px-3 py-2 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"

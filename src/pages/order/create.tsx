@@ -276,6 +276,7 @@ const CreateOrder = () => {
                       {stock.type}
                     </TableCell>
                     <TableCell className="border-2 border-gray-300 p-2 text-center">
+                      {/* TODO: Add validation greater than quantity */}
                       <Input
                         type="number"
                         className="border-2 border-gray-300 p-2 text-center"
