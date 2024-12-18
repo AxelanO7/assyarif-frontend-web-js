@@ -144,6 +144,7 @@ const CreateReturn = () => {
 
   const handleSelectStuff = (stock: StuffProps) => {
     setSelectedStock(stock);
+    console.log("set selected stock", stock);
   };
 
   const handleChangeReturnTotal = (value: number) => {
@@ -272,6 +273,15 @@ const CreateReturn = () => {
                     </option>
                   ))}
                 </select>
+              </div>
+              {/* id out */}
+              <div>
+                <label>ID Barang Keluar</label>
+                <input
+                  className="p-2 border-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 w-full bg-gray-100"
+                  disabled
+                  value={selectedStock?.id_out}
+                />
               </div>
             </div>
             {/* <div className="mt-4 flex flex-col">

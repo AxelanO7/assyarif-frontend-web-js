@@ -8,6 +8,7 @@ export interface StuffProps {
   quantity: number;
   unit: string;
   price: number;
+  id_out: number;
   created_at?: Date;
   updated_at?: Date;
   deleted_at?: Date;

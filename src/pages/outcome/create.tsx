@@ -22,6 +22,24 @@ export interface CreateOutcomeProps {
   returnMoney: number;
 }
 
+export interface CreateOutcomePayload {
+  out_id: number;
+  order_id: number;
+  total_paided: number;
+  return_cash: number;
+}
+
+export interface CreateStockOutletPayload {
+  id_stuff: number;
+  id_out: number;
+  id_outlet: number;
+  name: string;
+  type: string;
+  quantity: number;
+  unit: string;
+  price: number;
+}
+
 const CreateOutcome = () => {
   const dateNow = new Date().toLocaleDateString("id-ID", {
     year: "numeric",
@@ -118,14 +136,16 @@ const CreateOutcome = () => {
       listIdFinal.push(idFinal + i);
     }
 
-    const data = listSelectedOrder.map((item, index) => {
-      return {
-        out_id: listIdFinal[index],
-        order_id: item.orders.id,
-        total_paided: item.totalPay,
-        return_cash: item.returnMoney,
-      };
-    });
+    const data: CreateOutcomePayload[] = listSelectedOrder.map(
+      (item, index) => {
+        return {
+          out_id: listIdFinal[index],
+          order_id: item.orders.id,
+          total_paided: item.totalPay,
+          return_cash: item.returnMoney,
+        };
+      }
+    );
 
     axios
       .post(`${getBaseUrl()}/stuff/out/multiple`, data)
@@ -136,14 +156,14 @@ const CreateOutcome = () => {
           title: "Success",
           text: "Data berhasil disimpan",
         });
-        increaseDashboardOutlet();
+        increaseDashboardOutlet(data);
       })
       .catch((err) => {
         console.log(err);
       });
   };
 
-  const increaseDashboardOutlet = () => {
+  const increaseDashboardOutlet = (data: CreateOutcomePayload[]) => {
     // const payload = {
     //   orders: listSelectedOrder,
     // };
@@ -163,8 +183,24 @@ const CreateOutcome = () => {
     //     console.log(err);
     //   });
 
+    const prePayload: CreateStockOutletPayload[] = listSelectedOrder.map(
+      (item, index) => {
+        return {
+          id_stuff: item.orders.stock_id,
+          id_out: data[index].out_id,
+          id_outlet: parseInt(item.orders.outlet.id),
+          name: item.orders.stock.name,
+          type: item.orders.stock.type,
+          quantity: item.orders.total_order,
+          unit: item.orders.stock.unit,
+          price: item.orders.stock.price,
+        };
+      }
+    );
+
     const payload = {
-      orders: listSelectedOrder,
+      // orders: listSelectedOrder,
+      orders: prePayload,
     };
 
     axios
@@ -179,7 +215,7 @@ const CreateOutcome = () => {
           title: "Success",
           text: "Data berhasil disimpan",
         });
-        window.location.href = "/out";
+        // window.location.href = "/out";
       })
       .catch((err) => {
         console.log(err);
