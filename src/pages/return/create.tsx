@@ -161,7 +161,7 @@ const CreateReturn = () => {
   useEffect(() => {
     getUserProfile();
     getStocks();
-  }, [getUserProfile]);
+  }, []);
 
   return (
     <>
