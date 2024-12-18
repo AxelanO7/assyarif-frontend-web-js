@@ -34,7 +34,7 @@ const Sidebar = () => {
 
   return (
     <>
-      <div className="h-screen fixed top-16 left-0 z-10 select-none bg-gray-800 text-white min-w">
+      <div className="h-screen fixed top-16 left-0 z-10 select-none bg-gray-800 text-white">
         <p
           className={`${
             sidebarOpen ? "text-2xl py-4" : "text-xl py-3"
@@ -115,7 +115,12 @@ const Sidebar = () => {
             {/* laporan */}
             {sidebarOpen ? (
               <Collapsible>
-                <CollapsibleTrigger className="hover:bg-gray-700 cursor-pointer transition-all duration-300 ease-in-out border-b border-gray-700 w-[232px]">
+                <CollapsibleTrigger
+                  // className="hover:bg-gray-700 cursor-pointer transition-all duration-300 ease-in-out border-b border-gray-700 w-[232px]"
+                  className={`
+                    ${sidebarOpen ? "w-[232px]" : "w-max"}
+                    hover:bg-gray-700 cursor-pointer transition-all duration-300 ease-in-out border-b border-gray-700`}
+                >
                   <div
                     className={`${
                       sidebarOpen ? "mx-8 h-16" : "mx-4 h-12"
@@ -166,7 +171,10 @@ const Sidebar = () => {
           </div>
         )}
         {role === "outlet" && (
-          <div className="min-w-[232px]">
+          <div
+            // className="min-w-[232px]"
+            className={`${sidebarOpen ? "w-[232px]" : "w-max"} `}
+          >
             <div className="hover:bg-gray-700 cursor-pointer transition-all duration-300 ease-in-out border-b border-gray-700">
               <div
                 className={`${

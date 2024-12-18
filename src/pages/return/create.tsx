@@ -21,7 +21,6 @@ import {
   CommandGroup,
   CommandItem,
 } from "@sc/components/ui/command";
-import { Input } from "@/shadcn/components/ui/input";
 import Swal from "sweetalert2";
 
 const CreateReturn = () => {
@@ -46,7 +45,7 @@ const CreateReturn = () => {
     "Lainnya",
   ];
   const [selectedReason, setSelectedReason] = useState("");
-  const [proof, setProof] = useState<File>();
+  const [proof] = useState<File>();
 
   const submit = () => {
     const payload = {
@@ -162,7 +161,7 @@ const CreateReturn = () => {
   useEffect(() => {
     getUserProfile();
     getStocks();
-  }, []);
+  }, [getUserProfile]);
 
   return (
     <>
