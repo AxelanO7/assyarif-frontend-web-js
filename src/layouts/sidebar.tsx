@@ -34,7 +34,7 @@ const Sidebar = () => {
 
   return (
     <>
-      <div className="h-screen fixed top-16 left-0 z-10 select-none bg-gray-800 text-white overflow-y-auto">
+      <div className="h-screen fixed top-16 left-0 z-10 select-none bg-gray-800 text-white overflow-y-auto scrollbar-hide">
         <p
           className={`${
             sidebarOpen ? "text-2xl py-4" : "text-xl py-3"
