@@ -34,7 +34,7 @@ const Sidebar = () => {
 
   return (
     <>
-      <div className="h-screen fixed top-16 left-0 z-10 select-none bg-gray-800 text-white">
+      <div className="h-screen fixed top-16 left-0 z-10 select-none bg-gray-800 text-white overflow-y-auto">
         <p
           className={`${
             sidebarOpen ? "text-2xl py-4" : "text-xl py-3"
@@ -43,7 +43,7 @@ const Sidebar = () => {
         >
           {sidebarOpen ? "Main Menu" : "A"}
         </p>
-        <div className="hover:bg-gray-700 cursor-pointer transition-all duration-300 ease-in-out border-b border-gray-700">
+        <div className="hover:bg-gray-700 cursor-pointer transition-all duration-300 ease-in-out border-b border-gray-700 overflow-y-auto">
           <div
             className={`${
               sidebarOpen ? "mx-8 h-16" : "mx-4 h-12"
