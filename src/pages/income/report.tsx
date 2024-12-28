@@ -170,6 +170,9 @@ const ReportIncome = () => {
                     ID
                   </TableHead>
                   <TableHead className="border-2 border-gray-300 p-2 text-black text-center">
+                    Tanggal
+                  </TableHead>
+                  <TableHead className="border-2 border-gray-300 p-2 text-black text-center">
                     Nama
                   </TableHead>
                   <TableHead className="border-2 border-gray-300 p-2 text-black text-center">
@@ -204,6 +207,16 @@ const ReportIncome = () => {
                     <TableRow key={stock.id}>
                       <TableCell className="border-2 border-gray-300 p-2 text-center">
                         {stock.id_stuff}
+                      </TableCell>
+                      <TableCell className="border-2 border-gray-300 p-2 text-center">
+                        {new Date(
+                          stock.created_at?.toString() || new Date()
+                        ).toLocaleDateString("id-ID", {
+                          weekday: "long",
+                          year: "numeric",
+                          month: "long",
+                          day: "numeric",
+                        })}
                       </TableCell>
                       <TableCell className="border-2 border-gray-300 p-2 text-center">
                         {stock.name}
