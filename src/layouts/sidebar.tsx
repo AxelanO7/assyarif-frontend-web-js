@@ -161,10 +161,11 @@ const Sidebar = () => {
                   <div className="hover:bg-gray-700 cursor-pointer transition-all duration-300 ease-in-out border-b border-gray-700 px-16 py-4">
                     <p>Order</p>
                   </div>
+                  <div className="h-20" />
                 </CollapsibleContent>
               </Collapsible>
             ) : (
-              <div className="w-full flex justify-center">
+              <div className="w-full flex justify-center py-4 hover:bg-gray-700 cursor-pointer transition-all duration-300 ease-in-out border-b border-gray-700">
                 <DocumentChartBarIcon className="h-6 w-6" />
               </div>
             )}
