@@ -46,6 +46,7 @@ const CreateReturn = () => {
   ];
   const [selectedReason, setSelectedReason] = useState("");
   const [proof] = useState<File>();
+  const [idReturn, setIdReturn] = useState("");
 
   const submit = () => {
     const payload = {
@@ -99,6 +100,16 @@ const CreateReturn = () => {
       });
   };
 
+  const getReturnByID = (dataRes: StuffProps[]) => {
+    let id = 0;
+    dataRes.forEach((data) => {
+      if (data.id > id) {
+        id = data.id;
+      }
+    });
+    setIdReturn(String(id + 1));
+  };
+
   const getOutletByIDUser = ({ id }: { id: string }) => {
     axios
       .get(`${getBaseUrl()}/outlet/private/user/${id}`)
@@ -132,10 +143,11 @@ const CreateReturn = () => {
   const getStocks = () => {
     axios
       .get(`${getBaseUrl()}/stock_outlet/private/stuff`)
-      .then((res) => {
+      .then(async (res) => {
         console.log(res.data);
         const dataRes: StuffProps[] = res.data.data;
         setStocks(dataRes);
+        getReturnByID(dataRes);
       })
       .catch((err) => {
         console.error(err);
@@ -200,6 +212,15 @@ const CreateReturn = () => {
                   onChange={(e) =>
                     handleChangeReturnTotal(parseInt(e.target.value))
                   }
+                />
+              </div>
+              <div>
+                <label>ID Return</label>
+                <input
+                  className="p-2 border-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 w-full"
+                  type="number"
+                  value={idReturn}
+                  readOnly
                 />
               </div>
             </div>
