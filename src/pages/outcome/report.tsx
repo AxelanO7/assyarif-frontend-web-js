@@ -164,12 +164,12 @@ const ReportOutcome = () => {
             </h3>
             <div className="flex justify-between mt-4">
               <div className="flex space-x-4 text-base font-semibold text-white">
-                <button
+                {/* <button
                   className="bg-c-dark-blue rounded-md px-3"
                   onClick={addOut}
                 >
                   Tambah Barang
-                </button>
+                </button> */}
               </div>
               <div className="flex items-center">
                 <input
