@@ -140,12 +140,12 @@ const ReportIncome = () => {
             </h3>
             <div className="flex justify-between mt-4">
               <div className="flex space-x-4 text-base font-semibold text-white">
-                <button
+                {/* <button
                   className="bg-c-dark-blue rounded-md px-3"
                   onClick={addIn}
                 >
                   Tambah Barang
-                </button>
+                </button> */}
                 {/* <button className="bg-c-yellow rounded-md px-3">
                   Cetak Laporan
                 </button> */}
@@ -215,7 +215,7 @@ const ReportIncome = () => {
                         {stock.unit}
                       </TableCell>
                       <TableCell className="border-2 border-gray-300 p-2 text-center">
-                        <Input type="number" defaultValue={0} />
+                        {stock.quantity}
                       </TableCell>
                       <TableCell className="border-2 border-gray-300 p-2 text-center">
                         {stock.price.toLocaleString("id-ID", {
@@ -229,7 +229,10 @@ const ReportIncome = () => {
                             className="w-5 h-5 cursor-pointer text-black"
                             onClick={() => editIn(stock.id)}
                           /> */}
-                          <Button onClick={() => handleTapDetail(stock.id)}>
+                          <Button
+                            onClick={() => handleTapDetail(stock.id)}
+                            className="bg-c-dark-blue rounded-md px-3 text-white"
+                          >
                             Detail
                           </Button>
                         </div>
