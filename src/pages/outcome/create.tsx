@@ -4,7 +4,7 @@ import axios from "axios";
 import { useState, useEffect } from "react";
 import Swal from "sweetalert2";
 import { getBaseUrl } from "../../helpers/api";
-import { OrderProps } from "@/types/stuff";
+import { OrderProps, StuffProps } from "@/types/stuff";
 import {
   TableHeader,
   TableRow,
@@ -157,6 +157,21 @@ const CreateOutcome = () => {
           text: "Data berhasil disimpan",
         });
         increaseDashboardOutlet(data);
+        const payloadStock: StuffProps[] = listSelectedOrder.map((item) => {
+          return {
+            id: item.orders.stock.id,
+            id_stuff: item.orders.stock.id_stuff,
+            name: item.orders.stock.name,
+            type: item.orders.stock.type,
+            quantity: item.orders.stock.quantity,
+            unit: item.orders.stock.unit,
+            price: item.orders.stock.price,
+            created_at: item.orders.stock.created_at,
+            updated_at: item.orders.stock.updated_at,
+            deleted_at: item.orders.stock.deleted_at,
+          };
+        });
+        decreaseDashboard(payloadStock);
       })
       .catch((err) => {
         console.log(err);
@@ -220,6 +235,29 @@ const CreateOutcome = () => {
       .catch((err) => {
         console.log(err);
       });
+  };
+
+  const decreaseDashboard = (data: StuffProps[]) => {
+    try {
+      axios
+        .put(
+          `${getBaseUrl()}/stock/private/stuff/decrease-dashboard/multiple`,
+          data
+        )
+        .then((res) => {
+          console.log(res);
+          Swal.fire({
+            icon: "success",
+            title: "Success",
+            text: "Data berhasil disimpan",
+          });
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   // const handleSumReturnMoney = () => {
