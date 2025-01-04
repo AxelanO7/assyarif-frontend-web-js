@@ -15,6 +15,8 @@ import {
   TableRow,
 } from "@/shadcn/components/ui/table";
 import { Input } from "@/shadcn/components/ui/input";
+import { Button } from "@nextui-org/button";
+import { resourceUsage } from "process";
 
 const Income = () => {
   const [stocks, setStocks] = useState<StuffProps[]>([]);
@@ -52,6 +54,98 @@ const Income = () => {
 
   const editIn = (id: number) => {
     window.location.href = `/in/${id}`;
+  };
+
+  const increaseDashboard = () => {
+    try {
+      console.log("filteredStocks", filteredStocks);
+      console.log("stocks", stocks);
+      const payload = filteredStocks.map((item) => {
+        const stock = stocks.find((stock) => stock.id === item.id);
+        if (stock?.quantity !== item.quantity) {
+          return {
+            id: item.id,
+            id_stuff: item.id_stuff,
+            name: item.name,
+            type: item.type,
+            quantity: item.quantity,
+            unit: item.unit,
+            price: item.price,
+            id_out: item.id_out,
+            description: item.description,
+            created_at: item.created_at,
+            updated_at: item.updated_at,
+            deleted_at: item.deleted_at,
+          };
+        }
+      });
+      payload.forEach((item) => {
+        if (item === undefined) {
+          const index = payload.indexOf(item);
+          payload.splice(index, 1);
+        }
+      });
+      console.log("payload", payload);
+      // const payload = filteredStocks.map((item) => {
+      // stocks.forEach((stock) => {
+      //   if (stock.quantity !== item.quantity) {
+      //     console.log("stock", stock.quantity + " item", item.quantity);
+      //     return {
+      //       id: item.id,
+      //       id_stuff: item.id_stuff,
+      //       name: item.name,
+      //       type: item.type,
+      //       quantity: item.quantity,
+      //       unit: item.unit,
+      //       price: item.price,
+      //       id_out: item.id_out,
+      //       description: item.description,
+      //       created_at: item.created_at,
+      //       updated_at: item.updated_at,
+      //       deleted_at: item.deleted_at,
+      //     };
+      //   }
+      // });
+      //   stocks.map((stock) => {
+      //     if (stock.quantity !== item.quantity) {
+      //       console.log("stock", stock.quantity + " item", item.quantity);
+      //       return {
+      //         id: item.id,
+      //         id_stuff: item.id_stuff,
+      //         name: item.name,
+      //         type: item.type,
+      //         quantity: item.quantity,
+      //         unit: item.unit,
+      //         price: item.price,
+      //         id_out: item.id_out,
+      //         description: item.description,
+      //         created_at: item.created_at,
+      //         updated_at: item.updated_at,
+      //         deleted_at: item.deleted_at,
+      //       };
+      //     }
+      //   });
+      // });
+      // console.log(payload);
+      axios
+        .put(
+          `${getBaseUrl()}/stock/private/stuff/increase-dashboard/multiple`,
+          payload
+        )
+        .then((res) => {
+          console.log(res);
+          Swal.fire({
+            icon: "success",
+            title: "Success",
+            text: "Data berhasil disimpan",
+          });
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   const handleTapDetail = async (id: number) => {
@@ -187,9 +281,9 @@ const Income = () => {
                   <TableHead className="border-2 border-gray-300 p-2 text-black text-center">
                     Total
                   </TableHead>
-                  <TableHead className="border-2 border-gray-300 p-2 text-black text-center w-24">
+                  {/* <TableHead className="border-2 border-gray-300 p-2 text-black text-center w-24">
                     Aksi
-                  </TableHead>
+                  </TableHead> */}
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -229,7 +323,23 @@ const Income = () => {
                         {stock.unit}
                       </TableCell>
                       <TableCell className="border-2 border-gray-300 p-2 text-center">
-                        <Input type="number" defaultValue={0} />
+                        <Input
+                          type="number"
+                          defaultValue={0}
+                          onChange={(e) => {
+                            setFilteredStocks(
+                              filteredStocks.map((item) => {
+                                if (item.id === stock.id) {
+                                  return {
+                                    ...item,
+                                    quantity: parseInt(e.target.value),
+                                  };
+                                }
+                                return item;
+                              })
+                            );
+                          }}
+                        />
                       </TableCell>
                       <TableCell className="border-2 border-gray-300 p-2 text-center">
                         {stock.price.toLocaleString("id-ID", {
@@ -237,19 +347,24 @@ const Income = () => {
                           currency: "IDR",
                         })}
                       </TableCell>
-                      <TableCell className="border-2 border-gray-300 space-x-2 text-white font-semibold">
+                      {/* <TableCell className="border-2 border-gray-300 space-x-2 text-white font-semibold">
                         <div className="w-full flex justify-center">
                           <PencilIcon
                             className="w-5 h-5 cursor-pointer text-black"
                             onClick={() => editIn(stock.id)}
                           />
                         </div>
-                      </TableCell>
+                      </TableCell> */}
                     </TableRow>
                   ))
                 )}
               </TableBody>
             </Table>
+            <div className="flex justify-end mt-4">
+              <Button color="primary" onClick={() => increaseDashboard()}>
+                Simpan
+              </Button>
+            </div>
           </div>
         </div>
       </BaseLayout>
