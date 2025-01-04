@@ -24,7 +24,7 @@ const CreateOrder = () => {
     day: "numeric",
   });
 
-  const [, setOutlet] = useState<OutletProps>();
+  const [outlet, setOutlet] = useState<OutletProps>();
   const [, setUser] = useState<UserProps>();
   const [stocks, setStocks] = useState<StuffProps[]>([]);
   const [finalStocks, setFinalStocks] = useState<StuffProps[]>([]);
@@ -209,15 +209,19 @@ const CreateOrder = () => {
     // });
 
     // adjust final stock from listSelectedStock only quantity
-    const payload = listSelectedStock.map((item1) => {
-      finalStocks.map((item2) => {
-        if (item1.id === item2.id) {
+    const payload = listSelectedStock.map((item) => {
+      finalStocks.map((stock) => {
+        if (stock.id === item.id) {
           return {
-            ...item1,
-            quantity: item1.quantity,
+            outlet_id: outlet?.id,
+            stock_id: item.id,
+            date_order: Date.now(),
+            total_paid: item.price * item.quantity,
+            total_order: stock.quantity,
+            status: 0,
           };
         }
-        return item2;
+        return stock;
       });
     });
 
