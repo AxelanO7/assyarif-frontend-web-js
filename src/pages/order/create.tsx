@@ -24,7 +24,7 @@ const CreateOrder = () => {
     day: "numeric",
   });
 
-  const [outlet, setOutlet] = useState<OutletProps>();
+  const [, setOutlet] = useState<OutletProps>();
   const [, setUser] = useState<UserProps>();
   const [stocks, setStocks] = useState<StuffProps[]>([]);
   const [finalStocks, setFinalStocks] = useState<StuffProps[]>([]);
@@ -183,16 +183,36 @@ const CreateOrder = () => {
     //     });
     //   });
 
-    const payload = listSelectedStock.map((item) => {
-      return {
-        outlet_id: outlet?.id,
-        stock_id: item.id,
-        date_order: Date.now(),
-        total_paid: item.price * item.quantity,
-        total_order: item.quantity,
-        status: 0,
-      };
+    // const payload = listSelectedStock.map((item) => {
+    //   return {
+    //     outlet_id: outlet?.id,
+    //     stock_id: item.id,
+    //     date_order: Date.now(),
+    //     total_paid: item.price * item.quantity,
+    //     total_order: item.quantity,
+    //     status: 0,
+    //   };
+    // });
+
+    // const payload = finalStocks.map((item) => {
+    //   listSelectedStock.includes(item) &&
+    //     console.log("item", item) &&
+    //     console.log("listSelectedStock", listSelectedStock);
+    //   return {
+    //     outlet_id: outlet?.id,
+    //     stock_id: item.id,
+    //     date_order: Date.now(),
+    //     total_paid: item.price * item.quantity,
+    //     total_order: item.quantity,
+    //     status: 0,
+    //   };
+    // });
+
+    // adjust final stock from listSelectedStock
+    const payload = listSelectedStock.map((item1) => {
+      return finalStocks.find((item2) => item1.id === item2.id);
     });
+
     axios
       .post(`${getBaseUrl()}/order/stuff/multiple`, payload)
       .then((res) => {
