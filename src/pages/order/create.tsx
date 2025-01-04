@@ -194,6 +194,22 @@ const CreateOrder = () => {
     //   };
     // });
 
+    const payload: any[] = [];
+    listSelectedStock.forEach((item) => {
+      finalStocks.forEach((stock) => {
+        if (stock.id === item.id) {
+          payload.push({
+            outlet_id: outlet?.id,
+            stock_id: item.id,
+            date_order: Date.now(),
+            total_paid: item.price * item.quantity,
+            total_order: stock.quantity,
+            status: 0,
+          });
+        }
+      });
+    });
+
     // const payload = finalStocks.map((item) => {
     //   listSelectedStock.includes(item) &&
     //     console.log("item", item) &&
@@ -209,21 +225,21 @@ const CreateOrder = () => {
     // });
 
     // adjust final stock from listSelectedStock only quantity
-    const payload = listSelectedStock.map((item) => {
-      finalStocks.map((stock) => {
-        if (stock.id === item.id) {
-          return {
-            outlet_id: outlet?.id,
-            stock_id: item.id,
-            date_order: Date.now(),
-            total_paid: item.price * item.quantity,
-            total_order: stock.quantity,
-            status: 0,
-          };
-        }
-        return stock;
-      });
-    });
+    // const payload = listSelectedStock.map((item) => {
+    //   finalStocks.map((stock) => {
+    //     if (stock.id === item.id) {
+    //       return {
+    //         outlet_id: outlet?.id,
+    //         stock_id: item.id,
+    //         date_order: Date.now(),
+    //         total_paid: item.price * item.quantity,
+    //         total_order: stock.quantity,
+    //         status: 0,
+    //       };
+    //     }
+    //     return stock;
+    //   });
+    // });
 
     axios
       .post(`${getBaseUrl()}/order/stuff/multiple`, payload)
@@ -234,7 +250,7 @@ const CreateOrder = () => {
           title: "Berhasil",
           text: "Pesanan berhasil disimpan",
         }).then(() => {
-          window.location.href = "/dashboard";
+          // window.location.href = "/dashboard";
         });
       })
       .catch((err) => {
