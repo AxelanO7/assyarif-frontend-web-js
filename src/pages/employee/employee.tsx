@@ -68,6 +68,7 @@ const Employee = () => {
       .then((res) => {
         console.log(res.data);
         alert("Berhasil menghapus data");
+        getEmployees();
       })
       .catch((err) => {
         console.error(err);
