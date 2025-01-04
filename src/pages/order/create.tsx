@@ -213,7 +213,7 @@ const CreateOrder = () => {
       finalStocks.map((item2) => {
         if (item1.id === item2.id) {
           return {
-            ...item2,
+            ...item1,
             quantity: item1.quantity,
           };
         }
