@@ -158,9 +158,9 @@ const Sidebar = () => {
                   >
                     <p>Stok</p>
                   </div>
-                  <div className="hover:bg-gray-700 cursor-pointer transition-all duration-300 ease-in-out border-b border-gray-700 px-16 py-4">
+                  {/* <div className="hover:bg-gray-700 cursor-pointer transition-all duration-300 ease-in-out border-b border-gray-700 px-16 py-4">
                     <p>Order</p>
-                  </div>
+                  </div> */}
                   <div className="h-20" />
                 </CollapsibleContent>
               </Collapsible>
