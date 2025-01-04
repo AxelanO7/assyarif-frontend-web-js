@@ -40,7 +40,7 @@ const CreateEmployee = () => {
       name,
       phone,
       address,
-      id_user: 4,
+      id_user: 1,
     };
 
     axios
@@ -77,14 +77,14 @@ const CreateEmployee = () => {
               <h6 className="font-semibold text-lg py-1">{dateNow}</h6>
             </div>
             <div className="flex space-x-4 mt-4">
-              <div>
+              {/* <div>
                 <label>ID User</label>
                 <input
                   className="p-2 border-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 w-full bg-gray-100"
                   value={userLastNumber}
                   disabled
                 />
-              </div>
+              </div> */}
               <div>
                 <label>Nama Pegawai</label>
                 <input
