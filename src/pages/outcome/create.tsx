@@ -163,7 +163,7 @@ const CreateOutcome = () => {
             id_stuff: item.orders.stock.id_stuff,
             name: item.orders.stock.name,
             type: item.orders.stock.type,
-            quantity: item.orders.stock.quantity,
+            quantity: item.orders.total_order,
             unit: item.orders.stock.unit,
             price: item.orders.stock.price,
             created_at: item.orders.stock.created_at,
