@@ -208,9 +208,17 @@ const CreateOrder = () => {
     //   };
     // });
 
-    // adjust final stock from listSelectedStock
+    // adjust final stock from listSelectedStock only quantity
     const payload = listSelectedStock.map((item1) => {
-      return finalStocks.find((item2) => item1.id === item2.id);
+      finalStocks.map((item2) => {
+        if (item1.id === item2.id) {
+          return {
+            ...item2,
+            quantity: item1.quantity,
+          };
+        }
+        return item2;
+      });
     });
 
     axios
