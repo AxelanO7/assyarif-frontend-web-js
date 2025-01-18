@@ -202,7 +202,7 @@ const CreateOrder = () => {
             outlet_id: outlet?.id,
             stock_id: item.id,
             date_order: Date.now(),
-            total_paid: item.price * item.quantity,
+            total_paid: stock.price * stock.quantity,
             total_order: stock.quantity,
             status: 0,
           });
@@ -350,6 +350,7 @@ const CreateOrder = () => {
                             }
                             return item;
                           });
+                          console.log("newStocks", newStocks);
                           setFinalStocks(newStocks);
                         }}
                         disabled={
