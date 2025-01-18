@@ -172,6 +172,8 @@ const CreateOutcome = () => {
           };
         });
         decreaseDashboard(payloadStock);
+        handleDeleteOrders();
+        getOrders();
       })
       .catch((err) => {
         console.log(err);
@@ -274,6 +276,22 @@ const CreateOutcome = () => {
   //   }
   //   setReturnMoney(result);
   // };
+
+  const handleDeleteOrders = async () => {
+    const newFinalOrders = [];
+    for (let i = 0; i < finalOrders.length; i++) {
+      if (listSelectedOrder.includes(finalOrders[i])) {
+        newFinalOrders.push(finalOrders[i].orders.id);
+      }
+    }
+    try {
+      axios.delete(`${getBaseUrl()}/order/stuff/multiple/delete`, {
+        data: newFinalOrders,
+      });
+    } catch (error) {
+      console.log("error delete orders", error);
+    }
+  };
 
   useEffect(() => {
     getOutLast();
