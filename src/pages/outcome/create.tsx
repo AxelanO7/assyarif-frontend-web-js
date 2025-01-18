@@ -336,7 +336,15 @@ const CreateOutcome = () => {
                   </TableHead>
                 </TableRow>
               </TableHeader>
-              <TableBody>
+              <TableBody
+                onEmptied={() => (
+                  <TableRow>
+                    <TableCell colSpan={8} className="text-center">
+                      Tidak ada data
+                    </TableCell>
+                  </TableRow>
+                )}
+              >
                 {finalOrders?.map((order) => (
                   <TableRow key={order.orders.id}>
                     <TableCell className="border-2 border-gray-300 p-2 text-center">
