@@ -167,7 +167,7 @@ const CreateOutcome = () => {
           };
         });
         decreaseDashboard(payloadStock);
-        handleDeleteOrders();
+        // handleDeleteOrders();
         await new Promise((resolve) => setTimeout(resolve, 2000));
         window.location.reload();
       })
