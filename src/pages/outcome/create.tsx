@@ -149,13 +149,8 @@ const CreateOutcome = () => {
 
     axios
       .post(`${getBaseUrl()}/stuff/out/multiple`, data)
-      .then((res) => {
+      .then(async (res) => {
         console.log(res);
-        Swal.fire({
-          icon: "success",
-          title: "Success",
-          text: "Data berhasil disimpan",
-        });
         increaseDashboardOutlet(data);
         const payloadStock: StuffProps[] = listSelectedOrder.map((item) => {
           return {
@@ -173,7 +168,8 @@ const CreateOutcome = () => {
         });
         decreaseDashboard(payloadStock);
         handleDeleteOrders();
-        getOrders();
+        await new Promise((resolve) => setTimeout(resolve, 2000));
+        window.location.reload();
       })
       .catch((err) => {
         console.log(err);
@@ -227,11 +223,6 @@ const CreateOutcome = () => {
       )
       .then((res) => {
         console.log(res);
-        Swal.fire({
-          icon: "success",
-          title: "Success",
-          text: "Data berhasil disimpan",
-        });
         // window.location.href = "/out";
       })
       .catch((err) => {
