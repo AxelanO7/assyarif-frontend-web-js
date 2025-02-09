@@ -65,7 +65,7 @@ const CreateReturn = () => {
           title: "Success",
           text: "Data berhasil disimpan",
         });
-        // window.location.href = "/";
+        window.location.href = "/";
         decreaseDashboardOutlet();
       })
       .catch((err) => {
