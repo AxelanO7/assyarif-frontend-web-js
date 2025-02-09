@@ -110,7 +110,7 @@ const CreateReturn = () => {
     setIdReturn(String(id + 1));
   };
 
-  const getOutletByIDUser = ({ id }: { id: string }) => {
+  const getOutletByIdUser = ({ id }: { id: string }) => {
     axios
       .get(`${getBaseUrl()}/outlet/private/user/${id}`)
       .then((res) => {
@@ -133,7 +133,7 @@ const CreateReturn = () => {
       .then((res) => {
         console.log(res.data);
         const dataRes: UserProps = res.data.data;
-        getOutletByIDUser({ id: dataRes.id });
+        getOutletByIdUser({ id: dataRes.id });
       })
       .catch((err) => {
         console.error(err);
