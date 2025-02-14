@@ -111,7 +111,7 @@ const StockReport = () => {
         <DialogContent className="max-w-[90%]">
           <DialogHeader>
             <DialogTitle>Detail Stok</DialogTitle>
-            <div>
+            <div className="overflow-y-scroll max-h-[600px]">
               <div id="printTable">
                 <Table className="w-full mt-4">
                   <TableHeader>
@@ -231,7 +231,7 @@ const StockReport = () => {
                   <TableRow>
                     <TableCell
                       colSpan={6}
-                      className="border-2 border-gray-300 p-2"
+                      className="border-2 border-gray-300 p-2 text-center"
                     >
                       Data tidak ditemukan
                     </TableCell>

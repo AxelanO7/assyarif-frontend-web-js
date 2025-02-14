@@ -91,6 +91,7 @@ const ReportOutcome = () => {
 
   const handleTapDetail = (outs: Out[]) => {
     return (
+      // make it scrollable
       <Dialog>
         <DialogTrigger asChild>
           <Button className="bg-c-dark-blue rounded-md px-3 text-white">
@@ -100,7 +101,7 @@ const ReportOutcome = () => {
         <DialogContent className="max-w-[90%]">
           <DialogHeader>
             <DialogTitle>Detail Barang Keluar</DialogTitle>
-            <div>
+            <div className="overflow-y-scroll max-h-[600px]">
               <div id="printTable">
                 <Table className="w-full mt-4">
                   <TableHeader>

@@ -59,7 +59,7 @@ const ReturnReport = () => {
         <DialogContent className="max-w-[90%]">
           <DialogHeader>
             <DialogTitle>Detail Retur</DialogTitle>
-            <div>
+            <div className="overflow-y-scroll max-h-[600px]">
               <div id="printTable">
                 <Table className="w-full mt-4">
                   <TableHeader>
