@@ -3,7 +3,7 @@ import BaseLayout from "../../layouts/base";
 import axios from "axios";
 import { useState, useEffect } from "react";
 import { getBaseUrl } from "../../helpers/api";
-import { StuffProps } from "@/types/stuff";
+import { Stuff } from "@/types/stuff";
 import { OutletProps, UserProps } from "@/types/user";
 import { Button } from "@/shadcn/components/ui/button";
 import {
@@ -31,8 +31,8 @@ const CreateReturn = () => {
   });
 
   const [outlet, setOutlet] = useState<OutletProps>();
-  const [stocks, setStocks] = useState<StuffProps[]>([]);
-  const [selectedStock, setSelectedStock] = useState<StuffProps>();
+  const [stocks, setStocks] = useState<Stuff[]>([]);
+  const [selectedStock, setSelectedStock] = useState<Stuff>();
   const [openName, setOpenName] = useState(false);
   const [nameStuff, setNameStuff] = useState("");
   const [returnTotal, setReturnTotal] = useState(0);
@@ -100,7 +100,7 @@ const CreateReturn = () => {
       });
   };
 
-  const getReturnByID = (dataRes: StuffProps[]) => {
+  const getReturnByID = (dataRes: Stuff[]) => {
     let id = 0;
     dataRes.forEach((data) => {
       if (data.id > id) {
@@ -145,7 +145,7 @@ const CreateReturn = () => {
       .get(`${getBaseUrl()}/stock_outlet/private/stuff`)
       .then(async (res) => {
         console.log(res.data);
-        const dataRes: StuffProps[] = res.data.data;
+        const dataRes: Stuff[] = res.data.data;
         setStocks(dataRes);
         getReturnByID(dataRes);
       })
@@ -154,7 +154,7 @@ const CreateReturn = () => {
       });
   };
 
-  const handleSelectStuff = (stock: StuffProps) => {
+  const handleSelectStuff = (stock: Stuff) => {
     setSelectedStock(stock);
     console.log("set selected stock", stock);
   };
