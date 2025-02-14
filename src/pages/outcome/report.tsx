@@ -20,6 +20,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/shadcn/components/ui/dialog";
+import { getFormatDate } from "@/helpers/date";
 
 const ReportOutcome = () => {
   const [outs, setOuts] = useState<PeriodOut[]>([]);
@@ -32,7 +33,7 @@ const ReportOutcome = () => {
 
   const getOuts = () => {
     axios
-      .get(`${baseUrl()}/stuff/period`)
+      .get(`${baseUrl()}/stuff/period/out`)
       .then((res) => {
         console.log(res.data);
         const data: PeriodOut[] = res.data.data;
@@ -144,29 +145,6 @@ const ReportOutcome = () => {
         </DialogContent>
       </Dialog>
     );
-  };
-
-  const listMonth = (month: string) => {
-    const months = [
-      "Januari",
-      "Februari",
-      "Maret",
-      "April",
-      "Mei",
-      "Juni",
-      "Juli",
-      "Agustus",
-      "September",
-      "Oktober",
-      "November",
-      "Desember",
-    ];
-    return months[parseInt(month) - 1];
-  };
-
-  const getFormatDate = (date: string) => {
-    const dateArr = date.split("-");
-    return `${listMonth(dateArr[0])} ${dateArr[1]}`;
   };
 
   useEffect(() => {
