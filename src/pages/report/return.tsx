@@ -2,7 +2,7 @@ import { HomeIcon } from "@heroicons/react/20/solid";
 import BaseLayout from "../../layouts/base";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { ReturProps } from "@/types/stuff";
+import { Retur } from "@/types/stuff";
 import { getBaseUrl } from "@/helpers/api";
 import { MagnifyingGlassIcon } from "@heroicons/react/20/solid";
 
@@ -12,7 +12,7 @@ const ReturnReport = () => {
       .get(`${getBaseUrl()}/return/private/stuff`)
       .then((res) => {
         console.log(res.data);
-        const data: ReturProps[] = res.data.data;
+        const data: Retur[] = res.data.data;
         setReturns(data);
         setOriginalReturns(data);
       })
@@ -21,8 +21,8 @@ const ReturnReport = () => {
       });
   };
 
-  const [returns, setReturns] = useState<ReturProps[]>();
-  const [originalReturns, setOriginalReturns] = useState<ReturProps[]>();
+  const [returns, setReturns] = useState<Retur[]>();
+  const [originalReturns, setOriginalReturns] = useState<Retur[]>();
   const [search, setSearch] = useState("");
 
   const handleTapSearch = () => {
