@@ -3,7 +3,7 @@ import BaseLayout from "../../layouts/base";
 import { getBaseUrl } from "../../helpers/api";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { StuffProps } from "../../types/stuff";
+import { Stuff } from "../../types/stuff";
 import Swal from "sweetalert2";
 import { PencilIcon } from "@heroicons/react/16/solid";
 import {
@@ -19,8 +19,8 @@ import { Button } from "@nextui-org/button";
 import { resourceUsage } from "process";
 
 const Income = () => {
-  const [stocks, setStocks] = useState<StuffProps[]>([]);
-  const [filteredStocks, setFilteredStocks] = useState<StuffProps[]>([]);
+  const [stocks, setStocks] = useState<Stuff[]>([]);
+  const [filteredStocks, setFilteredStocks] = useState<Stuff[]>([]);
   const [search, setSearch] = useState("");
 
   const baseUrl = () => {
@@ -32,7 +32,7 @@ const Income = () => {
       .get(`${baseUrl()}/stuff/in`)
       .then((res) => {
         console.log(res.data);
-        const data: StuffProps[] = res.data.data;
+        const data: Stuff[] = res.data.data;
         setStocks(data);
         setFilteredStocks(data);
       })
@@ -153,7 +153,7 @@ const Income = () => {
       .get(`${baseUrl()}/stuff/in/${id}`)
       .then((res) => {
         console.log(res.data);
-        const data: StuffProps = res.data.data;
+        const data: Stuff = res.data.data;
         Swal.fire({
           title: "Detail Barang",
           html: `
