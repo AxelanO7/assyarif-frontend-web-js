@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import BaseLayout from "../../layouts/base";
 import { getBaseUrl } from "@/helpers/api";
 import axios from "axios";
-import { OrderProps } from "@/types/stuff";
+import { Order } from "@/types/stuff";
 import clsx from "clsx";
 import { TrashIcon } from "@heroicons/react/20/solid";
 import Swal from "sweetalert2";
@@ -10,7 +10,7 @@ import Swal from "sweetalert2";
 const DetailOrderOutlet = () => {
   const detailProduct = ["Kopi", "Teh", "Susu"];
 
-  const [order, setOrder] = useState<OrderProps>();
+  const [order, setOrder] = useState<Order>();
 
   const idParam = window.location.pathname.split("/")[3];
 
@@ -19,7 +19,7 @@ const DetailOrderOutlet = () => {
       .get(`${getBaseUrl()}/order/stuff/${idParam}`)
       .then((res) => {
         console.log(res.data);
-        const dataRes: OrderProps = res.data.data;
+        const dataRes: Order = res.data.data;
         console.log(dataRes);
         setOrder(dataRes);
       })
