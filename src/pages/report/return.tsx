@@ -2,17 +2,33 @@ import { HomeIcon } from "@heroicons/react/20/solid";
 import BaseLayout from "../../layouts/base";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { Retur } from "@/types/stuff";
+import { PeriodRetur, Retur } from "@/types/stuff";
 import { getBaseUrl } from "@/helpers/api";
 import { MagnifyingGlassIcon } from "@heroicons/react/20/solid";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/shadcn/components/ui/dialog";
+import { Button } from "@nextui-org/button";
+import { Table } from "lucide-react";
+import {
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/shadcn/components/ui/table";
 
 const ReturnReport = () => {
   const getReturns = () => {
     axios
-      .get(`${getBaseUrl()}/return/private/stuff`)
+      .get(`${getBaseUrl()}/return/period`)
       .then((res) => {
         console.log(res.data);
-        const data: Retur[] = res.data.data;
+        const data: PeriodRetur[] = res.data.data;
         setReturns(data);
         setOriginalReturns(data);
       })
@@ -21,15 +37,73 @@ const ReturnReport = () => {
       });
   };
 
-  const [returns, setReturns] = useState<Retur[]>();
-  const [originalReturns, setOriginalReturns] = useState<Retur[]>();
+  const [returns, setReturns] = useState<PeriodRetur[]>();
+  const [originalReturns, setOriginalReturns] = useState<PeriodRetur[]>();
   const [search, setSearch] = useState("");
 
   const handleTapSearch = () => {
     const filtered = originalReturns?.filter((retur) => {
-      return retur.stock.name.toLowerCase().includes(search.toLowerCase());
+      return retur.date.toLowerCase().includes(search.toLowerCase());
     });
     setReturns(filtered);
+  };
+
+  const handleTapDetail = (retur: Retur[]) => {
+    return (
+      <Dialog>
+        <DialogTrigger asChild>
+          <Button className="bg-c-dark-blue rounded-md px-3 text-white">
+            Detail
+          </Button>
+        </DialogTrigger>
+        <DialogContent className="max-w-[90%]">
+          <DialogHeader>
+            <DialogTitle>Detail Retur</DialogTitle>
+            <>
+              <Table className="w-full mt-4">
+                <TableHeader>
+                  <TableRow>
+                    <TableHead className="border-2 border-gray-300 p-2 text-black text-center">
+                      No
+                    </TableHead>
+                    <TableHead className="border-2 border-gray-300 p-2 text-black text-center">
+                      Tanggal
+                    </TableHead>
+                    <TableHead className="border-2 border-gray-300 p-2 text-black text-center">
+                      Nama
+                    </TableHead>
+                    <TableHead className="border-2 border-gray-300 p-2 text-black text-center">
+                      Alasan
+                    </TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {retur?.map((retur, index) => (
+                    <TableRow key={index}>
+                      <TableCell className="border-2 border-gray-300 p-2 text-black text-center">
+                        {index + 1}
+                      </TableCell>
+                      <TableCell className="border-2 border-gray-300 p-2 text-black text-center">
+                        {retur.outlet.name}
+                      </TableCell>
+                      <TableCell className="border-2 border-gray-300 p-2 text-black text-center">
+                        {retur.stock.name}
+                      </TableCell>
+                      <TableCell className="border-2 border-gray-300 p-2 text-black text-center">
+                        {retur.total_return}
+                      </TableCell>
+                      <TableCell className="border-2 border-gray-300 p-2 text-black text-center">
+                        {retur.reason}
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </>
+          </DialogHeader>
+        </DialogContent>
+      </Dialog>
+    );
   };
 
   useEffect(() => {
@@ -64,13 +138,9 @@ const ReturnReport = () => {
             <table className="w-full mt-4">
               <thead>
                 <tr className="bg-gray-300">
-                  {/* TODO: no invoice */}
-                  <th className="py-2 border border-gray-400">No</th>
-                  <th className="py-2 border border-gray-400">Outlet</th>
-                  <th className="py-2 border border-gray-400">Barang</th>
-                  <th className="py-2 border border-gray-400">Jumlah</th>
-                  <th className="py-2 border border-gray-400">Alasan</th>
-                  {/* <th className="py-2 border border-gray-400">Bukti</th> */}
+                  <th className="py-2 border border-gray-400 w-16">No</th>
+                  <th className="py-2 border border-gray-400">Tanggal</th>
+                  <th className="py-2 border border-gray-400 w-32">Aksi</th>
                 </tr>
               </thead>
               <tbody>
@@ -85,23 +155,14 @@ const ReturnReport = () => {
                   </tr>
                 )}
                 {returns?.map((retur, index) => (
-                  <tr key={retur.id} className="text-center">
+                  <tr key={index} className="text-center">
                     <td className="py-2 border border-gray-400">{index + 1}</td>
                     <td className="py-2 border border-gray-400">
-                      {retur.outlet.name}
+                      {retur.date}
                     </td>
                     <td className="py-2 border border-gray-400">
-                      {retur.stock.name}
+                      {handleTapDetail(retur.rtrs)}
                     </td>
-                    <td className="py-2 border border-gray-400">
-                      {retur.total_return}
-                    </td>
-                    <td className="py-2 border border-gray-400">
-                      {retur.reason}
-                    </td>
-                    {/* <td className="py-2 border border-gray-400">
-                      {retur.proof}
-                    </td> */}
                   </tr>
                 ))}
               </tbody>
