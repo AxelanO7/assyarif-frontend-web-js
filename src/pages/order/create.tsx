@@ -4,7 +4,7 @@ import { getBaseUrl } from "@/helpers/api";
 import axios from "axios";
 import { OutletProps, UserProps } from "@/types/user";
 import { useEffect, useState } from "react";
-import { StuffProps } from "@/types/stuff";
+import { Stuff } from "@/types/stuff";
 import Swal from "sweetalert2";
 import {
   Table,
@@ -26,10 +26,10 @@ const CreateOrder = () => {
 
   const [outlet, setOutlet] = useState<OutletProps>();
   const [, setUser] = useState<UserProps>();
-  const [stocks, setStocks] = useState<StuffProps[]>([]);
-  const [finalStocks, setFinalStocks] = useState<StuffProps[]>([]);
+  const [stocks, setStocks] = useState<Stuff[]>([]);
+  const [finalStocks, setFinalStocks] = useState<Stuff[]>([]);
   // const [selectedStock, setSelectedStock] = useState<StuffProps>();
-  const [listSelectedStock, setListSelectedStock] = useState<StuffProps[]>([]);
+  const [listSelectedStock, setListSelectedStock] = useState<Stuff[]>([]);
 
   // const [openName, setOpenName] = useState(false);
   // const [nameStuff, setNameStuff] = useState("");
@@ -73,7 +73,7 @@ const CreateOrder = () => {
       .get(`${getBaseUrl()}/stock/private/stuff`)
       .then((res) => {
         console.log(res.data);
-        const dataRes: StuffProps[] = res.data.data;
+        const dataRes: Stuff[] = res.data.data;
         setStocks(dataRes);
         setFinalStocks(dataRes);
       })
@@ -90,7 +90,7 @@ const CreateOrder = () => {
     stock,
     value,
   }: {
-    stock: StuffProps;
+    stock: Stuff;
     value: boolean;
   }) => {
     if (value) {
