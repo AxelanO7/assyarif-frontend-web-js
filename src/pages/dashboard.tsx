@@ -7,7 +7,7 @@ import BaseLayout from "../layouts/base";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { getBaseUrl } from "@/helpers/api";
-import { StuffProps } from "@/types/stuff";
+import { Stuff } from "@/types/stuff";
 import {
   Table,
   TableBody,
@@ -18,8 +18,8 @@ import {
 } from "@/shadcn/components/ui/table";
 
 const Dashboard = () => {
-  const [stocks, setStocks] = useState<StuffProps[]>([]);
-  const [filteredStocks, setFilteredStocks] = useState<StuffProps[]>([]);
+  const [stocks, setStocks] = useState<Stuff[]>([]);
+  const [filteredStocks, setFilteredStocks] = useState<Stuff[]>([]);
   const [search, setSearch] = useState("");
   const [, setDate] = useState("");
 
@@ -33,7 +33,7 @@ const Dashboard = () => {
       )
       .then((res) => {
         console.log(res.data);
-        const data: StuffProps[] = res.data.data;
+        const data: Stuff[] = res.data.data;
         setFilteredStocks(data);
         setStocks(data);
       })
