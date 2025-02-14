@@ -63,6 +63,43 @@ const StockReport = () => {
     setFilteredStocks(filtered);
   };
 
+  const handleTapPrint = () => {
+    const printTable = document.getElementById("printTable");
+    if (printTable) {
+      const printContents = printTable.innerHTML;
+      const originalContents = document.body.innerHTML;
+      document.body.innerHTML = printContents;
+      // make empty space for image signature
+      const emptySpace = document.createElement("div");
+      emptySpace.style.height = "200px";
+      document.body.appendChild(emptySpace);
+      // add  signature
+      const divParent = document.createElement("div");
+      divParent.style.position = "absolute";
+      divParent.style.right = "10px";
+      divParent.style.bottom = "10px";
+      divParent.style.fontSize = "12px";
+
+      divParent.innerHTML = `
+        <p class="font-bold text-center">Mengetahui</p>
+        <p class="font-bold text-center">Kepala Toko</p>
+        <br>
+        <br>
+        <br>
+        <br>
+        <p class="font-bold text-center">Syarif</p>
+      `;
+
+      document.body.appendChild(divParent);
+
+      window.print();
+      document.body.innerHTML = originalContents;
+      printTable.innerHTML = printContents;
+      // close the dialog
+      window.location.reload();
+    }
+  };
+
   const handleTapDetail = (stock: Stuff[]) => {
     return (
       <Dialog>
@@ -74,61 +111,71 @@ const StockReport = () => {
         <DialogContent className="max-w-[90%]">
           <DialogHeader>
             <DialogTitle>Detail Stok</DialogTitle>
-            <>
-              <Table className="w-full mt-4">
-                <TableHeader>
-                  <TableRow>
-                    <TableHead className="border-2 border-gray-300 p-2 text-black text-center">
-                      ID Barang
-                    </TableHead>
-                    <TableHead className="border-2 border-gray-300 p-2 text-black text-center">
-                      Nama
-                    </TableHead>
-                    <TableHead className="border-2 border-gray-300 p-2 text-black text-center">
-                      Tipe
-                    </TableHead>
-                    <TableHead className="border-2 border-gray-300 p-2 text-black text-center">
-                      Kuantitas
-                    </TableHead>
-                    <TableHead className="border-2 border-gray-300 p-2 text-black text-center">
-                      unit
-                    </TableHead>
-                    <TableHead className="border-2 border-gray-300 p-2 text-black text-center">
-                      Harga
-                    </TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {stock.map((stock, index) => {
-                    return (
-                      <TableRow key={index}>
-                        <TableCell className="border-2 border-gray-300 p-2 text-center">
-                          {stock.id_stuff}
-                        </TableCell>
-                        <TableCell className="border-2 border-gray-300 p-2 text-center">
-                          {stock.name}
-                        </TableCell>
-                        <TableCell className="border-2 border-gray-300 p-2 text-center">
-                          {stock.type}
-                        </TableCell>
-                        <TableCell className="border-2 border-gray-300 p-2 text-center">
-                          {stock.quantity}
-                        </TableCell>
-                        <TableCell className="border-2 border-gray-300 p-2 text-center">
-                          {stock.unit}
-                        </TableCell>
-                        <TableCell className="border-2 border-gray-300 p-2 text-center">
-                          {stock.price.toLocaleString("id-ID", {
-                            style: "currency",
-                            currency: "IDR",
-                          })}
-                        </TableCell>
-                      </TableRow>
-                    );
-                  })}
-                </TableBody>
-              </Table>
-            </>
+            <div>
+              <div id="printTable">
+                <Table className="w-full mt-4">
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead className="border-2 border-gray-300 p-2 text-black text-center">
+                        ID Barang
+                      </TableHead>
+                      <TableHead className="border-2 border-gray-300 p-2 text-black text-center">
+                        Nama
+                      </TableHead>
+                      <TableHead className="border-2 border-gray-300 p-2 text-black text-center">
+                        Tipe
+                      </TableHead>
+                      <TableHead className="border-2 border-gray-300 p-2 text-black text-center">
+                        Kuantitas
+                      </TableHead>
+                      <TableHead className="border-2 border-gray-300 p-2 text-black text-center">
+                        unit
+                      </TableHead>
+                      <TableHead className="border-2 border-gray-300 p-2 text-black text-center">
+                        Harga
+                      </TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {stock.map((stock, index) => {
+                      return (
+                        <TableRow key={index}>
+                          <TableCell className="border-2 border-gray-300 p-2 text-center">
+                            {stock.id_stuff}
+                          </TableCell>
+                          <TableCell className="border-2 border-gray-300 p-2 text-center">
+                            {stock.name}
+                          </TableCell>
+                          <TableCell className="border-2 border-gray-300 p-2 text-center">
+                            {stock.type}
+                          </TableCell>
+                          <TableCell className="border-2 border-gray-300 p-2 text-center">
+                            {stock.quantity}
+                          </TableCell>
+                          <TableCell className="border-2 border-gray-300 p-2 text-center">
+                            {stock.unit}
+                          </TableCell>
+                          <TableCell className="border-2 border-gray-300 p-2 text-center">
+                            {stock.price.toLocaleString("id-ID", {
+                              style: "currency",
+                              currency: "IDR",
+                            })}
+                          </TableCell>
+                        </TableRow>
+                      );
+                    })}
+                  </TableBody>
+                </Table>
+              </div>
+              <div className="flex justify-end mt-4">
+                <Button
+                  className="bg-c-dark-blue rounded-md px-3 text-white"
+                  onClick={handleTapPrint}
+                >
+                  Cetak
+                </Button>
+              </div>
+            </div>
           </DialogHeader>
         </DialogContent>
       </Dialog>
