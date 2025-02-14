@@ -3,7 +3,7 @@ import BaseLayout from "../../layouts/base";
 import axios from "axios";
 import { useState, useEffect } from "react";
 import { getBaseUrl } from "../../helpers/api";
-import { OutProps } from "../../types/stuff";
+import { Out } from "../../types/stuff";
 import Swal from "sweetalert2";
 import {
   Table,
@@ -15,8 +15,8 @@ import {
 } from "@/shadcn/components/ui/table";
 
 const Outcome = () => {
-  const [outs, setOuts] = useState<OutProps[]>([]);
-  const [filteredOuts, setFilteredOuts] = useState<OutProps[]>([]);
+  const [outs, setOuts] = useState<Out[]>([]);
+  const [filteredOuts, setFilteredOuts] = useState<Out[]>([]);
   const [search, setSearch] = useState("");
 
   const baseUrl = () => {
@@ -28,7 +28,7 @@ const Outcome = () => {
       .get(`${baseUrl()}/stuff/out`)
       .then((res) => {
         console.log(res.data);
-        const data: OutProps[] = res.data.data;
+        const data: Out[] = res.data.data;
         setOuts(data);
         setFilteredOuts(data);
       })
