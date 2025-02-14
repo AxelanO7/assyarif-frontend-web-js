@@ -63,13 +63,32 @@ export interface Opname {
   deleted_at?: Date;
 }
 
+export interface PeriodOut {
+  date: string;
+  outs: Out[];
+}
+
+export interface PeriodIn {
+  date: string;
+  ins: Stuff[];
+}
+
 export interface ResOpname {
   in?: Stuff[];
   out?: Out[];
   rtr?: Retur[];
 }
-
-export interface PeriodOut {
+export interface PeriodStock {
   date: string;
-  outs: Out[];
+  stocks: Stuff[];
+}
+
+export interface PeriodRetur {
+  date: string;
+  rtrs: Retur[];
+}
+
+export interface PeriodOpname {
+  date: string;
+  opnames: Opname[];
 }
