@@ -1,6 +1,6 @@
 import { OutletProps } from "./user";
 
-export interface StuffProps {
+export interface Stuff {
   id: number;
   id_stuff: number;
   name: string;
@@ -15,11 +15,11 @@ export interface StuffProps {
   deleted_at?: Date;
 }
 
-export interface OutProps {
+export interface Out {
   id: number;
   out_id: number;
   order_id: number;
-  order: OrderProps;
+  order: Order;
   total_paided: number;
   return_cash: number;
   created_at?: Date;
@@ -27,23 +27,23 @@ export interface OutProps {
   deleted_at?: Date;
 }
 
-export interface OrderProps {
+export interface Order {
   id: number;
   outlet_id: number;
   outlet: OutletProps;
   stock_id: number;
-  stock: StuffProps;
+  stock: Stuff;
   total_paid: number;
   total_order: number;
   status: number;
 }
 
-export interface ReturProps {
+export interface Retur {
   id: number;
   outlet_id: number;
   outlet: OutletProps;
   stock_id: number;
-  stock: StuffProps;
+  stock: Stuff;
   total_return: number;
   reason: string;
   proof: string;
@@ -52,7 +52,7 @@ export interface ReturProps {
   deleted_at?: Date;
 }
 
-export interface OpnameProps {
+export interface Opname {
   id: number;
   id_opname: string;
   name: string;
@@ -64,7 +64,12 @@ export interface OpnameProps {
 }
 
 export interface ResOpname {
-  in?: StuffProps[];
-  out?: OutProps[];
-  rtr?: ReturProps[];
+  in?: Stuff[];
+  out?: Out[];
+  rtr?: Retur[];
+}
+
+export interface PeriodOut {
+  date: string;
+  outs: Out[];
 }
