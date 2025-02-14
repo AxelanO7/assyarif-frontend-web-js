@@ -5,12 +5,12 @@ import { getBaseUrl } from "@/helpers/api";
 import { UserProps } from "@/types/user";
 import axios from "axios";
 import { OutletProps } from "react-router-dom";
-import { OrderProps } from "@/types/stuff";
+import { Order } from "@/types/stuff";
 
 const Order = () => {
   const [user, setUser] = useState<UserProps>();
   const [outlet, setOutlet] = useState<OutletProps>();
-  const [order, setOrder] = useState<OrderProps[]>([]);
+  const [order, setOrder] = useState<Order[]>([]);
 
   const getOutletByIDUser = ({ id }: { id: string }) => {
     axios
@@ -49,7 +49,7 @@ const Order = () => {
       .get(`${getBaseUrl()}/order/private/outlet/${id}`)
       .then((res) => {
         console.log(res.data);
-        const dataRes: OrderProps[] = res.data.data;
+        const dataRes: Order[] = res.data.data;
         setOrder(dataRes);
       })
       .catch((err) => {
