@@ -4,7 +4,7 @@ import axios from "axios";
 import { useState, useEffect } from "react";
 import Swal from "sweetalert2";
 import { getBaseUrl } from "../../helpers/api";
-import { OrderProps, StuffProps } from "@/types/stuff";
+import { Order, Stuff } from "@/types/stuff";
 import {
   TableHeader,
   TableRow,
@@ -17,7 +17,7 @@ import { Checkbox } from "@/shadcn/components/ui/checkbox";
 import { Input } from "@/shadcn/components/ui/input";
 
 export interface CreateOutcomeProps {
-  orders: OrderProps;
+  orders: Order;
   totalPay: number;
   returnMoney: number;
 }
@@ -52,7 +52,7 @@ const CreateOutcome = () => {
   const [,] = useState(0);
   // const [returnMoney] = useState(0);
 
-  const [, setOrders] = useState<OrderProps[]>();
+  const [, setOrders] = useState<Order[]>();
   const [finalOrders, setFinalOrders] = useState<CreateOutcomeProps[]>([]);
   const [listSelectedOrder, setListSelectedOrder] = useState<
     CreateOutcomeProps[]
@@ -85,7 +85,7 @@ const CreateOutcome = () => {
       .get(`${getBaseUrl()}/order/stuff`)
       .then(async (res) => {
         console.log(res.data);
-        const resData: OrderProps[] = res.data.data;
+        const resData: Order[] = res.data.data;
         setOrders(resData);
         const finalData: CreateOutcomeProps[] = resData.map((item) => {
           return {
@@ -152,7 +152,7 @@ const CreateOutcome = () => {
       .then(async (res) => {
         console.log(res);
         increaseDashboardOutlet(data);
-        const payloadStock: StuffProps[] = listSelectedOrder.map((item) => {
+        const payloadStock: Stuff[] = listSelectedOrder.map((item) => {
           return {
             id: item.orders.stock.id,
             id_stuff: item.orders.stock.id_stuff,
@@ -230,7 +230,7 @@ const CreateOutcome = () => {
       });
   };
 
-  const decreaseDashboard = (data: StuffProps[]) => {
+  const decreaseDashboard = (data: Stuff[]) => {
     try {
       axios
         .put(
