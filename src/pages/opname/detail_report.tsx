@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import BaseLayout from "../../layouts/base";
 import { getBaseUrl } from "@/helpers/api";
 import axios from "axios";
-import { OutProps, ResOpname, ReturProps, StuffProps } from "@/types/stuff";
+import { Out, ResOpname, Retur, Stuff } from "@/types/stuff";
 import {
   Table,
   TableHeader,
@@ -16,7 +16,7 @@ const DetailReportOpname = () => {
   const startDate = window.location.href.split("/")[4];
   const endDate = window.location.href.split("/")[5];
 
-  const [stuffs, setStuffs] = useState<StuffProps[]>([]);
+  const [stuffs, setStuffs] = useState<Stuff[]>([]);
 
   const getMonth = () => {
     const startDateMonth = new Date(startDate).getMonth();
@@ -60,9 +60,9 @@ const DetailReportOpname = () => {
   };
 
   const countProduct = async (resp: ResOpname) => {
-    const inc: StuffProps[] = resp.in || [];
-    const out: OutProps[] = resp.out || [];
-    const retur: ReturProps[] = resp.rtr || [];
+    const inc: Stuff[] = resp.in || [];
+    const out: Out[] = resp.out || [];
+    const retur: Retur[] = resp.rtr || [];
 
     for (let i = 0; i < inc.length; i++) {
       let total = inc[i].quantity;
