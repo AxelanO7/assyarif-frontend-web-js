@@ -3,11 +3,11 @@ import BaseLayout from "../../layouts/base";
 import axios from "axios";
 import { useState, useEffect } from "react";
 import { getBaseUrl } from "../../helpers/api";
-import { StuffProps } from "@/types/stuff";
+import { Stuff } from "@/types/stuff";
 
 const OutcomeOutlet = () => {
-  const [stocks, setStocks] = useState<StuffProps[]>([]);
-  const [filteredStocks, setFilteredStocks] = useState<StuffProps[]>([]);
+  const [stocks, setStocks] = useState<Stuff[]>([]);
+  const [filteredStocks, setFilteredStocks] = useState<Stuff[]>([]);
   const [search, setSearch] = useState("");
 
   const getIns = () => {
@@ -15,7 +15,7 @@ const OutcomeOutlet = () => {
       .get(`${getBaseUrl()}/stuff/out`)
       .then((res) => {
         console.log(res.data);
-        const data: StuffProps[] = res.data.data;
+        const data: Stuff[] = res.data.data;
         setStocks(data);
         setFilteredStocks(data);
       })
