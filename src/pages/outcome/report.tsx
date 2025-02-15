@@ -21,6 +21,7 @@ import {
   DialogTrigger,
 } from "@/shadcn/components/ui/dialog";
 import { getFormatDate } from "@/helpers/date";
+import { EmptyDataTable } from "@/components/table";
 
 const ReportOutcome = () => {
   const [outs, setOuts] = useState<PeriodOut[]>([]);
@@ -226,12 +227,12 @@ const ReportOutcome = () => {
             </div>
             <Table className="w-full mt-4">
               <TableHeader>
-                <TableRow>
+                <TableRow className="bg-gray-300 ">
                   <TableHead className="border-2 border-gray-300 p-2 text-black text-center w-16">
                     No
                   </TableHead>
                   <TableHead className="border-2 border-gray-300 p-2 text-black text-center">
-                    Tanggal
+                    Bulan
                   </TableHead>
                   <TableHead className="border-2 border-gray-300 p-2 text-black text-center w-32">
                     Aksi
@@ -239,30 +240,21 @@ const ReportOutcome = () => {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {filteredOuts.length === 0 ? (
-                  <TableRow>
-                    <TableCell
-                      colSpan={8}
-                      className="border-2 border-gray-300 p-2 text-center"
-                    >
-                      Data tidak ditemukan
-                    </TableCell>
-                  </TableRow>
-                ) : (
-                  filteredOuts.map((out, index) => (
-                    <TableRow>
-                      <TableCell className="border-2 border-gray-300 p-2 text-center">
-                        {index + 1}
-                      </TableCell>
-                      <TableCell className="border-2 border-gray-300 p-2 text-center">
-                        {getFormatDate(out.date)}
-                      </TableCell>
-                      <TableCell className="border-2 border-gray-300 p-2 text-center">
-                        {handleTapDetail(out.outs)}
-                      </TableCell>
-                    </TableRow>
-                  ))
-                )}
+                {filteredOuts.length === 0
+                  ? EmptyDataTable({ columnSpan: 3 })
+                  : filteredOuts.map((out, index) => (
+                      <TableRow>
+                        <TableCell className="border-2 border-gray-300 p-2 text-center">
+                          {index + 1}
+                        </TableCell>
+                        <TableCell className="border-2 border-gray-300 p-2 text-center">
+                          {getFormatDate(out.date)}
+                        </TableCell>
+                        <TableCell className="border-2 border-gray-300 p-2 text-center">
+                          {handleTapDetail(out.outs)}
+                        </TableCell>
+                      </TableRow>
+                    ))}
               </TableBody>
             </Table>
           </div>
@@ -273,11 +265,3 @@ const ReportOutcome = () => {
 };
 
 export default ReportOutcome;
-function useReactToPrint(arg0: {
-  content: () => any;
-  pageStyle: string;
-  documentTitle: string;
-  onAfterPrint: () => void;
-}) {
-  throw new Error("Function not implemented.");
-}
