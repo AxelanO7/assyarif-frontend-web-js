@@ -79,6 +79,9 @@ const ReturnReport = () => {
                         Nama
                       </TableHead>
                       <TableHead className="border-2 border-gray-300 p-2 text-black text-center">
+                        Jumlah
+                      </TableHead>
+                      <TableHead className="border-2 border-gray-300 p-2 text-black text-center">
                         Alasan
                       </TableHead>
                     </TableRow>
@@ -91,6 +94,9 @@ const ReturnReport = () => {
                         </TableCell>
                         <TableCell className="border-2 border-gray-300 p-2 text-black text-center">
                           {retur.outlet.name}
+                        </TableCell>
+                        <TableCell className="border-2 border-gray-300 p-2 text-black text-center">
+                          {(retur.created_at || "-").toString().split("T")[0]}
                         </TableCell>
                         <TableCell className="border-2 border-gray-300 p-2 text-black text-center">
                           {retur.stock.name}
