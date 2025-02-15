@@ -13,14 +13,16 @@ import {
   DialogTrigger,
 } from "@/shadcn/components/ui/dialog";
 import { Button } from "@nextui-org/button";
-import { Table } from "lucide-react";
 import {
+  Table,
   TableBody,
   TableCell,
   TableHead,
   TableHeader,
   TableRow,
 } from "@/shadcn/components/ui/table";
+import { EmptyDataTable } from "@/components/table";
+import { getFormatDate } from "@/helpers/date";
 
 const ReturnReport = () => {
   const getReturns = () => {
@@ -66,6 +68,9 @@ const ReturnReport = () => {
                     <TableRow>
                       <TableHead className="border-2 border-gray-300 p-2 text-black text-center">
                         No
+                      </TableHead>
+                      <TableHead className="border-2 border-gray-300 p-2 text-black text-center">
+                        Nama Outlet
                       </TableHead>
                       <TableHead className="border-2 border-gray-300 p-2 text-black text-center">
                         Tanggal
@@ -182,38 +187,37 @@ const ReturnReport = () => {
                 onClick={handleTapSearch}
               />
             </div>
-            <table className="w-full mt-4">
-              <thead>
-                <tr className="bg-gray-300">
-                  <th className="py-2 border border-gray-400 w-16">No</th>
-                  <th className="py-2 border border-gray-400">Tanggal</th>
-                  <th className="py-2 border border-gray-400 w-32">Aksi</th>
-                </tr>
-              </thead>
-              <tbody>
-                {returns?.length === 0 && (
-                  <tr>
-                    <td
-                      colSpan={6}
-                      className="text-center border border-gray-400 py-2"
-                    >
-                      No data
-                    </td>
-                  </tr>
-                )}
+            <Table className="w-full mt-4">
+              <TableHeader>
+                <TableRow className="bg-gray-300">
+                  <TableHead className="border-2 border-gray-300 p-2 text-black text-center w-16">
+                    No
+                  </TableHead>
+                  <TableHead className="border-2 border-gray-300 p-2 text-black text-center">
+                    Bulan
+                  </TableHead>
+                  <TableHead className="border-2 border-gray-300 p-2 text-black text-center w-32">
+                    Aksi
+                  </TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {returns?.length === 0 && EmptyDataTable({ columnSpan: 3 })}
                 {returns?.map((retur, index) => (
-                  <tr key={index} className="text-center">
-                    <td className="py-2 border border-gray-400">{index + 1}</td>
-                    <td className="py-2 border border-gray-400">
-                      {retur.date}
-                    </td>
-                    <td className="py-2 border border-gray-400">
+                  <TableRow key={index} className="text-center">
+                    <TableCell className="py-2 border border-gray-400">
+                      {index + 1}
+                    </TableCell>
+                    <TableCell className="py-2 border border-gray-400">
+                      {getFormatDate(retur.date)}
+                    </TableCell>
+                    <TableCell className="py-2 border border-gray-400">
                       {handleTapDetail(retur.rtrs)}
-                    </td>
-                  </tr>
+                    </TableCell>
+                  </TableRow>
                 ))}
-              </tbody>
-            </table>
+              </TableBody>
+            </Table>
           </div>
         </div>
       </BaseLayout>
