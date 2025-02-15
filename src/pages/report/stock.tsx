@@ -21,6 +21,7 @@ import {
 } from "@/shadcn/components/ui/dialog";
 import { Button } from "@nextui-org/button";
 import { getFormatDate } from "@/helpers/date";
+import { EmptyDataTable } from "@/components/table";
 
 const StockReport = () => {
   const [stocks, setStocks] = useState<PeriodStock[]>([]);
@@ -214,12 +215,12 @@ const StockReport = () => {
             </div>
             <Table className="w-full mt-4 ">
               <TableHeader>
-                <TableRow>
+                <TableRow className="bg-gray-300">
                   <TableHead className="border-2 border-gray-300 p-2 text-black text-center w-16">
                     No
                   </TableHead>
                   <TableHead className="border-2 border-gray-300 p-2 text-black text-center">
-                    Tanggal
+                    Bulan
                   </TableHead>
                   <TableHead className="border-2 border-gray-300 p-2 text-black text-center w-32">
                     Aksi
@@ -227,16 +228,8 @@ const StockReport = () => {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {filteredStocks.length === 0 && (
-                  <TableRow>
-                    <TableCell
-                      colSpan={6}
-                      className="border-2 border-gray-300 p-2 text-center"
-                    >
-                      Data tidak ditemukan
-                    </TableCell>
-                  </TableRow>
-                )}
+                {filteredStocks.length === 0 &&
+                  EmptyDataTable({ columnSpan: 3 })}
                 {filteredStocks.map((stock, index) => (
                   <TableRow key={index}>
                     <TableCell className="border-2 border-gray-300 p-2 text-center">
