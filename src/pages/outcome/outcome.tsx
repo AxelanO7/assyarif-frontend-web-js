@@ -13,6 +13,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/shadcn/components/ui/table";
+import { EmptyDataTable } from "@/components/table";
 
 const Outcome = () => {
   const [outs, setOuts] = useState<Out[]>([]);
@@ -46,38 +47,6 @@ const Outcome = () => {
 
   const addOut = () => {
     window.location.href = "/out/add";
-  };
-
-  const editOut = (id: number) => {
-    window.location.href = `/out/${id}`;
-  };
-
-  const handleDeleteOut = (id: number) => {
-    Swal.fire({
-      title: "Apakah Anda yakin?",
-      text: "Data yang dihapus tidak dapat dikembalikan!",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Ya, hapus!",
-    }).then((result) => {
-      if (result.isConfirmed) {
-        deleteStuff(id);
-      }
-    });
-  };
-
-  const deleteStuff = (id: number) => {
-    axios
-      .delete(`${baseUrl()}/stuff/out/${id}`)
-      .then((res) => {
-        console.log(res.data);
-        getOuts();
-      })
-      .catch((err) => {
-        console.log(err);
-      });
   };
 
   useEffect(() => {
@@ -148,61 +117,52 @@ const Outcome = () => {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {filteredOuts.length === 0 ? (
-                  <TableRow>
-                    <TableCell
-                      colSpan={8}
-                      className="border-2 border-gray-300 p-2 text-center"
-                    >
-                      Data tidak ditemukan
-                    </TableCell>
-                  </TableRow>
-                ) : (
-                  filteredOuts.map((out) => (
-                    <TableRow key={out.id}>
-                      <TableCell className="border-2 border-gray-300 p-2 text-center">
-                        {out.out_id}
-                      </TableCell>
-                      <TableCell className="border-2 border-gray-300 p-2 text-center">
-                        {new Date(
-                          out.created_at?.toString() || new Date()
-                        ).toLocaleDateString("id-ID", {
-                          weekday: "long",
-                          year: "numeric",
-                          month: "long",
-                          day: "numeric",
-                        })}
-                      </TableCell>
-                      <TableCell className="border-2 border-gray-300 p-2 text-center">
-                        {out.order.outlet.name}
-                      </TableCell>
-                      <TableCell className="border-2 border-gray-300 p-2 text-center">
-                        {out.order.stock.name}
-                      </TableCell>
-                      <TableCell className="border-2 border-gray-300 p-2 text-center">
-                        {out.order.total_order}
-                      </TableCell>
-                      <TableCell className="border-2 border-gray-300 p-2 text-center">
-                        {out.order.total_paid.toLocaleString("id-ID", {
-                          style: "currency",
-                          currency: "IDR",
-                        })}
-                      </TableCell>
-                      <TableCell className="border-2 border-gray-300 p-2 text-center">
-                        {out.total_paided.toLocaleString("id-ID", {
-                          style: "currency",
-                          currency: "IDR",
-                        })}
-                      </TableCell>
-                      <TableCell className="border-2 border-gray-300 p-2 text-center">
-                        {out.return_cash.toLocaleString("id-ID", {
-                          style: "currency",
-                          currency: "IDR",
-                        })}
-                      </TableCell>
-                    </TableRow>
-                  ))
-                )}
+                {filteredOuts.length === 0
+                  ? EmptyDataTable({ columnSpan: 8 })
+                  : filteredOuts.map((out) => (
+                      <TableRow key={out.id}>
+                        <TableCell className="border-2 border-gray-300 p-2 text-center">
+                          {out.out_id}
+                        </TableCell>
+                        <TableCell className="border-2 border-gray-300 p-2 text-center">
+                          {new Date(
+                            out.created_at?.toString() || new Date()
+                          ).toLocaleDateString("id-ID", {
+                            weekday: "long",
+                            year: "numeric",
+                            month: "long",
+                            day: "numeric",
+                          })}
+                        </TableCell>
+                        <TableCell className="border-2 border-gray-300 p-2 text-center">
+                          {out.order.outlet.name}
+                        </TableCell>
+                        <TableCell className="border-2 border-gray-300 p-2 text-center">
+                          {out.order.stock.name}
+                        </TableCell>
+                        <TableCell className="border-2 border-gray-300 p-2 text-center">
+                          {out.order.total_order}
+                        </TableCell>
+                        <TableCell className="border-2 border-gray-300 p-2 text-center">
+                          {out.order.total_paid.toLocaleString("id-ID", {
+                            style: "currency",
+                            currency: "IDR",
+                          })}
+                        </TableCell>
+                        <TableCell className="border-2 border-gray-300 p-2 text-center">
+                          {out.total_paided.toLocaleString("id-ID", {
+                            style: "currency",
+                            currency: "IDR",
+                          })}
+                        </TableCell>
+                        <TableCell className="border-2 border-gray-300 p-2 text-center">
+                          {out.return_cash.toLocaleString("id-ID", {
+                            style: "currency",
+                            currency: "IDR",
+                          })}
+                        </TableCell>
+                      </TableRow>
+                    ))}
               </TableBody>
             </Table>
           </div>
