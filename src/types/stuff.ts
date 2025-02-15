@@ -63,6 +63,25 @@ export interface Opname {
   deleted_at?: Date;
 }
 
+export interface StockRep {
+  id: number;
+  id_stuff: number;
+  name: string;
+  type: string;
+  quantity: number;
+  unit: string;
+  price: number;
+  id_out?: number;
+  description?: string;
+  created_at?: Date;
+  updated_at?: Date;
+  deleted_at?: Date;
+  initial_stock: number;
+  final_stock: number;
+  in_stock: number;
+  out_stock: number;
+}
+
 export interface PeriodOut {
   date: string;
   outs: Out[];
@@ -80,7 +99,7 @@ export interface ResOpname {
 }
 export interface PeriodStock {
   date: string;
-  stocks: Stuff[];
+  stocks: StockRep[];
 }
 
 export interface PeriodRetur {
