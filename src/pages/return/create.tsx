@@ -53,7 +53,7 @@ const CreateReturn = () => {
       outlet_id: outlet?.id,
       stock_id: selectedStock?.id,
       total_return: returnTotal,
-      reason: selectedReason,
+      reason: selectedReason || "Lainnya",
       proof: proof?.name,
     };
     axios
