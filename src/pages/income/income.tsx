@@ -5,7 +5,6 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { Stuff } from "../../types/stuff";
 import Swal from "sweetalert2";
-import { PencilIcon } from "@heroicons/react/16/solid";
 import {
   Table,
   TableBody,
@@ -16,7 +15,7 @@ import {
 } from "@/shadcn/components/ui/table";
 import { Input } from "@/shadcn/components/ui/input";
 import { Button } from "@nextui-org/button";
-import { resourceUsage } from "process";
+import { EmptyDataTable } from "@/components/table";
 
 const Income = () => {
   const [stocks, setStocks] = useState<Stuff[]>([]);
@@ -52,10 +51,6 @@ const Income = () => {
     window.location.href = "/in/add";
   };
 
-  const editIn = (id: number) => {
-    window.location.href = `/in/${id}`;
-  };
-
   const increaseDashboard = () => {
     try {
       console.log("filteredStocks", filteredStocks);
@@ -85,48 +80,6 @@ const Income = () => {
           payload.splice(index, 1);
         }
       });
-      console.log("payload", payload);
-      // const payload = filteredStocks.map((item) => {
-      // stocks.forEach((stock) => {
-      //   if (stock.quantity !== item.quantity) {
-      //     console.log("stock", stock.quantity + " item", item.quantity);
-      //     return {
-      //       id: item.id,
-      //       id_stuff: item.id_stuff,
-      //       name: item.name,
-      //       type: item.type,
-      //       quantity: item.quantity,
-      //       unit: item.unit,
-      //       price: item.price,
-      //       id_out: item.id_out,
-      //       description: item.description,
-      //       created_at: item.created_at,
-      //       updated_at: item.updated_at,
-      //       deleted_at: item.deleted_at,
-      //     };
-      //   }
-      // });
-      //   stocks.map((stock) => {
-      //     if (stock.quantity !== item.quantity) {
-      //       console.log("stock", stock.quantity + " item", item.quantity);
-      //       return {
-      //         id: item.id,
-      //         id_stuff: item.id_stuff,
-      //         name: item.name,
-      //         type: item.type,
-      //         quantity: item.quantity,
-      //         unit: item.unit,
-      //         price: item.price,
-      //         id_out: item.id_out,
-      //         description: item.description,
-      //         created_at: item.created_at,
-      //         updated_at: item.updated_at,
-      //         deleted_at: item.deleted_at,
-      //       };
-      //     }
-      //   });
-      // });
-      // console.log(payload);
       axios
         .put(
           `${getBaseUrl()}/stock/private/stuff/increase-dashboard/multiple`,
@@ -146,73 +99,6 @@ const Income = () => {
     } catch (err) {
       console.log(err);
     }
-  };
-
-  const handleTapDetail = async (id: number) => {
-    await axios
-      .get(`${baseUrl()}/stuff/in/${id}`)
-      .then((res) => {
-        console.log(res.data);
-        const data: Stuff = res.data.data;
-        Swal.fire({
-          title: "Detail Barang",
-          html: `
-            <div class="text-left">
-              <p><span class="font-semibold">ID Barang:</span> ${
-                data.id_stuff
-              }</p>
-              <p><span class="font-semibold">Nama:</span> ${data.name}</p>
-              <p><span class="font-semibold">Jenis:</span> ${data.type}</p>
-              <p><span class="font-semibold">Jumlah:</span> ${data.quantity}</p>
-              <p><span class="font-semibold">Satuan:</span> ${data.unit}</p>
-              <p><span class="font-semibold">Harga:</span> ${data.price.toLocaleString(
-                "id-ID",
-                {
-                  style: "currency",
-                  currency: "IDR",
-                }
-              )}</p>
-            </div>
-          `,
-          confirmButtonColor: "#3085d6",
-        }).then((result) => {
-          if (result.isConfirmed) {
-            console.log("OK");
-          }
-        });
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
-
-  const handleDeleteIn = (id: number) => {
-    Swal.fire({
-      title: "Apakah Anda yakin?",
-      text: "Data yang dihapus tidak dapat dikembalikan!",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Ya, hapus!",
-    }).then((result) => {
-      if (result.isConfirmed) {
-        deleteStuff(id);
-      }
-    });
-  };
-
-  const deleteStuff = (id: number) => {
-    axios
-      .delete(`${baseUrl()}/stuff/in/${id}`)
-      .then((res) => {
-        Swal.fire("Berhasil!", "Data berhasil dihapus.", "success");
-        getIns();
-      })
-      .catch((err) => {
-        console.log(err);
-        Swal.fire("Gagal!", "Data gagal dihapus.", "error");
-      });
   };
 
   useEffect(() => {
@@ -240,9 +126,6 @@ const Income = () => {
                 >
                   Tambah Barang
                 </button>
-                {/* <button className="bg-c-yellow rounded-md px-3">
-                  Cetak Laporan
-                </button> */}
               </div>
               <div className="flex items-center">
                 <input
@@ -281,83 +164,63 @@ const Income = () => {
                   <TableHead className="border-2 border-gray-300 p-2 text-black text-center">
                     Total
                   </TableHead>
-                  {/* <TableHead className="border-2 border-gray-300 p-2 text-black text-center w-24">
-                    Aksi
-                  </TableHead> */}
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {filteredStocks.length === 0 ? (
-                  <TableRow>
-                    <TableCell
-                      colSpan={7}
-                      className="border-2 border-gray-300 p-2"
-                    >
-                      Data tidak ditemukan
-                    </TableCell>
-                  </TableRow>
-                ) : (
-                  filteredStocks.map((stock) => (
-                    <TableRow key={stock.id}>
-                      <TableCell className="border-2 border-gray-300 p-2 text-center">
-                        {stock.id_stuff}
-                      </TableCell>
-                      <TableCell className="border-2 border-gray-300 p-2 text-center">
-                        {new Date(
-                          stock.created_at?.toString() || new Date()
-                        ).toLocaleDateString("id-ID", {
-                          weekday: "long",
-                          year: "numeric",
-                          month: "long",
-                          day: "numeric",
-                        })}
-                      </TableCell>
+                {filteredStocks.length === 0
+                  ? EmptyDataTable({ columnSpan: 7 })
+                  : filteredStocks.map((stock) => (
+                      <TableRow key={stock.id}>
+                        <TableCell className="border-2 border-gray-300 p-2 text-center">
+                          {stock.id_stuff}
+                        </TableCell>
+                        <TableCell className="border-2 border-gray-300 p-2 text-center">
+                          {new Date(
+                            stock.created_at?.toString() || new Date()
+                          ).toLocaleDateString("id-ID", {
+                            weekday: "long",
+                            year: "numeric",
+                            month: "long",
+                            day: "numeric",
+                          })}
+                        </TableCell>
 
-                      <TableCell className="border-2 border-gray-300 p-2 text-center">
-                        {stock.name}
-                      </TableCell>
-                      <TableCell className="border-2 border-gray-300 p-2 text-center">
-                        {stock.type}
-                      </TableCell>
-                      <TableCell className="border-2 border-gray-300 p-2 text-center">
-                        {stock.unit}
-                      </TableCell>
-                      <TableCell className="border-2 border-gray-300 p-2 text-center">
-                        <Input
-                          type="number"
-                          defaultValue={0}
-                          onChange={(e) => {
-                            setFilteredStocks(
-                              filteredStocks.map((item) => {
-                                if (item.id === stock.id) {
-                                  return {
-                                    ...item,
-                                    quantity: parseInt(e.target.value),
-                                  };
-                                }
-                                return item;
-                              })
-                            );
-                          }}
-                        />
-                      </TableCell>
-                      <TableCell className="border-2 border-gray-300 p-2 text-center">
-                        {stock.price.toLocaleString("id-ID", {
-                          style: "currency",
-                          currency: "IDR",
-                        })}
-                      </TableCell>
-                      {/* <TableCell className="border-2 border-gray-300 space-x-2 text-white font-semibold">
-                        <div className="w-full flex justify-center">
-                          <PencilIcon
-                            className="w-5 h-5 cursor-pointer text-black"
-                            onClick={() => editIn(stock.id)}
+                        <TableCell className="border-2 border-gray-300 p-2 text-center">
+                          {stock.name}
+                        </TableCell>
+                        <TableCell className="border-2 border-gray-300 p-2 text-center">
+                          {stock.type}
+                        </TableCell>
+                        <TableCell className="border-2 border-gray-300 p-2 text-center">
+                          {stock.unit}
+                        </TableCell>
+                        <TableCell className="border-2 border-gray-300 p-2 text-center">
+                          <Input
+                            type="number"
+                            defaultValue={0}
+                            onChange={(e) => {
+                              setFilteredStocks(
+                                filteredStocks.map((item) => {
+                                  if (item.id === stock.id) {
+                                    return {
+                                      ...item,
+                                      quantity: parseInt(e.target.value),
+                                    };
+                                  }
+                                  return item;
+                                })
+                              );
+                            }}
                           />
-                        </div>
-                      </TableCell> */}
-                    </TableRow>
-                  ))
-                )}
+                        </TableCell>
+                        <TableCell className="border-2 border-gray-300 p-2 text-center">
+                          {stock.price.toLocaleString("id-ID", {
+                            style: "currency",
+                            currency: "IDR",
+                          })}
+                        </TableCell>
+                      </TableRow>
+                    ))}
               </TableBody>
             </Table>
             <div className="flex justify-end mt-4">
