@@ -5,6 +5,15 @@ import { getBaseUrl } from "@/helpers/api";
 import { useEffect, useState } from "react";
 import { EmployeeProps } from "@/types/user";
 import Swal from "sweetalert2";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/shadcn/components/ui/table";
+import { EmptyDataTable } from "@/components/table";
 
 const Employee = () => {
   const [employees, setEmployees] = useState<EmployeeProps[]>([]);
@@ -115,39 +124,43 @@ const Employee = () => {
               </div>
             </div>
 
-            <table className="w-full mt-4">
-              <thead>
-                <tr>
-                  <th className="border-2 border-gray-300 p-2">No</th>
-                  <th className="border-2 border-gray-300 p-2">Nama</th>
-                  <th className="border-2 border-gray-300 p-2">No Telepon</th>
-                  <th className="border-2 border-gray-300 p-2">Alamat</th>
-                  <th className="border-2 border-gray-300 p-2">Aksi</th>
-                </tr>
-              </thead>
-              <tbody className="text-center text-gray-700">
-                {employees.length === 0 && (
-                  <tr>
-                    <td colSpan={5} className="border-2 border-gray-300 p-2">
-                      Tidak ada data
-                    </td>
-                  </tr>
-                )}
+            <Table className="w-full mt-4">
+              <TableHeader>
+                <TableRow>
+                  <TableHead className="border-2 border-gray-300 p-2">
+                    No
+                  </TableHead>
+                  <TableHead className="border-2 border-gray-300 p-2">
+                    Nama
+                  </TableHead>
+                  <TableHead className="border-2 border-gray-300 p-2">
+                    No Telepon
+                  </TableHead>
+                  <TableHead className="border-2 border-gray-300 p-2">
+                    Alamat
+                  </TableHead>
+                  <TableHead className="border-2 border-gray-300 p-2">
+                    Aksi
+                  </TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody className="text-center text-gray-700">
+                {employees.length === 0 && EmptyDataTable({ columnSpan: 5 })}
                 {employees.map((employee, index) => (
-                  <tr key={employee.id}>
-                    <td className="border-2 border-gray-300 p-2">
+                  <TableRow key={employee.id}>
+                    <TableCell className="border-2 border-gray-300 p-2">
                       {index + 1}
-                    </td>
-                    <td className="border-2 border-gray-300 p-2">
+                    </TableCell>
+                    <TableCell className="border-2 border-gray-300 p-2">
                       {employee.name}
-                    </td>
-                    <td className="border-2 border-gray-300 p-2">
+                    </TableCell>
+                    <TableCell className="border-2 border-gray-300 p-2">
                       {employee.phone}
-                    </td>
-                    <td className="border-2 border-gray-300 p-2">
+                    </TableCell>
+                    <TableCell className="border-2 border-gray-300 p-2">
                       {employee.address}
-                    </td>
-                    <td className="border-2 border-gray-300 flex space-x-2 text-white p-2">
+                    </TableCell>
+                    <TableCell className="border-2 border-gray-300 flex space-x-2 text-white p-2">
                       <button
                         className="bg-blue-500 rounded-md w-full p-1"
                         onClick={() =>
@@ -164,11 +177,11 @@ const Employee = () => {
                       >
                         Hapus
                       </button>
-                    </td>
-                  </tr>
+                    </TableCell>
+                  </TableRow>
                 ))}
-              </tbody>
-            </table>
+              </TableBody>
+            </Table>
           </div>
         </div>
       </BaseLayout>
