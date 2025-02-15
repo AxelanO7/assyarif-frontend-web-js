@@ -5,8 +5,18 @@ import axios from "axios";
 import { Retur } from "@/types/stuff";
 import { getBaseUrl } from "@/helpers/api";
 import { MagnifyingGlassIcon } from "@heroicons/react/20/solid";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/shadcn/components/ui/table";
+import { EmptyDataTable } from "@/components/table";
 
 const Return = () => {
+
   const getReturns = () => {
     axios
       .get(`${getBaseUrl()}/return/private/stuff`)
@@ -59,51 +69,49 @@ const Return = () => {
                 onClick={handleTapSearch}
               />
             </div>
-            <table className="w-full mt-4">
-              <thead>
-                <tr className="bg-gray-300">
-                  {/* TODO: no invoice */}
-                  <th className="py-2 border border-gray-400">No</th>
-                  <th className="py-2 border border-gray-400">Outlet</th>
-                  <th className="py-2 border border-gray-400">Barang</th>
-                  <th className="py-2 border border-gray-400">Jumlah</th>
-                  <th className="py-2 border border-gray-400">Alasan</th>
-                  {/* <th className="py-2 border border-gray-400">Bukti</th> */}
-                </tr>
-              </thead>
-              <tbody>
-                {returns?.length === 0 && (
-                  <tr>
-                    <td
-                      colSpan={6}
-                      className="text-center border border-gray-400 py-2"
-                    >
-                      No data
-                    </td>
-                  </tr>
-                )}
+            <Table className="w-full mt-4">
+              <TableHeader>
+                <TableRow className="bg-gray-300">
+                  <TableHead className="py-2 border border-gray-400">
+                    No
+                  </TableHead>
+                  <TableHead className="py-2 border border-gray-400">
+                    Outlet
+                  </TableHead>
+                  <TableHead className="py-2 border border-gray-400">
+                    Barang
+                  </TableHead>
+                  <TableHead className="py-2 border border-gray-400">
+                    Jumlah
+                  </TableHead>
+                  <TableHead className="py-2 border border-gray-400">
+                    Alasan
+                  </TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {returns?.length === 0 && EmptyDataTable({ columnSpan: 6 })}
                 {returns?.map((retur, index) => (
-                  <tr key={retur.id} className="text-center">
-                    <td className="py-2 border border-gray-400">{index + 1}</td>
-                    <td className="py-2 border border-gray-400">
+                  <TableRow key={retur.id} className="text-center">
+                    <TableCell className="py-2 border border-gray-400">
+                      {index + 1}
+                    </TableCell>
+                    <TableCell className="py-2 border border-gray-400">
                       {retur.outlet.name}
-                    </td>
-                    <td className="py-2 border border-gray-400">
+                    </TableCell>
+                    <TableCell className="py-2 border border-gray-400">
                       {retur.stock.name}
-                    </td>
-                    <td className="py-2 border border-gray-400">
+                    </TableCell>
+                    <TableCell className="py-2 border border-gray-400">
                       {retur.total_return}
-                    </td>
-                    <td className="py-2 border border-gray-400">
+                    </TableCell>
+                    <TableCell className="py-2 border border-gray-400">
                       {retur.reason}
-                    </td>
-                    {/* <td className="py-2 border border-gray-400">
-                      {retur.proof}
-                    </td> */}
-                  </tr>
+                    </TableCell>
+                  </TableRow>
                 ))}
-              </tbody>
-            </table>
+              </TableBody>
+            </Table>
           </div>
         </div>
       </BaseLayout>
