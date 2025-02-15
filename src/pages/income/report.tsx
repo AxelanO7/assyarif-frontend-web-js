@@ -21,6 +21,7 @@ import {
 } from "@/shadcn/components/ui/dialog";
 import { DialogTrigger } from "@radix-ui/react-dialog";
 import { getFormatDate } from "@/helpers/date";
+import { EmptyDataTable } from "@/components/table";
 
 const ReportIncome = () => {
   const [stocks, setStocks] = useState<PeriodIn[]>([]);
@@ -220,7 +221,7 @@ const ReportIncome = () => {
                     No
                   </TableHead>
                   <TableHead className="border-2 border-gray-300 p-2 text-black text-center">
-                    Tanggal
+                    Bulan
                   </TableHead>
                   <TableHead className="border-2 border-gray-300 p-2 text-black text-center w-32">
                     Aksi
@@ -228,30 +229,21 @@ const ReportIncome = () => {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {filteredStocks.length === 0 ? (
-                  <TableRow>
-                    <TableCell
-                      colSpan={3}
-                      className="border-2 border-gray-300 p-2 text-center"
-                    >
-                      Data tidak ditemukan
-                    </TableCell>
-                  </TableRow>
-                ) : (
-                  filteredStocks.map((ins, index) => (
-                    <TableRow key={index}>
-                      <TableCell className="border-2 border-gray-300 p-2 text-center">
-                        {index + 1}
-                      </TableCell>
-                      <TableCell className="border-2 border-gray-300 p-2 text-center">
-                        {getFormatDate(ins.date)}
-                      </TableCell>
-                      <TableCell className="border-2 border-gray-300 p-2 text-center">
-                        {handleTapDetail(ins.ins)}
-                      </TableCell>
-                    </TableRow>
-                  ))
-                )}
+                {filteredStocks.length === 0
+                  ? EmptyDataTable({ columnSpan: 3 })
+                  : filteredStocks.map((ins, index) => (
+                      <TableRow key={index}>
+                        <TableCell className="border-2 border-gray-300 p-2 text-center">
+                          {index + 1}
+                        </TableCell>
+                        <TableCell className="border-2 border-gray-300 p-2 text-center">
+                          {getFormatDate(ins.date)}
+                        </TableCell>
+                        <TableCell className="border-2 border-gray-300 p-2 text-center">
+                          {handleTapDetail(ins.ins)}
+                        </TableCell>
+                      </TableRow>
+                    ))}
               </TableBody>
             </Table>
           </div>
