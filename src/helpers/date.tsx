@@ -18,5 +18,5 @@ export const listMonth = (month: string) => {
 
 export const getFormatDate = (date: string) => {
   const dateArr = date.split("-");
-  return `${listMonth(dateArr[0])} ${dateArr[1]}`;
+  return `${listMonth(dateArr[0])}`;
 };
