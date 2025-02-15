@@ -144,7 +144,7 @@ const Dashboard = () => {
                   <TableRow>
                     <TableCell
                       colSpan={6}
-                      className="border-2 border-gray-300 p-2"
+                      className="border-2 border-gray-300 p-2 text-center"
                     >
                       Data tidak ditemukan
                     </TableCell>
