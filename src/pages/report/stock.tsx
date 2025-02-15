@@ -2,7 +2,7 @@ import { HomeIcon, MagnifyingGlassIcon } from "@heroicons/react/20/solid";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { getBaseUrl } from "@/helpers/api";
-import { PeriodStock, Stuff } from "@/types/stuff";
+import { PeriodStock, StockRep } from "@/types/stuff";
 import {
   Table,
   TableBody,
@@ -101,7 +101,7 @@ const StockReport = () => {
     }
   };
 
-  const handleTapDetail = (stock: Stuff[]) => {
+  const handleTapDetail = (stock: StockRep[]) => {
     return (
       <Dialog>
         <DialogTrigger asChild>
@@ -117,23 +117,29 @@ const StockReport = () => {
                 <Table className="w-full mt-4">
                   <TableHeader>
                     <TableRow>
-                      <TableHead className="border-2 border-gray-300 p-2 text-black text-center">
-                        ID Barang
+                      <TableHead className="border-2 border-gray-300 p-2 text-black text-center w-12">
+                        ID
                       </TableHead>
                       <TableHead className="border-2 border-gray-300 p-2 text-black text-center">
                         Nama
                       </TableHead>
                       <TableHead className="border-2 border-gray-300 p-2 text-black text-center">
-                        Tipe
-                      </TableHead>
-                      <TableHead className="border-2 border-gray-300 p-2 text-black text-center">
-                        Kuantitas
-                      </TableHead>
-                      <TableHead className="border-2 border-gray-300 p-2 text-black text-center">
-                        unit
+                        Satuan
                       </TableHead>
                       <TableHead className="border-2 border-gray-300 p-2 text-black text-center">
                         Harga
+                      </TableHead>
+                      <TableHead className="border-2 border-gray-300 p-2 text-black text-center">
+                        Stok Awal
+                      </TableHead>
+                      <TableHead className="border-2 border-gray-300 p-2 text-black text-center">
+                        Stok Masuk
+                      </TableHead>
+                      <TableHead className="border-2 border-gray-300 p-2 text-black text-center">
+                        Stok Keluar
+                      </TableHead>
+                      <TableHead className="border-2 border-gray-300 p-2 text-black text-center">
+                        Stok Akhir
                       </TableHead>
                     </TableRow>
                   </TableHeader>
@@ -148,12 +154,6 @@ const StockReport = () => {
                             {stock.name}
                           </TableCell>
                           <TableCell className="border-2 border-gray-300 p-2 text-center">
-                            {stock.type}
-                          </TableCell>
-                          <TableCell className="border-2 border-gray-300 p-2 text-center">
-                            {stock.quantity}
-                          </TableCell>
-                          <TableCell className="border-2 border-gray-300 p-2 text-center">
                             {stock.unit}
                           </TableCell>
                           <TableCell className="border-2 border-gray-300 p-2 text-center">
@@ -161,6 +161,18 @@ const StockReport = () => {
                               style: "currency",
                               currency: "IDR",
                             })}
+                          </TableCell>
+                          <TableCell className="border-2 border-gray-300 p-2 text-center">
+                            {stock.initial_stock}
+                          </TableCell>
+                          <TableCell className="border-2 border-gray-300 p-2 text-center">
+                            {stock.in_stock}
+                          </TableCell>
+                          <TableCell className="border-2 border-gray-300 p-2 text-center">
+                            {stock.out_stock}
+                          </TableCell>
+                          <TableCell className="border-2 border-gray-300 p-2 text-center">
+                            {stock.final_stock}
                           </TableCell>
                         </TableRow>
                       );
